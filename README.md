@@ -4,9 +4,9 @@ Avoid the sky anomalies and keep flying. Use the perk jars to gain advantages (o
 
 ## Controls
 
-Arrow keys (<- and ->): Side movement
-Z key: Boost
-X key: Down boost (not finished)
+- Arrow keys (<- and ->): Side movement
+- Z key: Boost
+- X key: Down boost (not finished)
 
 ## Features
 - Health
