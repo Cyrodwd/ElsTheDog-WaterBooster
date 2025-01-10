@@ -1,0 +1,55 @@
+{
+    "name" : "els-the-fox-magma-booster",
+    "description" : "Simple game of Els the fox. Avoid anomalies in sky",
+    "authors" : ["ByancaUwU"],
+    "copyright" : "Copyright © 2024, ByancaUwU",
+    "license" : "MIT",
+    "dependencies": {
+        "joka": "*",
+        "parin": "*"
+    },
+    "targetName": "ElsTheFox_MagmaBooster_Executable",
+    "configurations": [
+        {
+            "name": "linux",
+            "targetType": "executable",
+            "platforms": ["linux"],
+            "dflags": ["-i"],
+            "lflags": ["-L.", "-rpath=$$ORIGIN"],
+            "libs": [
+                "raylib",
+                "GL",
+                "m",
+                "pthread",
+                "dl",
+                "rt",
+                "X11"
+            ]
+        },
+        {
+            "name": "windows",
+            "targetType": "executable",
+            "platforms": ["windows"],
+            "dflags": ["-i"],
+            "libs": [
+                "raylib"
+            ]
+        },
+        {
+            "name": "osx",
+            "targetType": "executable",
+            "platforms": ["osx"],
+            "dflags": ["-i"],
+            "lflags": ["-L.", "-rpath", "@executable_path/"],
+            "libs": [
+                "raylib"
+            ]
+        },
+        {
+            "name": "web",
+            "targetType": "staticLibrary",
+            "targetName": "webgame",
+            "dflags": ["-mtriple=wasm32-unknown-unknown-wasm", "-checkaction=halt", "-betterC", "-i", "--release"]
+        }
+    ]
+}
