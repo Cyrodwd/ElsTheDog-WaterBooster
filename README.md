@@ -1,6 +1,6 @@
 # Els The Fox: Magma Booster.
 
-Avoid the sky anomalies and keep flying. Use the perk jars to gain advantages (obviously) on your journey.
+Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advantages (obviously) on your journey.
 
 ## Controls
 
