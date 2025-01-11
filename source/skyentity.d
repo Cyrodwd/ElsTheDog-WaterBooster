@@ -124,6 +124,8 @@ abstract class SkyEntity {
     public abstract void updateCollision(ref Player pl);
 }
 
+/* TODO: Create a separate module for Anomaly and AdvantageFlask class */
+
 final class Anomaly : SkyEntity
 {
     private ubyte damageAmount;
