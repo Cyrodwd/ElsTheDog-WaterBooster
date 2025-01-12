@@ -5,4 +5,5 @@ public {
     import managers.score;
     import managers.text;
     import managers.texture;
+    import managers.resources;
 }

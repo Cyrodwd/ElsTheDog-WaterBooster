@@ -13,7 +13,6 @@ final class SceneManager
 
     public void clear() {
         scenes.clear();
-        currentScene.onFree();
         currentScene = null;
     }
 
@@ -30,14 +29,13 @@ final class SceneManager
         scenes[name] = scene;
     }
 
-    public void set(IStr name, bool freeLast = true, bool restartNew = true) {
+    public void set(IStr name, bool refresh = true) {
         if (name !in scenes)
             assert(0, "Scene is not inside scenes map");
-        
-        if (currentScene !is null && freeLast) currentScene.onFree();
+
         currentScene = scenes[name];
         
-        if (restartNew) currentScene.onStart();
+        if (refresh) currentScene.onStart();
     }
 
     public void update(float dt) {

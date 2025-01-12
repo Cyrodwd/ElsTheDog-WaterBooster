@@ -3,26 +3,19 @@ module game;
 import parin;
 import skyentity;
 
-import scenes.playscene;
-import scenes.menuscene;
-import managers.scene;
-import managers.texture;
-import managers.text;
+import managers;
 
 struct Game
 {
     void start() {
         FontManager.setup();
 
-        SceneManager.get().add("PlayScene", new PlayScene());
-        SceneManager.get().add("MenuScene", new MenuScene());
+        ResourceManager.loadAnomalyResources();
+        ResourceManager.loadAtlases();
 
-        TextureManager.getInstance().add("uiBar", "ui/uiBar.png");
-        TextureManager.getInstance().add("ElsAtlas", "Els.png"); 
-        TextureManager.getInstance().add("FlaskAtlas", "AdvantageFlask.png");
-        TextureManager.getInstance().add("FireTear", "FireTear.png");
-
-        TextureManager.getInstance().add("NightBg", "NightBG.png");
+        ResourceManager.loadBackgrounds();
+        ResourceManager.loadUiResources("ui");
+        ResourceManager.setupScenes();
 
         SceneManager.get().set("MenuScene");
     }
@@ -38,7 +31,7 @@ struct Game
 
     void free() {
         FontManager.free();
-        TextureManager.getInstance().clear();
         SceneManager.get().clear();
+        TextureManager.getInstance().clear();
     }
 }

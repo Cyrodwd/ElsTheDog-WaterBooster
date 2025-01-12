@@ -24,13 +24,9 @@ class MenuScene : IScene {
         if (uiButton(Rect(Vec2.zero, buttonSize), "Start test", mOptions)) {
             SceneManager.get().set("PlayScene");
         }
-
+        
         if (uiButton(Rect(Vec2(0, 256), buttonSize), "Parin URL test", mOptions)) {
             openUrl();
         }
-    }
-
-    public override void onFree() {
-        /* DAMN */
     }
 }

@@ -75,7 +75,6 @@ enum PlayState : ubyte {
     GameOver
 }
 
-
 class PlayScene : IScene
 {
     private PlayState state;
@@ -112,9 +111,9 @@ class PlayScene : IScene
 
         // Testing multiple anomalies
         anomalies = [
-            new Anomaly(SEConfig(SEDirection.horizontal, 244.3f), "FireTear", 25, 2.6f),
-            new Anomaly(SEConfig(SEDirection.vertical, 644.2f), "FireTear", 22, 1.56f),
-            new Anomaly(SEConfig(SEDirection.vertical, 965.12f), "FireTear", 23, 66.2f),
+            new Anomaly(SEConfig(SEDirection.horizontal, 244.3f), "FireTear", 15, 2.6f),
+            new Anomaly(SEConfig(SEDirection.vertical, 644.2f), "FireTear", 12, 1.56f),
+            new Anomaly(SEConfig(SEDirection.vertical, 965.12f), "FireTear", 1, 6.2f),
         ];
 
         // Why... :<
@@ -135,7 +134,7 @@ class PlayScene : IScene
         playerEls.update(dt);
 
         if (state == PlayState.Normal) {
-             if (isPressed(Keyboard.esc)) SceneManager.get().set("MenuScene", false);
+             if (isPressed(Keyboard.esc)) SceneManager.get().set("PauseScene");
 
             scoreManager.update(dt);
             StarBG.update(dt);
@@ -174,10 +173,6 @@ class PlayScene : IScene
         healthFlask.draw();
 
         drawUI();
-    }
-
-    public override void onFree() {
-        /* Empty */
     }
 
     private void drawUI() {

@@ -12,6 +12,4 @@ interface IScene
     void onUpdate(float dt);
     /// Called each frame to draw
     void onDraw();
-    /// Called when exit
-    void onFree();   
 }

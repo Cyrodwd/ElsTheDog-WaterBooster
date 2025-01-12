@@ -10,7 +10,7 @@ enum ElsState : ubyte {
     hurt = 0x1,
     dead = 0x2,
 }
-// private constants
+
 struct ElsPhysics {
      @disable this();
      static enum gravity = 420.0f;
@@ -38,7 +38,7 @@ struct ElsHitbox {
     );
 }
 
-// functions
+// rare
 byte getArrowKeysAxis() {
     return isDown(Keyboard.right) - isDown(Keyboard.left);
 }
