@@ -2,7 +2,7 @@
     "name" : "els-the-fox-magma-booster",
     "description" : "Simple game of Els the fox. Avoid anomalies in sky",
     "authors" : ["ByancaUwU"],
-    "copyright" : "Copyright © 2024, ByancaUwU",
+    "copyright" : "Copyright © 2025, ByancaUwU",
     "license" : "MIT",
     "dependencies": {
         "joka": "*",
