@@ -33,7 +33,7 @@ private
         }
     }
 
-    struct StarBG {
+    struct ScrollingBG {
         @disable this();
 
         static:
@@ -62,10 +62,10 @@ private
 
         void draw() {
             // First copy
-            drawTexture(TextureManager.getInstance().get("NightBg"), position, drawOptions);
+            drawTexture(TextureManager.getInstance().get("NightSkyBackground"), position, drawOptions);
 
             // Second copy
-            drawTexture(TextureManager.getInstance().get("NightBg"), clonePosition, drawOptions);
+            drawTexture(TextureManager.getInstance().get("NightSkyBackground"), clonePosition, drawOptions);
         }
     }
 }
@@ -85,20 +85,20 @@ class PlayScene : IScene
     private Text scoreText;
     private Text fuelText;
 
-    private Timer deadTimer; // Time to switch to GameOver Screen
-
+    private Timer deadTimer; // Time to switch to GameOver Scene
+    
     private void fillBooster() {
         playerEls.getBooster.addFuel(5.0f);
     }
 
-    private Anomaly[3] anomalies;
+    private Anomaly[3] anomalies; // Test
     private AdvantageFlask healthFlask;
     private OffscreenRect verticalLimit;
 
     private SEConfig fireTearConfig;
 
     public override void onStart() {
-        StarBG.start();
+        ScrollingBG.start();
         fireTearConfig = SEConfig(SEDirection.vertical, 354.2f);
 
         playerEls.start();
@@ -137,7 +137,7 @@ class PlayScene : IScene
              if (isPressed(Keyboard.esc)) SceneManager.get().set("PauseScene");
 
             scoreManager.update(dt);
-            StarBG.update(dt);
+            ScrollingBG.update(dt);
 
             if (!playerEls.isAlive()) {
                 deadTimer.start();
@@ -156,13 +156,13 @@ class PlayScene : IScene
             deadTimer.update(dt);
 
             if (deadTimer.hasStopped()) {
-                SceneManager.get().set("MenuScene");
+                SceneManager.get().set("GameOverScene");
             }
         }
     }
 
     public override void onDraw() {
-        StarBG.draw();
+        ScrollingBG.draw();
 
         playerEls.draw();
 
@@ -172,7 +172,8 @@ class PlayScene : IScene
 
         healthFlask.draw();
 
-        drawUI();
+        if (state != PlayState.GameOver)
+            drawUI();
     }
 
     private void drawUI() {
