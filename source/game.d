@@ -14,7 +14,8 @@ struct Game
         ResourceManager.loadAtlases();
 
         ResourceManager.loadBackgrounds();
-        ResourceManager.loadUiResources("ui");
+        ResourceManager.loadUiResources();
+        
         ResourceManager.setupScenes();
 
         SceneManager.get().set("MenuScene");
