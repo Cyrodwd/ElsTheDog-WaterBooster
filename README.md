@@ -16,22 +16,21 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 - Various anomalies: fast, slow, weak, strong, blah blah blah
 
 ## Missing
-- Main menu
+- Main menu (A good one)
 - Unique anomalies
 - More advantage flasks
-- Pause system
 - Other stuff I'm still thinking about
 
 This game was created with [Parin](https://github.com/Kapendev/parin).
 
 ## Compilation
 
-First, run this command in your terminal/cmd:
+First, run this command in your terminal/cmd.
 ```sh
 dub run parin:setup
 ```
 
-Now, run this other command to compile.
+Now, run this other command to build it.
 ```sh
 dub build
 ```
