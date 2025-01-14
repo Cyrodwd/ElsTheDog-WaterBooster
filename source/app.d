@@ -1,13 +1,13 @@
-import parin;
-import globals : ETFResolution;
 import game;
+import parin;
+import constants : ETFResolution;
 
+// Ok?
 Game etfMbGame = {};
 
 void ready() {
     lockResolution(ETFResolution.width, ETFResolution.height);
     setBackgroundColor(black);
-    //setIsPixelPerfect(value: true);
     etfMbGame.start();
 }
 

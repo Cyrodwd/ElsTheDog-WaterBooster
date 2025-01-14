@@ -1,8 +1,5 @@
 module game;
 
-import parin;
-import skyentity;
-
 import managers;
 
 struct Game
