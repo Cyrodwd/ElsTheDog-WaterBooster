@@ -1,8 +1,9 @@
 module scenes.gameoverscene;
 
 import parin;
-import globals : ETFUi;
-import scenes.scene;
+import constants : ETFUi;
+import scenes.iscene;
+
 import managers.texture;
 import managers.scene;
 import managers.text;

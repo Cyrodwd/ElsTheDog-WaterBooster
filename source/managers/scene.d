@@ -1,7 +1,7 @@
 module managers.scene;
 
 import parin;
-import scenes.scene;
+import scenes.iscene;
 
 final class SceneManager
 {

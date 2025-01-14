@@ -1,7 +1,8 @@
 module scenes.menuscene;
 
 import parin;
-import scenes.scene;
+import scenes.iscene;
+
 import managers.scene;
 import managers.text;
 

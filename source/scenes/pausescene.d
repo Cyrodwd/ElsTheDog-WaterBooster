@@ -1,8 +1,9 @@
 module scenes.pausescene;
 
 import parin;
-import globals;
-import scenes.scene;
+import constants;
+import scenes.iscene;
+
 import managers.text;
 import managers.scene;
 

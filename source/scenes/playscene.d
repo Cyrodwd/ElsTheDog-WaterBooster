@@ -1,19 +1,20 @@
 module scenes.playscene;
 
-import parin : Rect, Vec2, DrawOptions, drawTexture, isPressed, Keyboard, drawDebugText, drawText, Timer;
-import joka.colors;
-import globals : ETFResolution;
+import parin;
+import constants;
 
 import player;
-import globals;
-import skyentity;
+import player.magmabooster : MagmaBoosterConst;
 
-import scenes.scene;
+import sentity.data;
+import sentity.anomaly;
+import sentity.advantageflask;
+
 import managers;
-import std.format : format;
+import scenes.iscene;
+import std.format : format; // To display score with five digits
 
-private
-{
+private {
     enum offscreenRectSize = Vec2(ETFResolution.width, 1);
     enum offscreenRectPosition = Vec2(0, ETFResolution.height - offscreenRectSize.y);
 
@@ -40,7 +41,9 @@ private
 
         float scrollSpeed;
         Vec2 position, clonePosition;
+
         DrawOptions drawOptions;
+        TextureId texture;
 
         void start() {
             position = Vec2.zero;
@@ -50,6 +53,7 @@ private
             
             // 1280x960 lmao
             drawOptions.scale = Vec2(2);
+            texture = TextureManager.getInstance().get("NightSkyBackground");
         }
 
         void update(float dt) {
@@ -62,10 +66,10 @@ private
 
         void draw() {
             // First copy
-            drawTexture(TextureManager.getInstance().get("NightSkyBackground"), position, drawOptions);
+            drawTexture(texture, position, drawOptions);
 
             // Second copy
-            drawTexture(TextureManager.getInstance().get("NightSkyBackground"), clonePosition, drawOptions);
+            drawTexture(texture, clonePosition, drawOptions);
         }
     }
 }
@@ -77,12 +81,22 @@ enum PlayState : ubyte {
 
 class PlayScene : IScene
 {
+    // Constants
+
+    private struct TextConstants {
+        @disable this();
+        enum ushort vOffset = ETFResolution.height - 85;
+        enum Vec2 centerPosition = Vec2((ETFResolution.width / 2) - (ETFUi.charSize * 5), vOffset);
+    }
+
+    // Attributes/Methods
+
     private PlayState state;
     private Player playerEls;
     private ScoreManager scoreManager;
 
     private Text healthText;
-    private Text scoreText;
+    private Text centerText;
     private Text fuelText;
 
     private Timer deadTimer; // Time to switch to GameOver Scene
@@ -106,20 +120,21 @@ class PlayScene : IScene
         scoreManager = ScoreManager(1.0f);
         verticalLimit.start();
 
-        healthFlask = new AdvantageFlask(SEConfig(SEDirection.horizontal, 554.2f), 5.3f, 30, pink, &fillBooster);
+        healthFlask = new AdvantageFlask(SEConfig(SEDirection.horizontal, 554.2f, "+FUEL"), 5.3f, 30,
+            pink, &fillBooster);
         deadTimer = Timer(3.0f);
 
         // Testing multiple anomalies
         anomalies = [
-            new Anomaly(SEConfig(SEDirection.horizontal, 244.3f), "FireTear", 15, 2.6f),
-            new Anomaly(SEConfig(SEDirection.vertical, 644.2f), "FireTear", 12, 1.56f),
-            new Anomaly(SEConfig(SEDirection.vertical, 965.12f), "FireTear", 1, 6.2f),
+            new Anomaly(SEConfig(SEDirection.horizontal, 244.3f, "FireTear"), 15, 2.6f),
+            new Anomaly(SEConfig(SEDirection.vertical, 644.2f, "FireTear"), 12, 1.56f),
+            new Anomaly(SEConfig(SEDirection.vertical, 965.12f, "FireTear"), 1, 6.2f),
         ];
 
         // Why... :<
-        healthText = Text("Health: X/Y", Vec2(45, ETFResolution.height - 85), white);
-        scoreText = Text("000000", Vec2(640 - 90, ETFResolution.height - 85), white);
-        fuelText = Text("Fuel: X", Vec2(ETFResolution.width - 400, ETFResolution.height - 85), white);
+        centerText = Text("00000", TextConstants.centerPosition, white);
+        healthText = Text("Health: X/Y", Vec2(45, TextConstants.vOffset), white);
+        fuelText = Text("Fuel: X", Vec2(ETFResolution.width - 400, TextConstants.vOffset), white);
 
         state = PlayState.Normal;
     }
@@ -182,13 +197,13 @@ class PlayScene : IScene
             ETFResolution.height - TextureManager.getInstance().get("uiBar").size().y);
         drawTexture(TextureManager.getInstance().get("uiBar"), uiBarPosition);
 
-        scoreText.setText(format("%06u", scoreManager.points));
-        scoreText.draw();
+        centerText.setText(format("%05u", scoreManager.points));
+        centerText.draw();
 
-        healthText.setText(format("Health: %02u/%02d", playerEls.getHealth(), ElsMisc.maxHealth));
+        healthText.setText(format("Health: %02u/%02d", playerEls.getHealth(), ElsNumbers.maxHealth));
         healthText.draw();
 
-        fuelText.setText(format("Fuel: %.2f/%.0f", playerEls.getBooster().getFuel(), MagmaBoosterExpr.maxFuel));
+        fuelText.setText(format("Fuel: %.2f/%.0f", playerEls.getBooster().getFuel(), MagmaBoosterConst.maxFuel));
         fuelText.draw();
     }
 }

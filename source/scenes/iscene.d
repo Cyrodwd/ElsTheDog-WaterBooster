@@ -1,8 +1,4 @@
-module scenes.scene;
-
-/** 
- * TODO: Add documentation comments (Why? Because)
- */
+module scenes.iscene;
 
 interface IScene
 {
