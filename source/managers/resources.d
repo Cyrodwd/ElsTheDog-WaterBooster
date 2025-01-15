@@ -30,6 +30,7 @@ struct ResourceManager
         const IStr folderPath = "ui/{}"; // Folder where ui-based textures are stored
         // UI bar (base) to display Health, Points/Name of Advantage Flask obtained and Fuel.
         TextureManager.getInstance().add("uiBar", format(folderPath, "uiBar.png"));
+        TextureManager.getInstance().add("Title", format(folderPath, "title.png"));
     }
 
     void loadBackgrounds() {

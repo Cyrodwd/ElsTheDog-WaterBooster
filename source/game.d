@@ -1,6 +1,7 @@
 module game;
 
 import managers;
+import bg.nightsky;
 
 struct Game
 {
@@ -14,6 +15,9 @@ struct Game
         ResourceManager.loadUiResources();
         
         ResourceManager.setupScenes();
+
+        // This is weird
+        BGNightSky.start();
 
         SceneManager.get().set("MenuScene");
     }

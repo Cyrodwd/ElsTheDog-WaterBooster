@@ -12,6 +12,8 @@ import sentity.advantageflask;
 
 import managers;
 import scenes.iscene;
+import bg.nightsky;
+
 import std.format : format; // To display score with five digits
 
 private {
@@ -31,45 +33,6 @@ private {
                 pl.takeDamage(amount: 5);
                 pl.startHurtState();
             }
-        }
-    }
-
-    struct ScrollingBG {
-        @disable this();
-
-        static:
-
-        float scrollSpeed;
-        Vec2 position, clonePosition;
-
-        DrawOptions drawOptions;
-        TextureId texture;
-
-        void start() {
-            position = Vec2.zero;
-            clonePosition = Vec2(ETFResolution.width, 0);
-
-            scrollSpeed = 450.0f;
-            
-            // 1280x960 lmao
-            drawOptions.scale = Vec2(2);
-            texture = TextureManager.getInstance().get("NightSkyBackground");
-        }
-
-        void update(float dt) {
-            position.x -= scrollSpeed * dt;
-            if (position.x <= -ETFResolution.width)
-                position.x = 0.0f;
-
-            clonePosition.x = position.x + ETFResolution.width;
-        }
-
-        void draw() {
-            // First copy
-            drawTexture(texture, position, drawOptions);
-
-            // Second copy
-            drawTexture(texture, clonePosition, drawOptions);
         }
     }
 }
@@ -112,7 +75,7 @@ class PlayScene : IScene
     private SEConfig fireTearConfig;
 
     public override void onStart() {
-        ScrollingBG.start();
+        // Scrolling background have been already started
         fireTearConfig = SEConfig(SEDirection.vertical, 354.2f);
 
         playerEls.start();
@@ -131,7 +94,7 @@ class PlayScene : IScene
             new Anomaly(SEConfig(SEDirection.vertical, 965.12f, "FireTear"), 1, 6.2f),
         ];
 
-        // Why... :<
+        // Hard-coded positions lmao
         centerText = Text("00000", TextConstants.centerPosition, white);
         healthText = Text("Health: X/Y", Vec2(45, TextConstants.vOffset), white);
         fuelText = Text("Fuel: X", Vec2(ETFResolution.width - 400, TextConstants.vOffset), white);
@@ -152,7 +115,7 @@ class PlayScene : IScene
              if (isPressed(Keyboard.esc)) SceneManager.get().set("PauseScene");
 
             scoreManager.update(dt);
-            ScrollingBG.update(dt);
+            BGNightSky.update(dt);
 
             if (!playerEls.isAlive()) {
                 deadTimer.start();
@@ -177,7 +140,7 @@ class PlayScene : IScene
     }
 
     public override void onDraw() {
-        ScrollingBG.draw();
+        BGNightSky.draw();
 
         playerEls.draw();
 
@@ -199,6 +162,10 @@ class PlayScene : IScene
 
         centerText.setText(format("%05u", scoreManager.points));
         centerText.draw();
+
+        // The text is red if player is hurt or dead
+        const Color hpTextColor = playerEls.state == ElsState.hurt ? red : white;
+        healthText.setColor(hpTextColor);
 
         healthText.setText(format("Health: %02u/%02d", playerEls.getHealth(), ElsNumbers.maxHealth));
         healthText.draw();

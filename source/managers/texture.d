@@ -54,3 +54,32 @@ final class TextureManager {
             remove(id);
     }
 }
+
+struct WaveTexture
+{
+    float time;
+    DrawOptions drawOptions;
+
+    Vec2 position;
+    TextureId texture;
+
+    this(IStr name, Vec2 origin) {
+        drawOptions.scale = Vec2(2.0f);
+
+        texture = TextureManager.getInstance().get(name);
+        position = origin;
+        time = 0.0f;
+    }
+
+    void update(float dt) {
+        time += dt;
+        time = fmod(time, 2 * pi);
+
+        const float offset = sin(time * 2.0f) * 40.0f;
+        position.y = offset;
+    }
+
+    void draw() {
+        drawTexture(texture, position,  drawOptions);
+    }
+}
