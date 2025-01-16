@@ -2,6 +2,7 @@ module managers.text;
 
 import parin.engine;
 import joka.io : println;
+import constants;
 
 struct FontManager {
     @disable this();
@@ -33,10 +34,13 @@ struct Text {
     Vec2 position;
     DrawOptions drawOptions;
 
-    this(IStr text, Vec2 position, Color color) {
+    this(IStr text, Vec2 position, Color color, Alignment alignment = Alignment.left) {
         this.text = text;
         this.position = position;
+
         drawOptions.color = color;
+        drawOptions.alignment = alignment;
+        drawOptions.alignmentWidth = ETFApplication.width;
     }
 
     void setText(IStr newText) {
@@ -52,7 +56,7 @@ struct Text {
         this.position = position;
     }
 
-    void draw() {
+    void draw() const {
         drawText(FontManager.get(), text, position, drawOptions);
     }
 }
@@ -65,17 +69,17 @@ struct WaveText {
     float offset;
     float amplitude;
 
-    Vec2 position;
     Text text;
+    Vec2 position;
 
-    this(IStr str, Vec2 origin, Color color, float amplitude) {
+    this(IStr str, Vec2 origin, Color color, float waveAmplitude, Alignment alignment = Alignment.left) {
         position = origin;
-        text = Text(str, origin, color);
+        text = Text(str, origin, color, alignment);
 
-        baseY = origin.y;
-        offset = 0.0f;
         time = 0.0f;
-        this.amplitude = amplitude;
+        offset = 0.0f;
+        baseY = origin.y;
+        amplitude = waveAmplitude;
     }
 
     void update(float dt) {
@@ -88,7 +92,7 @@ struct WaveText {
         text.setPosition(position);
     }
 
-    void draw() {
+    void draw() const {
         text.draw();
     }
 }

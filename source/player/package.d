@@ -45,8 +45,8 @@ struct ElsHitbox {
     @disable this();
     static immutable Vec2 size = Vec2(90, 228);
     static immutable Vec2 offset = Vec2(
-        ETFResolution.width - size.x,
-        ETFResolution.height - size.y,
+        ETFApplication.width - size.x,
+        ETFApplication.height - size.y,
     );
 }
 
@@ -108,7 +108,7 @@ struct Player {
 
     void draw() const {
         // It is drawn when it is on screen only
-        if (position.y < ETFResolution.height)
+        if (position.y < ETFApplication.height)
             drawSprite(texture, sprite);
     }
 
@@ -141,7 +141,7 @@ struct Player {
 
     void clampPosition() {
         position.x = clamp(position.x, -ElsHitbox.size.x, ElsHitbox.offset.x);
-        position.y = clamp(position.y, 0, ETFResolution.height);
+        position.y = clamp(position.y, 0, ETFApplication.height);
     }
 
     void updateInput() {

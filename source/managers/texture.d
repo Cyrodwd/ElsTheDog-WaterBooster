@@ -2,6 +2,7 @@ module managers.texture;
 
 import parin.engine;
 import parin : format, println;
+import constants;
 
 final class TextureManager {
     private static TextureManager instance;
@@ -58,28 +59,34 @@ final class TextureManager {
 struct WaveTexture
 {
     float time;
+    float amplitude;
+    float baseY;
     DrawOptions drawOptions;
 
     Vec2 position;
     TextureId texture;
 
-    this(IStr name, Vec2 origin) {
-        drawOptions.scale = Vec2(2.0f);
-
-        texture = TextureManager.getInstance().get(name);
-        position = origin;
+    this(IStr name, Vec2 origin, float amplitude) {
         time = 0.0f;
+        baseY = origin.y;
+
+        position = origin;
+        this.amplitude = amplitude;
+        texture = TextureManager.getInstance().get(name);
+
+        drawOptions.scale = Vec2(2.0f);
+        drawOptions.hook = Hook.center;
     }
 
     void update(float dt) {
         time += dt;
         time = fmod(time, 2 * pi);
 
-        const float offset = sin(time * 2.0f) * 40.0f;
-        position.y = offset;
+        const float offset = sin(time * 2.0f) * amplitude;
+        position.y = baseY + offset;
     }
 
-    void draw() {
-        drawTexture(texture, position,  drawOptions);
+    void draw() const {
+        drawTexture(texture, position, drawOptions);
     }
 }

@@ -3,10 +3,10 @@ module managers.resources;
 import parin;
 import managers;
 
-import scenes.menuscene;
-import scenes.pausescene;
-import scenes.playscene;
-import scenes.gameoverscene;
+import scenes.menu;
+import scenes.pause;
+import scenes.play;
+import scenes.gameover;
 
 struct ResourceManager
 {
@@ -31,6 +31,7 @@ struct ResourceManager
         // UI bar (base) to display Health, Points/Name of Advantage Flask obtained and Fuel.
         TextureManager.getInstance().add("uiBar", format(folderPath, "uiBar.png"));
         TextureManager.getInstance().add("Title", format(folderPath, "title.png"));
+        TextureManager.getInstance().add("PauseTexture", format(folderPath, "pause.png"));
     }
 
     void loadBackgrounds() {

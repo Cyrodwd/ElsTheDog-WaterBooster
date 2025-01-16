@@ -1,17 +1,21 @@
 module constants;
-import parin : Vec2, Rect;
+import parin : Vec2, Rect, Keyboard;
 
-struct ETFResolution {
+struct ETFApplication {
     @disable this();
 
     enum width = 1280;
     enum height = 920;
+    enum title = "Els The Fox: Magma Booster ~ Cyrodwd";
 }
 
 struct ETFUi {
     @disable this();
     enum buttonSize = Vec2(512, 128);
     enum charSize = 15;
+
+    alias confirmKey = Keyboard.space;
+    alias denyKey = Keyboard.esc;
 }
 
 struct ETFSprite {

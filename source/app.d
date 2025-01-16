@@ -1,12 +1,12 @@
 import game;
 import parin;
-import constants : ETFResolution;
+import constants : ETFApplication;
 
 // Ok?
 Game etfMbGame = {};
 
 void ready() {
-    lockResolution(ETFResolution.width, ETFResolution.height);
+    lockResolution(ETFApplication.width, ETFApplication.height);
     setBackgroundColor(black);
     etfMbGame.start();
 }
@@ -21,4 +21,4 @@ void finish() {
     etfMbGame.free();
 }
 
-mixin runGame!(ready, update, finish, ETFResolution.width, ETFResolution.height);
+mixin runGame!(ready, update, finish, ETFApplication.width, ETFApplication.height, ETFApplication.title);

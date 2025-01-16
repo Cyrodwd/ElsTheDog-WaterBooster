@@ -5,12 +5,12 @@ import sentity.data;
 import managers.texture;
 
 import player;
-import constants : ETFResolution, ETFSprite;
+import constants : ETFApplication, ETFSprite;
 
 abstract class SkyEntity {
     private immutable Vec2 maxPosition = Vec2(
-        ETFResolution.width - ETFSprite.size,
-        ETFResolution.height - ETFSprite.size,
+        ETFApplication.width - ETFSprite.size,
+        ETFApplication.height - ETFSprite.size,
     );
 
     private immutable Vec2 hitboxDefaultSize = Vec2(128);
@@ -54,7 +54,7 @@ abstract class SkyEntity {
     }
 
     public final void checkPosLimits() {
-        if (position.x < -ETFSprite.size || position.y > ETFResolution.height) reset(); 
+        if (position.x < -ETFSprite.size || position.y > ETFApplication.height) reset(); 
     }
 
     public final bool hasCollide(Rect other) {
@@ -63,7 +63,7 @@ abstract class SkyEntity {
 
     public void enable() {
         state = SEState.enabled;
-        velocity.x = position.x >= ETFResolution.width ? -1 : 0;
+        velocity.x = position.x >= ETFApplication.width ? -1 : 0;
         velocity.y = position.y < 0; // bool returns 1 or 0
     }
 
@@ -78,7 +78,7 @@ abstract class SkyEntity {
         
         final switch (direction) {
             case SEDirection.horizontal:
-                spawn = Vec2(ETFResolution.width, randi() % maxPosition.y);
+                spawn = Vec2(ETFApplication.width, randi() % maxPosition.y);
                 break;
 
             case SEDirection.vertical:
