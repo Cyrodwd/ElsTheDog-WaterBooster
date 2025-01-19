@@ -45,8 +45,8 @@ struct ElsHitbox {
     @disable this();
     static immutable Vec2 size = Vec2(90, 228);
     static immutable Vec2 offset = Vec2(
-        ETFApplication.width - size.x,
-        ETFApplication.height - size.y,
+        ETFApplication.resolution.x - size.x,
+        ETFApplication.resolution.y - size.y,
     );
 }
 
@@ -76,9 +76,14 @@ struct Player {
 
         offset = ETFSprite.getOffset(ElsHitbox.size);
         velocity = Vec2.zero;
-        position = Vec2.zero;
+        position = Vec2(
+            ETFApplication.resolution.x / 2.0f - ETFSprite.size / 2.0f,
+            ETFApplication.resolution.y / 2.0f - ETFSprite.size / 2.0f
+        );
         
         sprite = Sprite(ETFSprite.size, ETFSprite.size, 0, 0);
+        sprite.position = position;
+
         hitbox = Rect(position, ElsHitbox.size);
         hurtTimer = Timer(0.6f);
 
@@ -90,8 +95,7 @@ struct Player {
     }
 
     void update(float dt) {
-        sprite.update(dt);
-        sprite.play(animations[state]);
+        updateSprite(dt);
 
         // Update states
         final switch (state) {
@@ -108,8 +112,9 @@ struct Player {
 
     void draw() const {
         // It is drawn when it is on screen only
-        if (position.y < ETFApplication.height)
+        if (position.y < ETFApplication.resolution.y)
             drawSprite(texture, sprite);
+        debug if (isDown(Keyboard.c)) drawRect(hitbox); 
     }
 
     // ----------------------------------
@@ -127,6 +132,11 @@ struct Player {
             velocity.x = moveTo(velocity.x, 0.0f, dt);
     }
 
+    void updateSprite(float dt) {
+        sprite.update(dt);
+        sprite.play(animations[state]);
+    }
+
     void updateGravity(float dt) {
         velocity.y += ElsPhysics.gravity * dt;
     }
@@ -141,7 +151,7 @@ struct Player {
 
     void clampPosition() {
         position.x = clamp(position.x, -ElsHitbox.size.x, ElsHitbox.offset.x);
-        position.y = clamp(position.y, 0, ETFApplication.height);
+        position.y = clamp(position.y, 0, ETFApplication.resolution.y);
     }
 
     void updateInput() {

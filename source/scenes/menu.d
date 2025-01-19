@@ -16,7 +16,7 @@ private struct StartTextConstants {
     enum str = "Press SPACE to start";
     // TODO: Center (Position X) next to the title.
     enum origin = Vec2(
-        0, ETFApplication.height - 150
+        0, ETFApplication.resolution.y - 150
     );
 }
 
@@ -27,7 +27,7 @@ class MenuScene : IScene {
 
     public override void onStart() {
         /* Empty */
-        titleTexture = WaveTexture("Title", Vec2(ETFApplication.width / 2.0f, ETFSprite.size), 20.5f);
+        titleTexture = WaveTexture("Title", Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size), 20.5f);
         startText = WaveText(StartTextConstants.str, StartTextConstants.origin, white, 30.0f, Alignment.center);
         authorText = Text("@Cyrodwd", Vec2.zero, pink, Alignment.left);
     }

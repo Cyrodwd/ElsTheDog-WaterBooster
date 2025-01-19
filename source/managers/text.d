@@ -40,7 +40,7 @@ struct Text {
 
         drawOptions.color = color;
         drawOptions.alignment = alignment;
-        drawOptions.alignmentWidth = ETFApplication.width;
+        drawOptions.alignmentWidth = ETFApplication.resolution.x;
     }
 
     void setText(IStr newText) {
@@ -54,6 +54,10 @@ struct Text {
 
     void setPosition(Vec2 position) {
         this.position = position;
+    }
+
+    void setScale(Vec2 scale) {
+        drawOptions.scale = scale;
     }
 
     void draw() const {
@@ -94,5 +98,9 @@ struct WaveText {
 
     void draw() const {
         text.draw();
+    }
+
+    void setText(IStr text) {
+        this.text.setText(text);
     }
 }

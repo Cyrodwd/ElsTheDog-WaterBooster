@@ -9,8 +9,8 @@ import constants : ETFApplication, ETFSprite;
 
 abstract class SkyEntity {
     private immutable Vec2 maxPosition = Vec2(
-        ETFApplication.width - ETFSprite.size,
-        ETFApplication.height - ETFSprite.size,
+        ETFApplication.resolution.x - ETFSprite.size,
+        ETFApplication.resolution.y - ETFSprite.size,
     );
 
     private immutable Vec2 hitboxDefaultSize = Vec2(128);
@@ -54,7 +54,7 @@ abstract class SkyEntity {
     }
 
     public final void checkPosLimits() {
-        if (position.x < -ETFSprite.size || position.y > ETFApplication.height) reset(); 
+        if (position.x < -ETFSprite.size || position.y > ETFApplication.resolution.y) reset(); 
     }
 
     public final bool hasCollide(Rect other) {
@@ -63,7 +63,7 @@ abstract class SkyEntity {
 
     public void enable() {
         state = SEState.enabled;
-        velocity.x = position.x >= ETFApplication.width ? -1 : 0;
+        velocity.x = position.x >= ETFApplication.resolution.x ? -1 : 0;
         velocity.y = position.y < 0; // bool returns 1 or 0
     }
 
@@ -78,7 +78,7 @@ abstract class SkyEntity {
         
         final switch (direction) {
             case SEDirection.horizontal:
-                spawn = Vec2(ETFApplication.width, randi() % maxPosition.y);
+                spawn = Vec2(ETFApplication.resolution.x, randi() % maxPosition.y);
                 break;
 
             case SEDirection.vertical:

@@ -1,39 +1,43 @@
 module scenes.gameover;
 
 import parin;
-import constants : ETFUi;
+import constants : ETFUi, ETFApplication;
 import scenes.iscene;
 
+import bg;
 import managers.texture;
 import managers.scene;
 import managers.text;
 
 class GameOverScene : IScene
 {
-    private DrawOptions bgOptions;
-    private UiOptions bOptions;
+    private static Alignment textAlignment = Alignment.center;
+    private static float textAmplitude = 40.0f;
+
+    private Background background;
+    private WaveText restartText;
+    private WaveText giveUpText;
 
     public override void onStart() {
-        bgOptions.scale = Vec2(2); // 640x480 -> 1280x960
-        bOptions.font = FontManager.get();
+        const Vec2 rsOrigin = Vec2(0, ETFApplication.resolution.y / 2.0f);
+        const Vec2 guOrigin = Vec2(0, rsOrigin.y - 60);
 
-        println("Els has fallen from very high.");
+        background = Background("ElsDeadBackground");
+        restartText = WaveText("Press SPACE to restart", rsOrigin, white, textAmplitude, textAlignment);
+        giveUpText = WaveText("Press ESC to give up", guOrigin, white, textAmplitude, textAlignment);
     }
 
     public override void onUpdate(float dt) {
-        prepareUi();
-        setUiFocus(id: 0);
+        restartText.update(dt);
+        giveUpText.update(dt);
+
+        if (isDown(ETFUi.confirmKey)) SceneManager.get().set("PlayScene");
+        else if (isDown(ETFUi.denyKey)) SceneManager.get().set("MenuScene");
     }
 
     public override void onDraw() {
-        drawTexture(TextureManager.getInstance().get("ElsDeadBackground"), Vec2.zero, bgOptions);
-
-        if (uiButton(Rect(Vec2.zero, ETFUi.buttonSize), "Restart", bOptions)) {
-            SceneManager.get().set("PlayScene");
-        }
-
-        if (uiButton(Rect(Vec2(0, ETFUi.buttonSize.y), ETFUi.buttonSize), "GiveUp", bOptions)) {
-            SceneManager.get().set("MenuScene");
-        }
+        background.draw();
+        restartText.draw();
+        giveUpText.draw();
     }
 }

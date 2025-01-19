@@ -17,24 +17,8 @@ import bg.nightsky;
 import std.format : format; // To display score with five digits
 
 private {
-    enum offscreenRectSize = Vec2(ETFApplication.width, 1);
-    enum offscreenRectPosition = Vec2(0, ETFApplication.height - offscreenRectSize.y);
-
-    // Screen Limit
-    struct OffscreenRect {
-        Rect rect;
-
-        void start() {
-            rect = Rect(offscreenRectPosition, offscreenRectSize);
-        }
-
-        void update(ref Player pl) {
-            if (rect.hasIntersection(pl.hitbox)) {
-                pl.takeDamage(amount: 10);
-                pl.startHurtState();
-            }
-        }
-    }
+    enum offscreenRectSize = Vec2(ETFApplication.resolution.x, 1);
+    enum offscreenRectPosition = Vec2(0, ETFApplication.resolution.y - offscreenRectSize.y);
 
     struct UiBar {
         DrawOptions drawOptions;
@@ -44,7 +28,7 @@ private {
 
         void start() {
             texture = TextureManager.getInstance().get("uiBar");
-            position = Vec2(0, ETFApplication.height - texture.size().y);
+            position = Vec2(0, ETFApplication.resolution.y - texture.size().y);
 
             // Slightly transparent
             drawOptions.color = Color(255, 255, 255, 180);
@@ -57,7 +41,9 @@ private {
 }
 
 enum PlayState : ubyte {
-    Normal = 0,
+    Ready = 0,
+    Active,
+    Pause,
     GameOver
 }
 
@@ -65,15 +51,11 @@ class PlayScene : IScene
 {
     // Constants
 
-    private struct TextConstants {
-        @disable this();
-        enum ushort vOffset = ETFApplication.height - 85;
-        enum Vec2 centerPosition = Vec2((ETFApplication.width / 2) - (ETFUi.charSize * 5), vOffset);
-    }
+    private static enum vOffset = ETFApplication.resolution.y - 85.0f;
 
     // Attributes/Methods
 
-    private PlayState state;
+    private static PlayState state;
     private Player playerEls;
     private ScoreManager scoreManager;
 
@@ -83,25 +65,47 @@ class PlayScene : IScene
 
     private Timer deadTimer; // Time to switch to GameOver Scene
     
+    private static struct ScreenLimit {
+        @disable this();
+
+        static:
+        
+        Rect rect;
+        ubyte damage;
+
+        void start() {
+            rect = Rect(offscreenRectPosition, offscreenRectSize);
+            damage = 10;
+        }
+
+        void update(ref Player pl) {
+            if (rect.hasIntersection(pl.hitbox)) {
+                pl.takeDamage(amount: damage);
+                pl.startHurtState();
+            }
+        }
+    }
+
     private void fillBooster() {
         playerEls.getBooster.addFuel(5.0f);
     }
 
     private Anomaly[3] anomalies; // Test
     private AdvantageFlask healthFlask;
-    private OffscreenRect verticalLimit;
 
     private SEConfig fireTearConfig;
     private UiBar uiBar;
+    
+    public static Timer readyTimer = Timer(3.0f);
+    private WaveText readyCounter;
 
     public override void onStart() {
         // Scrolling background have been already started
         fireTearConfig = SEConfig(SEDirection.vertical, 354.2f);
-
         playerEls.start();
 
         scoreManager = ScoreManager(1.0f);
-        verticalLimit.start();
+        ScreenLimit.start();
 
         healthFlask = new AdvantageFlask(SEConfig(SEDirection.horizontal, 554.2f, "+FUEL"), 5.3f, 30,
             pink, &fillBooster);
@@ -115,55 +119,36 @@ class PlayScene : IScene
         ];
 
         // Hard-coded positions lmao
-        centerText = Text("-----", Vec2(0, TextConstants.vOffset), white, Alignment.center);
-        healthText = Text("Health: -/-", Vec2(45, TextConstants.vOffset), white, Alignment.left);
-        fuelText = Text("Fuel: --/--", Vec2(-35, TextConstants.vOffset), white, Alignment.right);
+        centerText = Text("-----", Vec2(0, vOffset), white, Alignment.center);
+        healthText = Text("Health: -/-", Vec2(45, vOffset), white, Alignment.left);
+        fuelText = Text("Fuel: --/--", Vec2(-35, vOffset), white, Alignment.right);
 
         uiBar.start();
 
-        state = PlayState.Normal;
+        state = PlayState.Ready;
+        readyTimer.start();
+
+        const Vec2 readyCounterPos = Vec2(0, ETFApplication.resolution.y / 2.0f - 40);
+        readyCounter = WaveText("-", readyCounterPos, ETFUi.cherryColor, 20.0f, Alignment.center);
     }
 
     public override void onUpdate(float dt) {
-        /* Input update */
-        foreach (ref Anomaly anomaly ; anomalies)
-            anomaly.update(dt);
-
-        healthFlask.update(dt);
-
-        playerEls.update(dt);
-
-        if (state == PlayState.Normal) {
-             if (isPressed(Keyboard.esc)) SceneManager.get().set("PauseScene");
-
-            scoreManager.update(dt);
-            BGNightSky.update(dt);
-
-            if (!playerEls.isAlive()) {
-                deadTimer.start();
-                state = PlayState.GameOver;
-            }
-
-            foreach (ref Anomaly anomaly ; anomalies)
-                anomaly.updateCollision(playerEls);
-
-            healthFlask.updateCollision(playerEls);
-
-            verticalLimit.update(playerEls);
-        }
-        else
+        if (state != PlayState.Pause) BGNightSky.update(dt);
+        
+        final switch ( state )
         {
-            deadTimer.update(dt);
-
-            if (deadTimer.hasStopped()) {
-                SceneManager.get().set("GameOverScene");
-            }
+            case PlayState.Ready:
+            case PlayState.Pause:
+                updateReady(dt); break;
+            case PlayState.Active:
+                updateActive(dt); break;
+            case PlayState.GameOver:
+                updateGameover(dt); break;
         }
     }
 
     public override void onDraw() {
         BGNightSky.draw();
-
         playerEls.draw();
 
         foreach (Anomaly anomaly ; anomalies) {
@@ -171,9 +156,9 @@ class PlayScene : IScene
         }
 
         healthFlask.draw();
+        drawUI();
 
-        if (state != PlayState.GameOver)
-            drawUI();
+        if (onCounting()) readyCounter.draw();
     }
 
     private void drawUI() {
@@ -184,7 +169,7 @@ class PlayScene : IScene
         centerText.draw();
 
         // The text is red if player is hurt or dead
-        const Color hpTextColor = playerEls.state == ElsState.hurt ? red : white;
+        const Color hpTextColor = playerEls.state == ElsState.hurt ? pink : white;
         healthText.setColor(hpTextColor);
 
         healthText.setText(format("Health: %02u/%02d", playerEls.getHealth(), ElsNumbers.maxHealth));
@@ -192,5 +177,56 @@ class PlayScene : IScene
 
         fuelText.setText(format("Fuel: %.2f/%.0f", playerEls.getBooster().getFuel(), MagmaBoosterConst.maxFuel));
         fuelText.draw();
+    }
+
+    // 
+    private bool onCounting() {
+        return (state == PlayState.Ready || state == PlayState.Pause);
+    }
+
+    private void updateReady(float dt) {
+        if (state != PlayState.Pause) playerEls.updateSprite(dt);
+
+        readyTimer.update(dt);
+        readyCounter.update(dt);
+        readyCounter.setText(toStr(cast(int)readyTimer.time + 1));
+
+        if (readyTimer.hasStopped()) {
+            state = PlayState.Active;
+        }
+    }
+
+    private void updateActive(float dt) {
+        playerEls.update(dt);
+
+        if (isPressed(Keyboard.esc)) {
+            state = PlayState.Pause;
+            SceneManager.get().set("PauseScene");
+        }
+
+        scoreManager.update(dt);
+
+        foreach (ref Anomaly anomaly ; anomalies) {
+            anomaly.update(dt);
+            anomaly.updateCollision(playerEls);
+        }
+        
+        healthFlask.update(dt);
+        healthFlask.updateCollision(playerEls);
+        ScreenLimit.update(playerEls);
+
+        if (!playerEls.isAlive()) {
+            deadTimer.start();
+            state = PlayState.GameOver;
+        }
+    }
+
+    private void updateGameover(float dt) {
+        playerEls.update(dt);
+        deadTimer.update(dt);
+
+        if (deadTimer.hasStopped()) {
+            SceneManager.get().set("GameOverScene");
+        }
     }
 }

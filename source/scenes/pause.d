@@ -2,6 +2,7 @@ module scenes.pause;
 
 import parin;
 import constants;
+import scenes.play : PlayScene;
 import scenes.iscene;
 
 import managers.text;
@@ -35,7 +36,11 @@ class PauseScene : IScene
         continueText.update(dt);
         abortText.update(dt);
 
-        if (isPressed(ETFUi.confirmKey)) SceneManager.get().set("PlayScene", refresh: false);
+        if (isPressed(ETFUi.confirmKey)){
+            PlayScene.readyTimer.start();
+            SceneManager.get().set("PlayScene", refresh: false);
+        }
+
         else if (isPressed(ETFUi.denyKey)) SceneManager.get().set("MenuScene");
     }
 

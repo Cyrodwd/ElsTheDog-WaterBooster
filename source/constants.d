@@ -1,19 +1,17 @@
 module constants;
-import parin : Vec2, Rect, Keyboard;
-
+import parin : Color, IVec2, Vec2, Rect, Keyboard;
 struct ETFApplication {
     @disable this();
 
-    enum width = 1280;
-    enum height = 920;
+    enum resolution = IVec2(1280, 960);
     enum title = "Els The Fox: Magma Booster ~ Cyrodwd";
 }
 
 struct ETFUi {
     @disable this();
-    enum buttonSize = Vec2(512, 128);
-    enum charSize = 15;
 
+    enum charSize = 15;
+    enum cherryColor = Color(222, 49, 99, 255);
     alias confirmKey = Keyboard.space;
     alias denyKey = Keyboard.esc;
 }
