@@ -216,6 +216,10 @@ struct Player {
         return healthPoints > 0;
     }
 
+    bool isHurt() const {
+        return state == ElsState.hurt;
+    }
+
     // ------------------------
 
     void setVelocityX(float x) {
