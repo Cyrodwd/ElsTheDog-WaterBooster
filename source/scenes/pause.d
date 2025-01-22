@@ -2,7 +2,7 @@ module scenes.pause;
 
 import parin;
 import constants;
-import scenes.play : PlayScene;
+import scenes.play : PlayScene, PlayTimer;
 import scenes.iscene;
 
 import managers.text;
@@ -17,7 +17,7 @@ private struct TextStrings {
     enum abort = "ESC to abort"; // Go to menu
 }
 
-class PauseScene : IScene
+final class PauseScene : IScene
 {
     private static textAmplitude = 40.2f;
 
@@ -37,7 +37,7 @@ class PauseScene : IScene
         abortText.update(dt);
 
         if (isPressed(ETFUi.confirmKey)){
-            PlayScene.readyTimer.start();
+            PlayTimer.start();
             SceneManager.get().set("PlayScene", refresh: false);
         }
 

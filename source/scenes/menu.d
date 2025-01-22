@@ -20,7 +20,7 @@ private struct StartTextConstants {
     );
 }
 
-class MenuScene : IScene {
+final class MenuScene : IScene {
     Text authorText;
     WaveText startText;
     WaveTexture titleTexture;

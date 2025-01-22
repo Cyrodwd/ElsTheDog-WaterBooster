@@ -1,7 +1,7 @@
 module scenes.gameover;
 
 import parin;
-import constants : ETFUi, ETFApplication;
+import constants : ETFUi, ETFSprite, ETFApplication;
 import scenes.iscene;
 
 import bg;
@@ -9,12 +9,14 @@ import managers.texture;
 import managers.scene;
 import managers.text;
 
-class GameOverScene : IScene
+final class GameOverScene : IScene
 {
     private static Alignment textAlignment = Alignment.center;
     private static float textAmplitude = 40.0f;
 
     private Background background;
+
+    private WaveTexture testFailedTexture;
     private WaveText restartText;
     private WaveText giveUpText;
 
@@ -25,9 +27,13 @@ class GameOverScene : IScene
         background = Background("ElsDeadBackground");
         restartText = WaveText("Press SPACE to restart", rsOrigin, white, textAmplitude, textAlignment);
         giveUpText = WaveText("Press ESC to give up", guOrigin, white, textAmplitude, textAlignment);
+
+        testFailedTexture = WaveTexture("TestFailedTexture",
+            Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size), 40.0f);
     }
 
     public override void onUpdate(float dt) {
+        testFailedTexture.update(dt);
         restartText.update(dt);
         giveUpText.update(dt);
 
@@ -37,7 +43,9 @@ class GameOverScene : IScene
 
     public override void onDraw() {
         background.draw();
-        restartText.draw();
+
         giveUpText.draw();
+        restartText.draw();
+        testFailedTexture.draw();
     }
 }
