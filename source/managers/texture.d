@@ -22,7 +22,7 @@ final class TextureManager {
             assert(0, format("{} does not exists in textures.", name));
 
         if (!textures[name].isValid())
-            assert(0, format("{} is not loaded."));
+            assert(0, format("{} is not loaded.", name));
 
         return textures[name];
     }
@@ -36,7 +36,7 @@ final class TextureManager {
 
         textures[name] = loadTexture(format("sprites/{}", filename));
         if (!textures[name].isValid())
-            assert(0, format("{} is not a valid image."));
+            assert(0, format("{} is not a valid image.", filename));
     }
 
     public void remove(IStr name) {
