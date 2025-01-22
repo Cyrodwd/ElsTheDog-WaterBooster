@@ -197,7 +197,7 @@ struct Player {
     // ----------------
 
     void takeDamage(ubyte amount) {
-        if (state != ElsState.normal || healthPoints == 0)
+        if (state != ElsState.normal || !isAlive())
             return;
         
         if (amount == 0) return;
@@ -207,13 +207,17 @@ struct Player {
     }
 
     void addHealth(ubyte amount) {
-        if (state == ElsState.dead) return;
+        if (!isAlive()) return;
         healthPoints += clamp(amount, 1, ElsNumbers.maxHealth);
         if (healthPoints > ElsNumbers.maxHealth) healthPoints = ElsNumbers.maxHealth;
     }
 
     bool isAlive() const {
         return healthPoints > 0;
+    }
+
+    bool isHurt() const {
+        return state == ElsState.hurt;
     }
 
     // ------------------------
