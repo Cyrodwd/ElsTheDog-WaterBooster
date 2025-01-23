@@ -1,5 +1,7 @@
 module constants;
 import parin : Color, IVec2, Vec2, Rect, Keyboard;
+import joka.colors : white;
+
 struct ETFApplication {
     @disable this();
 
@@ -14,6 +16,9 @@ struct ETFUi {
     enum cherryColor = Color(222, 49, 99, 255);
     alias confirmKey = Keyboard.space;
     alias denyKey = Keyboard.esc;
+
+    static enum vTextOffset = ETFApplication.resolution.y - 85.0f;
+    static enum defaultTextColor = white;
 }
 
 struct ETFSprite {

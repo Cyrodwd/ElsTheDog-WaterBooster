@@ -37,7 +37,7 @@ final class Anomaly : SkyEntity
     }
 
     public override void updateCollision(ref Player pl) {
-        if (state == SEState.enabled && hasCollide(pl.hitbox)) {
+        if (hasCollisionWithPlayer(pl)) {
             const float pushDirection = ( hasCollide(pl.hitbox.leftArea()) ) ?
                 -1.0f : 1.0f;
 
@@ -47,6 +47,10 @@ final class Anomaly : SkyEntity
             pl.startHurtState();
             state = SEState.collide;
         }
+    }
+
+    private bool hasCollisionWithPlayer(Player pl) {
+        return state == SEState.enabled && hasCollide(pl.hitbox);
     }
 
     public override void draw() {

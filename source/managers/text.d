@@ -100,6 +100,18 @@ struct WaveText {
         text.draw();
     }
 
+    void setAmplitude(float amplitude) {
+        this.amplitude = amplitude;
+    }
+
+    void setPosition(Vec2 position) {
+        text.setPosition(position);
+    }
+
+    void setColor(Color color) {
+        text.setColor(color);
+    }
+
     void setText(IStr text) {
         this.text.setText(text);
     }

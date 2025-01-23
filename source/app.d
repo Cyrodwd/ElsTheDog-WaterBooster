@@ -7,15 +7,18 @@ import constants : ETFApplication;
 Game etfMbGame = {};
 
 void ready() {
-    // yeah lmao
+    // Testing window icon
+    setWindowIconFromFiles("icon.png");
     lockResolution(ETFApplication.resolution.x, ETFApplication.resolution.y);
     setBackgroundColor(black);
+    
     etfMbGame.start();
 }
 
 bool update(float dt) {
     if (etfMbGame.update(dt)) return true;
     etfMbGame.draw();
+    if (isPressed(Keyboard.a)) println("PEN");
     return false;
 }
 

@@ -1,4 +1,4 @@
-module sentity.advantageflask;
+module sentity.aflask;
 
 import parin;
 import player;
@@ -69,13 +69,17 @@ final class AdvantageFlask : SkyEntity
     }
 
     public override void updateCollision(ref Player pl) {
-        if (state == SEState.enabled && hasCollide(pl.hitbox)) {
+        if (hasCollisionWithPlayer(pl)) {
             if (effect is null) assert(0, "Effect is null");
             /* Applying the effect */
             effect();
             sprite.reset();
             state = SEState.collide;
         }
+    }
+
+    private bool hasCollisionWithPlayer(Player pl) {
+        return state == SEState.enabled && hasCollide(pl.hitbox);
     }
 
     public override void updatePosition(float dt) {
@@ -105,5 +109,9 @@ final class AdvantageFlask : SkyEntity
 
     public IStr getName() const {
         return name;
+    }
+    
+    public SEState getState() const {
+        return state;
     }
 }

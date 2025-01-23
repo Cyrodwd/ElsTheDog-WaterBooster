@@ -8,7 +8,7 @@ import player.magmabooster : MagmaBoosterConst;
 
 import sentity.data;
 import sentity.anomaly;
-import sentity.advantageflask;
+import sentity.aflask;
 
 import managers;
 import scenes.iscene;
@@ -33,24 +33,18 @@ struct UiBar {
 }
 
 struct UiText {
-    static enum vOffset = ETFApplication.resolution.y - 85.0f;
-    static enum defaultColor = white;
-
     WaveText counter;
 
     Text healthText;
-    Text scoreText; // It also display advantage flask names
     Text fuelText;
 
     void start() {
-        scoreText = Text("-", Vec2(0, vOffset), defaultColor, Alignment.center);
-        healthText = Text("Health: --/--", Vec2(45, vOffset), defaultColor, Alignment.left);
-        fuelText = Text("Fuel: ----/--", Vec2(-35, vOffset), defaultColor, Alignment.right);
+        healthText = Text("Health: --/--", Vec2(45, ETFUi.vTextOffset), ETFUi.defaultTextColor, Alignment.left);
+        fuelText = Text("Fuel: ----/--", Vec2(-35, ETFUi.vTextOffset), ETFUi.defaultTextColor, Alignment.right);
     }
 
     void setColor(Color color) {
         healthText.setColor(color);
-        scoreText.setColor(color);
         fuelText.setColor(color);
     }
 
@@ -62,17 +56,71 @@ struct UiText {
         fuelText.setText(format("Fuel: %.2f/%.0f", currentFuel, maxFuel));
     }
 
-    void setScore(ushort currentScore) {
-        scoreText.setText(format("%05d", currentScore));
-    }
-
     void draw() const {
         healthText.draw();
-        scoreText.draw();
         fuelText.draw();
     }
 
 }
+
+struct UiCenterText {
+    static enum tempAmplitude = 13.6f;
+    static enum textDefaultPosition = Vec2(0.0f, ETFUi.vTextOffset);
+
+    bool tempText;
+    Timer tempTimer;
+    WaveText text;
+
+    void start() {
+        text = WaveText("-", textDefaultPosition, ETFUi.defaultTextColor, 0.0f, Alignment.center);
+        tempTimer = Timer(3.0f); 
+        tempText = false;
+    }
+
+    void update(float dt) {
+        if (tempText) {
+            tempTimer.update(dt);
+            text.update(dt);
+            
+            if (tempTimer.hasStopped()) {
+                text.setColor(ETFUi.defaultTextColor);
+                text.setAmplitude(0.0f);
+                text.setPosition(textDefaultPosition);
+                    
+                tempText = false;
+            }
+        }   
+    }
+
+    void draw() {
+        text.draw();
+    }
+
+    void setText(IStr str) {
+        text.setText(str);
+    }
+
+    void setTempText(IStr str) {
+        text.setText(str);
+
+        if (!tempText && !tempTimer.hasStarted()) {
+            text.setColor(pink);
+            text.setAmplitude(tempAmplitude);
+
+            tempText = true;
+            tempTimer.start();
+        }
+    }
+
+    void setColor(Color color) {
+        text.setColor(color);
+    }
+
+    bool hasTempText() {
+        return tempText;
+    }
+}
+
 struct ScreenLimit {
     static enum size = Vec2(ETFApplication.resolution.x, 1);
     static enum position = Vec2(0, ETFApplication.resolution.y - size.y);
@@ -89,7 +137,6 @@ struct ScreenLimit {
         }
     }
 }
-
 
 public:
 
@@ -145,8 +192,9 @@ final class PlayScene : IScene
     private UiBar uiBar;
     private UiText uiText;
     private WaveText counter;
+    private UiCenterText centerText;
 
-    private Color uiTextColor = UiText.defaultColor;
+    private Color uiTextColor = ETFUi.defaultTextColor;
 
     private void fillBooster() {
         playerEls.getBooster.addFuel(5.0f);
@@ -160,7 +208,7 @@ final class PlayScene : IScene
         scoreManager = ScoreManager(1.0f);
         screenLimit.start();
 
-        healthFlask = new AdvantageFlask(SEConfig(SEDirection.horizontal, 554.2f, "+FUEL"), 5.3f, 30,
+        healthFlask = new AdvantageFlask(SEConfig(SEDirection.horizontal, 554.2f, "+FUEL"), 5.3f, 90,
             pink, &fillBooster);
         deadTimer = Timer(3.0f);
 
@@ -177,6 +225,7 @@ final class PlayScene : IScene
         PlayTimer.start();
 
         uiText.start();
+        centerText.start();
         counter = WaveText("-", counterPosition, ETFUi.cherryColor, 20.0f, Alignment.center);
     }
 
@@ -204,20 +253,28 @@ final class PlayScene : IScene
             anomaly.draw();
         }
 
+        healthFlask.draw();
+
         drawUi();
     }
 
     private void updateUi(float dt) {
+        if (state == PlayState.Active) centerText.update(dt);
+
         uiText.setHealth(playerEls.getHealth(), ElsNumbers.maxHealth);
+
+        if (!centerText.hasTempText())
+            centerText.setText(format("%05d", scoreManager.points));
+
         if (playerEls.isHurt()) uiText.setColor(ETFUi.cherryColor);
 
         uiText.setFuel(playerEls.getBooster().getFuel(), MagmaBoosterConst.maxFuel);
-        uiText.setScore(scoreManager.points);
     }
 
     private void drawUi() {
         uiBar.draw();
         uiText.draw();
+        centerText.draw();
 
         if (onCounting()) counter.draw();
     }
@@ -242,8 +299,9 @@ final class PlayScene : IScene
     private void updateActive(float dt) {
         playerEls.update(dt);
 
-        uiTextColor = playerEls.isHurt() ? ETFUi.cherryColor : UiText.defaultColor;
+        uiTextColor = playerEls.isHurt() ? ETFUi.cherryColor : ETFUi.defaultTextColor;
         uiText.setColor(uiTextColor);
+        if (!centerText.hasTempText()) centerText.setColor(uiTextColor);
 
         if (isPressed(Keyboard.esc)) {
             state = PlayState.Pause;
@@ -259,6 +317,10 @@ final class PlayScene : IScene
         
         healthFlask.update(dt);
         healthFlask.updateCollision(playerEls);
+
+        if (healthFlask.getState() == SEState.collide) {
+            centerText.setTempText(healthFlask.getName());
+        }
 
         screenLimit.update(playerEls);
 
