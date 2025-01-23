@@ -148,7 +148,7 @@ struct PlayTimer {
     private Timer timer = Timer(3.0f);
 
     void start() {
-        timer.start();
+        timer.start(3.0f);
     }
 
     void update(float dt) {
@@ -160,7 +160,7 @@ struct PlayTimer {
     }
 
     ubyte count() {
-        return cast (ubyte) (timer.time + 1U);
+        return cast (ubyte) (timer.duration - timer.time + 1U);
     }
 }
 
@@ -303,7 +303,7 @@ final class PlayScene : IScene
         uiText.setColor(uiTextColor);
         if (!centerText.hasTempText()) centerText.setColor(uiTextColor);
 
-        if (isPressed(Keyboard.esc)) {
+        if (isPressed(ETFUi.denyKey)) {
             state = PlayState.Pause;
             SceneManager.get().set("PauseScene");
         }

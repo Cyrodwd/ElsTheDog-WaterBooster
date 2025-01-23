@@ -11,14 +11,15 @@ void ready() {
     setWindowIconFromFiles("icon.png");
     lockResolution(ETFApplication.resolution.x, ETFApplication.resolution.y);
     setBackgroundColor(black);
-    
+
     etfMbGame.start();
 }
 
 bool update(float dt) {
     if (etfMbGame.update(dt)) return true;
     etfMbGame.draw();
-    if (isPressed(Keyboard.a)) println("PEN");
+
+    debug drawDebugText(format("{} fps.", fps()), Vec2.zero);
     return false;
 }
 

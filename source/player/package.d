@@ -114,7 +114,6 @@ struct Player {
         // It is drawn when it is on screen only
         if (position.y < ETFApplication.resolution.y)
             drawSprite(texture, sprite);
-        debug if (isDown(Keyboard.c)) drawRect(hitbox); 
     }
 
     // ----------------------------------
