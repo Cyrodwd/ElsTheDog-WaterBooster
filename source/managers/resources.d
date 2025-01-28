@@ -1,12 +1,9 @@
 module managers.resources;
 
 import parin;
+import scenes;
 import managers;
-
-import scenes.menu;
-import scenes.pause;
-import scenes.play;
-import scenes.gameover;
+import constants : ETFScenesNames;
 
 struct ResourceManager
 {
@@ -27,31 +24,38 @@ struct ResourceManager
     }
 
     void loadUiResources() {
-        const IStr folderPath = "ui/{}"; // Folder where ui-based textures are stored
+        const IStr mainPath = "ui/{}"; // Folder where ui-based textures are stored
+        const IStr iconsPath = format(mainPath, "introIcons/{}");
         // UI bar (base) to display Health, Points/Name of Advantage Flask obtained and Fuel.
-        TextureManager.getInstance().add("uiBar", format(folderPath, "uiBar.png"));
+        TextureManager.getInstance().add("uiBar", format(mainPath, "uiBar.png"));
         
-        TextureManager.getInstance().add("Title", format(folderPath, "title.png"));
-        TextureManager.getInstance().add("PauseTexture", format(folderPath, "pause.png"));
-        TextureManager.getInstance().add("TestFailedTexture", format(folderPath, "testFailed.png"));
+        TextureManager.getInstance().add("Title", format(mainPath, "title.png"));
+        TextureManager.getInstance().add("PauseTexture", format(mainPath, "pause.png"));
+        TextureManager.getInstance().add("TestFailedTexture", format(mainPath, "testFailed.png"));
+
+        // Intro icons
+        TextureManager.getInstance().add("ParinLogo", format(iconsPath, "parin.png"));
+        TextureManager.getInstance().add("DlangLogo", format(iconsPath, "dlang.png"));
     }
 
     void loadBackgrounds() {
         // Backgrounds size: 640x480 (Half of 1280x960).
-        const IStr folderPath = "bg/{}"; // Folder where backgrounds are stored
+        const IStr mainPath = "bg/{}"; // Folder where backgrounds are stored
         // Background for PlayScene
-        TextureManager.getInstance().add("NightSkyBackground", format(folderPath, "bgNightSky.png"));
+        TextureManager.getInstance().add("NightSkyBackground", format(mainPath, "bgNightSky.png"));
         // Background for GameOverScene
-        TextureManager.getInstance().add("ElsDeadBackground", format(folderPath, "bgGameOver.png"));
+        TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "bgGameOver.png"));
     }
 
     void setupScenes() {
-        SceneManager.get().add("PlayScene", new PlayScene());
+        SceneManager.get().add(ETFScenesNames.intro, new IntroScene());
 
-        SceneManager.get().add("MenuScene", new MenuScene());
+        SceneManager.get().add(ETFScenesNames.menu, new MenuScene());
 
-        SceneManager.get().add("PauseScene", new PauseScene());
+        SceneManager.get().add(ETFScenesNames.play, new PlayScene());
 
-        SceneManager.get().add("GameOverScene", new GameOverScene());
+        SceneManager.get().add(ETFScenesNames.pause, new PauseScene());
+
+        SceneManager.get().add(ETFScenesNames.gameOver, new GameOverScene());
     }
 }

@@ -110,6 +110,10 @@ final class AdvantageFlask : SkyEntity
     public IStr getName() const {
         return name;
     }
+
+    public Color getColor() const {
+        return drawOptions.color;
+    }
     
     public SEState getState() const {
         return state;

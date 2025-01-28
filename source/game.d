@@ -2,6 +2,8 @@ module game;
 
 import managers;
 import bg.nightsky;
+import constants : ETFScenesNames;
+import parin : isPressed, toggleIsFullscreen, Keyboard;
 
 struct Game
 {
@@ -19,10 +21,11 @@ struct Game
         // This is weird
         BGNightSky.start();
 
-        SceneManager.get().set("MenuScene");
+        SceneManager.get().set(ETFScenesNames.intro);
     }
 
     bool update(float dt) {
+        if (isPressed(Keyboard.f)) toggleIsFullscreen();
         SceneManager.get().update(dt);
         return false;
     }

@@ -1,6 +1,9 @@
 module constants;
+
 import parin : Color, IVec2, Vec2, Rect, Keyboard;
 import joka.colors : white;
+import joka.types : IStr;
+import core.atomic;
 
 struct ETFApplication {
     @disable this();
@@ -29,4 +32,14 @@ struct ETFSprite {
     static Vec2 getOffset(const Vec2 rectSize) {
         return (Vec2(size) - rectSize) / Vec2(2);
     }
+}
+
+struct ETFScenesNames {
+    @disable this();
+
+    enum IStr intro = "IntroScene";
+    enum IStr menu = "MenuScene";
+    enum IStr play = "PlayScene";
+    enum IStr pause = "PauseScene";
+    enum IStr gameOver = "GameOverScene";
 }

@@ -60,6 +60,10 @@ struct Text {
         drawOptions.scale = scale;
     }
 
+    void setAlpha(float alpha) {
+        drawOptions.color.a = cast(ubyte)(alpha * 255);
+    }
+
     void draw() const {
         drawText(FontManager.get(), text, position, drawOptions);
     }
@@ -114,5 +118,9 @@ struct WaveText {
 
     void setText(IStr text) {
         this.text.setText(text);
+    }
+
+    void setAlpha(float alpha) {
+        text.setAlpha(alpha);
     }
 }

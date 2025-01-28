@@ -6,4 +6,5 @@ public {
     import managers.text;
     import managers.texture;
     import managers.resources;
+    import managers.transition;
 }

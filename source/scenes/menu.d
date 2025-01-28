@@ -3,10 +3,8 @@ module scenes.menu;
 import parin;
 import scenes.iscene;
 
+import managers;
 import constants;
-import managers.text;
-import managers.scene;
-import managers.texture;
 
 import bg.nightsky;
 
@@ -21,24 +19,28 @@ private struct StartTextConstants {
 }
 
 final class MenuScene : IScene {
-    Text authorText;
     WaveText startText;
     WaveTexture titleTexture;
+    TransitionManager transitions;
 
     public override void onStart() {
-        /* Empty */
+        transitions = TransitionManager(1.0f);
+        transitions.playTransition(Transition.fadeIn);
+        
         titleTexture = WaveTexture("Title", Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size), 20.5f);
         startText = WaveText(StartTextConstants.str, StartTextConstants.origin, white, 30.0f, Alignment.center);
-        authorText = Text("@Cyrodwd", Vec2.zero, pink, Alignment.left);
     }
 
     public override void onUpdate(float dt) {
+        transitions.update(dt);
         startText.update(dt);
         titleTexture.update(dt);
 
         BGNightSky.update(dt);
 
-        if (isDown(ETFUi.confirmKey)) SceneManager.get().set("PlayScene");
+        if (transitions.canTransition() && isDown(ETFUi.confirmKey)) {
+            SceneManager.get().set(ETFScenesNames.play);
+        }
     }
 
     public override void onDraw() {
@@ -46,6 +48,6 @@ final class MenuScene : IScene {
         titleTexture.draw();
 
         startText.draw();
-        authorText.draw();
+        transitions.draw();
     }
 }

@@ -14,7 +14,7 @@ private struct TextStrings {
 
     enum pause = "PAUSE";
     enum cnt = "SPACE to continue";
-    enum abort = "ESC to abort"; // Go to menu
+    enum abort = "ESC to abort"; // Abort Magma Booster Test
 }
 
 final class PauseScene : IScene
@@ -38,10 +38,10 @@ final class PauseScene : IScene
 
         if (isPressed(ETFUi.confirmKey)){
             PlayTimer.start();
-            SceneManager.get().set("PlayScene", refresh: false);
+            SceneManager.get().set(ETFScenesNames.play, refresh: false);
         }
 
-        else if (isPressed(ETFUi.denyKey)) SceneManager.get().set("MenuScene");
+        else if (isPressed(ETFUi.denyKey)) SceneManager.get().set(ETFScenesNames.menu);
     }
 
     public override void onDraw() {
