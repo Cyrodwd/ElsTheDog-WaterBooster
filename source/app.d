@@ -1,7 +1,7 @@
 import game;
 import parin;
 import std.conv : to;
-import constants : ETFApplication;
+import data.constants : ETFApplication;
 
 // Ok?
 Game etfMbGame = {};

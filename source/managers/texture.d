@@ -2,7 +2,7 @@ module managers.texture;
 
 import parin.engine;
 import parin : format, println;
-import constants;
+import data.constants;
 
 final class TextureManager {
     private static TextureManager instance;

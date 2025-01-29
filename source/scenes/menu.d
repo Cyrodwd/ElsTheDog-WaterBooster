@@ -4,7 +4,7 @@ import parin;
 import scenes.iscene;
 
 import managers;
-import constants;
+import data.constants;
 
 import bg.nightsky;
 

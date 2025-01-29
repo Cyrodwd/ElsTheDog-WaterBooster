@@ -2,7 +2,7 @@ module game;
 
 import managers;
 import bg.nightsky;
-import constants : ETFScenesNames;
+import data.constants : ETFScenesNames;
 import parin : isPressed, toggleIsFullscreen, Keyboard;
 
 struct Game

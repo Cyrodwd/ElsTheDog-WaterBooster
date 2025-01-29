@@ -1,26 +1,26 @@
-module player.magmabooster;
+module player.booster;
 
 import joka.math : clamp;
 
-struct MagmaBoosterConst {
+struct WBoosterConst {
     @disable this();
     static immutable float maxFuel = 60.0f;
     static immutable float startingFuel = 50.0f;
 }
 
-struct MagmaBooster {
+struct WaterBooster {
     float impulseForce;
     float fuel;
 
     /// Set an impulse force
     this(float force) {
         this.impulseForce = -force;
-        fuel = MagmaBoosterConst.startingFuel;
+        fuel = WBoosterConst.startingFuel;
     }
 
     void addFuel(float value) {
-        fuel += clamp(value, 0.0f, MagmaBoosterConst.maxFuel);
-        if (fuel > MagmaBoosterConst.maxFuel) fuel = MagmaBoosterConst.maxFuel;
+        fuel += clamp(value, 0.0f, WBoosterConst.maxFuel);
+        if (fuel > WBoosterConst.maxFuel) fuel = WBoosterConst.maxFuel;
     }
 
     float getFuel() {

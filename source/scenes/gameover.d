@@ -1,7 +1,7 @@
 module scenes.gameover;
 
 import parin;
-import constants : ETFUi, ETFSprite, ETFApplication;
+import data.constants : ETFUi, ETFSprite, ETFApplication;
 import scenes.iscene;
 
 import bg;

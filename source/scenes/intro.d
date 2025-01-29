@@ -1,7 +1,8 @@
 module scenes.intro;
 
 import parin;
-import constants;
+import data.constants;
+
 import scenes.iscene;
 import managers.text, managers.scene, managers.texture;
 import managers.transition;

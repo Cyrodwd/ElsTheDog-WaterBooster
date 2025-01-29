@@ -3,7 +3,7 @@ module managers.resources;
 import parin;
 import scenes;
 import managers;
-import constants : ETFScenesNames;
+import data.constants : ETFScenesNames;
 
 struct ResourceManager
 {
@@ -35,7 +35,6 @@ struct ResourceManager
 
         // Intro icons
         TextureManager.getInstance().add("ParinLogo", format(iconsPath, "parin.png"));
-        TextureManager.getInstance().add("DlangLogo", format(iconsPath, "dlang.png"));
     }
 
     void loadBackgrounds() {

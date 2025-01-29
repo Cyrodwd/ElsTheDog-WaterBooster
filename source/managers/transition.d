@@ -1,7 +1,7 @@
 module managers.transition;
 
 import parin;
-import constants;
+import data.constants;
 
 enum Transition {
     none,

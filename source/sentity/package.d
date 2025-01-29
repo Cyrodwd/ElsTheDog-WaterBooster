@@ -1,11 +1,11 @@
-module sentity.skyentity;
+module sentity;
 
 import parin;
 import sentity.data;
 import managers.texture;
 
 import player;
-import constants : ETFApplication, ETFSprite;
+import data.constants : ETFApplication, ETFSprite;
 
 abstract class SkyEntity {
     private immutable Vec2 maxPosition = Vec2(

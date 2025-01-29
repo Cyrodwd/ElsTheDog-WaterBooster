@@ -3,9 +3,9 @@ module sentity.anomaly;
 import parin;
 import player;
 
+import sentity;
 import sentity.data;
-import sentity.skyentity;
-import constants : ETFSprite;
+import data.constants : ETFSprite;
 
 final class Anomaly : SkyEntity
 {

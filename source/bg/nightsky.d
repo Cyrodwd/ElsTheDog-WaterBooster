@@ -2,7 +2,7 @@ module bg.nightsky;
 
 import parin : Vec2, DrawOptions, TextureId, drawTexture;
 import managers : TextureManager;
-import constants : ETFApplication;
+import data.constants : ETFApplication;
 
 /// NOT using "Background" struct (It has an special behavior)
 struct BGNightSky {

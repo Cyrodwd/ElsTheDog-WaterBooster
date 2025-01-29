@@ -3,12 +3,21 @@ module sentity.aflask;
 import parin;
 import player;
 
+import sentity;
 import sentity.data;
-import sentity.skyentity;
-import constants : ETFSprite;
+import data.constants : ETFSprite;
+
 
 // Advantage Flask Effect alias. It is more auto-explicative
-alias AFlaskEffect = void delegate();
+alias AFlaskEffect = void function();
+
+struct AFlaskConfig
+{
+    Color color;
+    ubyte rarityRate;
+    float respawnTime;
+    AFlaskEffect effect;
+}
 
 final class AdvantageFlask : SkyEntity
 {
@@ -26,7 +35,7 @@ final class AdvantageFlask : SkyEntity
 
     private IStr name;
 
-    public this(SEConfig baseConfig, float respawnTime, ubyte rarityRate, Color color, AFlaskEffect effect) {
+    public this(SEConfig baseConfig, AFlaskConfig config) {
         const SEConfig cfg = SEConfig(baseConfig.direction, baseConfig.speed, atlasName);
         super(cfg);
 
@@ -34,16 +43,16 @@ final class AdvantageFlask : SkyEntity
         animations[SEState.collide] = SpriteAnimation(1, framesCount, 12);
 
         sprite = Sprite(ETFSprite.size, ETFSprite.size, 0, 0);
-        this.effect = effect;
+        effect = config.effect;
         
         // Still works
         drawOptions.scale = Vec2(0.8f);
-        drawOptions.color = color;
+        drawOptions.color = config.color;
 
-        this.rarityRate = cast (ubyte) clamp(rarityRate, 0, 100);
+        rarityRate = cast (ubyte) clamp(config.rarityRate, 0, 100);
         name = baseConfig.name;
 
-        respawnTimer = Timer(respawnTime);
+        respawnTimer = Timer(config.respawnTime);
         reset();
     }
 

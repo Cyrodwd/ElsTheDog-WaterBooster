@@ -2,7 +2,7 @@ module managers.text;
 
 import parin.engine;
 import joka.io : println;
-import constants;
+import data.constants;
 
 struct FontManager {
     @disable this();

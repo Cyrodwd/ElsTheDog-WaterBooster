@@ -1,10 +1,11 @@
 module scenes.play;
 
 import parin;
-import constants;
+import data.play;
+import data.constants;
 
 import player;
-import player.magmabooster : MagmaBoosterConst;
+import player.booster : WBoosterConst;
 
 import sentity.data;
 import sentity.anomaly;
@@ -12,8 +13,8 @@ import sentity.aflask;
 
 import managers;
 import scenes.iscene;
-import bg.nightsky;
 
+import bg.nightsky;
 import std.format : format; // To display score with five digits
 
 private:
@@ -165,13 +166,11 @@ struct UiCenterText {
     void setTempText(IStr str, Color color) {
         text.setText(str);
 
-        if (!tempText && !tempTimer.hasStarted()) {
-            text.setColor(color);
-            text.setAmplitude(tempAmplitude);
+        text.setColor(color);
+        text.setAmplitude(tempAmplitude);
 
-            tempText = true;
-            tempTimer.start();
-        }
+        if (!tempText) tempText = true;
+        tempTimer.start();
     }
 
     void setColor(Color color) {
@@ -236,7 +235,6 @@ enum PlayState : ubyte {
 final class PlayScene : IScene
 {
     private static enum Vec2 counterPosition = Vec2(0, ETFApplication.resolution.y / 2.0f - 40);
-    private static enum Color waterColor = Color(164, 244, 249, 255);
 
     // Attributes/Methods
 
@@ -247,7 +245,7 @@ final class PlayScene : IScene
     private Timer deadTimer; // Time to switch to GameOver Scene
 
     private Anomaly[3] anomalies; // Test
-    private AdvantageFlask healthFlask;
+    private AdvantageFlask[] advantageFlasks;
 
     private SEConfig fireTearConfig;
     private ScreenLimit screenLimit;
@@ -266,14 +264,17 @@ final class PlayScene : IScene
     public override void onStart() {
         // Scrolling background have been already started
         fireTearConfig = SEConfig(SEDirection.vertical, 354.2f);
-        playerEls.start();
 
+        playerEls.start();
         scoreManager = ScoreManager(1.0f);
+        FlasksEffects.setup(&scoreManager, &playerEls);
+
         screenLimit.start();
-	
-	    // Project will be renamed as 'Els The Fox: Water Booster'
-        healthFlask = new AdvantageFlask(SEConfig(SEDirection.vertical, 554.2f, "+WATER"), 5.3f, 90,
-            color: waterColor, &fillBooster);
+
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
+
         deadTimer = Timer(3.0f);
 
         // Testing multiple anomalies
@@ -314,10 +315,11 @@ final class PlayScene : IScene
         BGNightSky.draw();
         playerEls.draw();
 
-        foreach (Anomaly anomaly ; anomalies) {
+        foreach (Anomaly anomaly ; anomalies)
             anomaly.draw();
-        }
-        healthFlask.draw();
+        
+        foreach (AdvantageFlask flask ; advantageFlasks)
+            flask.draw();
 
         drawUi();
     }
@@ -332,7 +334,7 @@ final class PlayScene : IScene
 
         if (playerEls.isHurt()) uiText.setColor(ETFUi.cherryColor);
 
-        uiText.setFuel(playerEls.getBooster().getFuel(), MagmaBoosterConst.maxFuel);
+        uiText.setFuel(playerEls.getBooster().getFuel(), WBoosterConst.maxFuel);
     }
 
     private void drawUi() {
@@ -382,11 +384,10 @@ final class PlayScene : IScene
             anomaly.updateCollision(playerEls);
         }
         
-        healthFlask.update(dt);
-        healthFlask.updateCollision(playerEls);
-
-        if (healthFlask.getState() == SEState.collide) {
-            centerText.setTempText(healthFlask.getName(), healthFlask.getColor());
+        foreach (ref AdvantageFlask flask ; advantageFlasks) {
+            flask.update(dt);
+            flask.updateCollision(playerEls);
+            if (flask.getState() == SEState.collide) centerText.setTempText(flask.getName(), flask.getColor());
         }
 
         screenLimit.update(playerEls);
@@ -412,7 +413,7 @@ final class PlayScene : IScene
 
         // DO NOT UPDATE COLLISIONS
         foreach(ref Anomaly anomaly ; anomalies) anomaly.update(dt);
-        healthFlask.update(dt);
+        foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
             SceneManager.get().set(ETFScenesNames.gameOver);
