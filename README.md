@@ -4,9 +4,14 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 
 ## Controls
 
-- Arrow keys (<- and ->): Side movement
+### Gameplay
+- Arrow keys (Left & Right): Side movement
 - Z key: Boost
 - X key: Down boost
+
+### Menus
+- Space key: Confirm
+- Esc key: Deny
 
 ## Features
 - Health
