@@ -16,7 +16,7 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 ## Features
 - Health
 - Fuel for the Magma Booster
-- Score (max 32,000)
+- Score (max 10,000)
 - Advantage Flasks with callbacks and their own rarity
 - Various anomalies: fast, slow, weak, strong, blah blah blah
 - Minimalistic menus
