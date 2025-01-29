@@ -1,12 +1,12 @@
-# Els The Fox: Magma Booster.
+# Els The Fox: Water Booster.
 
-Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advantages (obviously) on your journey.
+Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advantages (obviously) on your journey, and keep and get the water in your booster so you don't fall.
 
 ## Controls
 
 - Arrow keys (<- and ->): Side movement
 - Z key: Boost
-- X key: Down boost (unpolished)
+- X key: Down boost
 
 ## Features
 - Health
@@ -14,9 +14,9 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 - Score (max 32,000)
 - Advantage Flasks with callbacks and their own rarity
 - Various anomalies: fast, slow, weak, strong, blah blah blah
+- Minimalistic menus
 
 ## Missing
-- Main menu (A good one)
 - Unique anomalies
 - More advantage flasks
 - Other stuff I'm still thinking about
