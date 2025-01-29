@@ -1,5 +1,5 @@
 {
-    "name" : "els-the-fox-magma-booster",
+    "name" : "els-the-fox-water-booster",
     "description" : "Simple game of Els the fox. Avoid anomalies in sky",
     "authors" : ["ByancaUwU"],
     "copyright" : "Copyright © 2025, ByancaUwU",
@@ -8,7 +8,7 @@
         "joka": "*",
         "parin": "*"
     },
-    "targetName": "ElsTheFox_MagmaBooster_Executable",
+    "targetName": "ElsTheFox_WaterBooster_Executable",
     "configurations": [
         {
             "name": "linux",
