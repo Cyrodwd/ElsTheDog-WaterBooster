@@ -15,7 +15,8 @@ import managers;
 import scenes.iscene;
 
 import bg.nightsky;
-import std.format : format; // To display score with five digits
+import data.play;
+import std.format : format; // score with 5 digits
 
 private:
 
@@ -86,7 +87,7 @@ struct UiText {
 
     void start() {
         healthText = Text("Health: --/--", Vec2(45, ETFUi.vTextOffset), ETFUi.defaultTextColor, Alignment.left);
-        fuelText = Text("Fuel: ----/--", Vec2(-35, ETFUi.vTextOffset), ETFUi.defaultTextColor, Alignment.right);
+        fuelText = Text("Water: ----", Vec2(-58, ETFUi.vTextOffset), ETFUi.defaultTextColor, Alignment.right);
 
         healthText.setAlpha(0.0f);
         fuelText.setAlpha(0.0f);
@@ -102,7 +103,7 @@ struct UiText {
     }
 
     void setFuel(float currentFuel, float maxFuel) {
-        fuelText.setText(format("Fuel: %.2f/%.0f", currentFuel, maxFuel));
+        fuelText.setText(format("Water: %.2f", currentFuel));
     }
 
     void setAlpha(float alpha) {
@@ -244,7 +245,7 @@ final class PlayScene : IScene
 
     private Timer deadTimer; // Time to switch to GameOver Scene
 
-    private Anomaly[3] anomalies; // Test
+    private Anomaly[] anomalies;
     private AdvantageFlask[] advantageFlasks;
 
     private SEConfig fireTearConfig;
@@ -258,37 +259,24 @@ final class PlayScene : IScene
     private Color uiTextColor = ETFUi.defaultTextColor;
 
     private void fillBooster() {
-        playerEls.getBooster.addFuel(5.0f);
+        playerEls.getBooster.addFuel(5U);
     }
 
     public override void onStart() {
-        // Scrolling background have been already started
-        fireTearConfig = SEConfig(SEDirection.vertical, 354.2f);
-
         playerEls.start();
-        scoreManager = ScoreManager(1.0f);
-        FlasksEffects.setup(&scoreManager, &playerEls);
-
-        screenLimit.start();
-
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
-
         deadTimer = Timer(3.0f);
 
-        // Testing multiple anomalies
-        anomalies = [
-            new Anomaly(SEConfig(SEDirection.horizontal, 244.3f, "FireTear"), 15, 2.6f),
-            new Anomaly(SEConfig(SEDirection.vertical, 644.2f, "FireTear"), 12, 1.56f),
-            new Anomaly(SEConfig(SEDirection.vertical, 965.12f, "FireTear"), 1, 6.2f),
-        ];
+        scoreManager = ScoreManager(1.0f);
+        FlasksEffects.setup(&scoreManager, &playerEls);
+        screenLimit.start();
 
-        uiBar.start();
+        addAnomalies();
+        addAdvantageFlasks();
 
         state = PlayState.Ready;
         PlayTimer.start();
 
+        uiBar.start();
         uiText.start();
         centerText.start();
         counter = WaveText("-", counterPosition, ETFUi.cherryColor, 20.0f, Alignment.center);
@@ -322,6 +310,17 @@ final class PlayScene : IScene
             flask.draw();
 
         drawUi();
+    }
+
+    private void addAnomalies() {
+        anomalies ~= new Anomaly(AnomaliesBaseConfig.fireTear, AnomaliesConfig.fireTear);
+        anomalies ~= new Anomaly(AnomaliesBaseConfig.umoonRock, AnomaliesConfig.umoonRock);
+    }
+
+    private void addAdvantageFlasks() {
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
+        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
     }
 
     private void updateUi(float dt) {

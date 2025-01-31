@@ -9,8 +9,8 @@ struct WBoosterConst {
 }
 
 struct WaterBooster {
-    float impulseForce;
     float fuel;
+    float impulseForce;
 
     /// Set an impulse force
     this(float force) {

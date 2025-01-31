@@ -10,8 +10,7 @@ struct Game
     void start() {
         FontManager.setup();
 
-        ResourceManager.loadAnomalyResources();
-        ResourceManager.loadAtlases();
+        ResourceManager.loadSentities();
 
         ResourceManager.loadBackgrounds();
         ResourceManager.loadUiResources();

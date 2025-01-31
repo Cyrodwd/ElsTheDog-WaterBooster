@@ -1,10 +1,10 @@
 module player;
 
 import parin;
-import constants;
+import data.constants;
 
+import player.booster;
 import managers.texture;
-import player.magmabooster;
  
 /// Els State -> Player State
 enum ElsState : ubyte {
@@ -35,7 +35,7 @@ struct ElsNumbers {
     /// The fuel that is subtracted from the Magma Booster when propelled
     static enum boosterFuel = 0.05f;
     /// Fuel subtracted when propelled downward
-    static enum boosterFuelDownward = 0.15f;
+    static enum boosterFuelDownward = 0.10f;
     /// Player's Magma booster boosting force
     static enum boosterImpulseForce = 280.0f;
 }
@@ -64,7 +64,7 @@ struct Player {
     TextureId texture;
     Sprite sprite;
 
-    MagmaBooster booster;
+    WaterBooster booster;
 
     void start() {
         previousHealthPoints = ElsNumbers.maxHealth;
@@ -91,7 +91,7 @@ struct Player {
         animations[ElsState.hurt] = SpriteAnimation(1, 4, 8);
         animations[ElsState.dead] = SpriteAnimation(2, 2, 2);
 
-        booster = MagmaBooster(ElsNumbers.boosterImpulseForce);
+        booster = WaterBooster(ElsNumbers.boosterImpulseForce);
     }
 
     void update(float dt) {
@@ -118,7 +118,8 @@ struct Player {
 
     // ----------------------------------
 
-    byte inputAxis() const {
+    // The impact will be minimal but still
+    pragma(inline, true) byte inputAxis() const {
         return isDown(Keyboard.right) - isDown(Keyboard.left);
     }
 
@@ -160,7 +161,7 @@ struct Player {
         }
 
         if (isPressed(Keyboard.x)) {
-            booster.subtractFuel(0.15f);
+            booster.subtractFuel(ElsNumbers.boosterFuelDownward);
             velocity.y = abs(booster.getImpulse());
         }
     }
@@ -233,7 +234,7 @@ struct Player {
         return healthPoints;
     }
 
-    ref MagmaBooster getBooster() {
+    ref WaterBooster getBooster() {
         return booster;
     }
 }

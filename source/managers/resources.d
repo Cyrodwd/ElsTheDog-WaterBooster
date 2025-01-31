@@ -11,16 +11,15 @@ struct ResourceManager
 
     static:
 
-    void loadAnomalyResources() {
-        TextureManager.getInstance().add("FireTear", "FireTear.png");
-    }
+    void loadSentities() {
+        const IStr mainPath = "sentity/{}";
 
-    void loadAtlases() {
-        // Texture Atlas of Els (Player)
-        TextureManager.getInstance().add("ElsAtlas", "Els.png"); 
+        TextureManager.getInstance().add("FireTear", format(mainPath, "FireTear.png"));
+        TextureManager.getInstance().add("UnknownMoonRock", format(mainPath, "UnknownMoonRock.png"));
 
         // Texture for Advantage Flasks (all share the same, but with different colors)
-        TextureManager.getInstance().add("FlaskAtlas", "AdvantageFlask.png");
+        TextureManager.getInstance().add("FlaskAtlas", format(mainPath, "AdvantageFlask.png"));
+        TextureManager.getInstance().add("ElsAtlas", format(mainPath, "Els.png")); // Not a sky entity, just entity lmao
     }
 
     void loadUiResources() {

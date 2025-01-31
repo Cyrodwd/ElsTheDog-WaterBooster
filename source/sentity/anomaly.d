@@ -7,6 +7,12 @@ import sentity;
 import sentity.data;
 import data.constants : ETFSprite;
 
+struct AnomalyConfig {
+    ubyte damageAmount;
+    ubyte frameCount;
+    float respawnDelay;
+}
+
 final class Anomaly : SkyEntity
 {
     private ubyte damageAmount;
@@ -15,15 +21,15 @@ final class Anomaly : SkyEntity
     Timer respawnTimer;
     private Sprite sprite;
 
-    public this(SEConfig baseConfig, ubyte damageAmount, float respawnDelay) {
+    public this(SEConfig baseConfig, AnomalyConfig config) {
         super(baseConfig);
 
-        respawnTimer = Timer(respawnDelay);
-        this.damageAmount = damageAmount;
+        respawnTimer = Timer(config.respawnDelay);
+        this.damageAmount = config.damageAmount;
         
         // Sprites configuration
-        animations[SEState.enabled] = SpriteAnimation(0, 4, 6);
-        animations[SEState.collide] = SpriteAnimation(1, 4, 12);
+        animations[SEState.enabled] = SpriteAnimation(0, config.frameCount, 6);
+        animations[SEState.collide] = SpriteAnimation(1, config.frameCount, 12);
 
         sprite = Sprite(ETFSprite.size, ETFSprite.size, 0, 0);
         reset();
