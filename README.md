@@ -15,7 +15,7 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 
 ## Features
 - Health
-- Fuel for the Magma Booster
+- Water booster
 - Score (max 10,000)
 - Advantage Flasks with callbacks and their own rarity
 - Various anomalies: fast, slow, weak, strong, blah blah blah
@@ -23,8 +23,7 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 
 ## Missing
 - Unique anomalies
-- More advantage flasks
-- Other stuff I'm still thinking about
+- "Surrender" and "Victory" scenes.
 
 This game was created with [Parin](https://github.com/Kapendev/parin).
 
