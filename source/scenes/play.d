@@ -16,6 +16,7 @@ import scenes.iscene;
 
 import bg.nightsky;
 import data.play;
+
 import std.format : format; // score with 5 digits
 
 private:
@@ -200,40 +201,7 @@ struct ScreenLimit {
     }
 }
 
-public:
-
-struct PlayTimer {
-    @disable this();
-
-    static:
-
-    private Timer timer = Timer(3.0f);
-
-    void start() {
-        timer.start(3.0f);
-    }
-
-    void update(float dt) {
-        timer.update(dt);
-    }
-
-    bool done() {
-        return timer.hasStopped();
-    }
-
-    ubyte count() {
-        return cast (ubyte) (timer.duration - timer.time + 1U);
-    }
-}
-
-enum PlayState : ubyte {
-    Ready = 0,
-    Active,
-    Pause,
-    GameOver
-}
-
-final class PlayScene : IScene
+public final class PlayScene : IScene
 {
     private static enum Vec2 counterPosition = Vec2(0, ETFApplication.resolution.y / 2.0f - 40);
 
@@ -245,8 +213,8 @@ final class PlayScene : IScene
 
     private Timer deadTimer; // Time to switch to GameOver Scene
 
-    private Anomaly[] anomalies;
-    private AdvantageFlask[] advantageFlasks;
+    private Anomaly[3] anomalies;
+    private AdvantageFlask[3] advantageFlasks;
 
     private SEConfig fireTearConfig;
     private ScreenLimit screenLimit;
@@ -313,14 +281,15 @@ final class PlayScene : IScene
     }
 
     private void addAnomalies() {
-        anomalies ~= new Anomaly(AnomaliesBaseConfig.fireTear, AnomaliesConfig.fireTear);
-        anomalies ~= new Anomaly(AnomaliesBaseConfig.umoonRock, AnomaliesConfig.umoonRock);
+        anomalies[0] = new Anomaly(AnomaliesBaseConfig.fireTear, AnomaliesConfig.fireTear);
+        anomalies[1] = new Anomaly(AnomaliesBaseConfig.fastTear, AnomaliesConfig.fastTear);
+        anomalies[2] = new Anomaly(AnomaliesBaseConfig.meteorite, AnomaliesConfig.meteorite);
     }
 
     private void addAdvantageFlasks() {
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
-        advantageFlasks ~= new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
+        advantageFlasks[0] = new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
+        advantageFlasks[1] = new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
+        advantageFlasks[2] = new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
     }
 
     private void updateUi(float dt) {

@@ -38,7 +38,7 @@ struct FlasksBaseConfig {
     @disable this();
     static:
 
-    SEConfig waterFlask = SEConfig(SEDirection.vertical, speed: 440.2f, name: "+WATER");
+    SEConfig waterFlask = SEConfig(SEDirection.vertical, speed: 740.2f, name: "+WATER");
     SEConfig healthFlask = SEConfig(SEDirection.horizontal, speed: 611.45f, name: "+HEALTH");
     SEConfig scoreFlask = SEConfig(SEDirection.vertical, speed: 578.5f, name: "+SCORE");
 }

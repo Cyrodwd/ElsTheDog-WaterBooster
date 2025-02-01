@@ -10,12 +10,21 @@ import data.constants : ETFSprite;
 struct AnomalyConfig {
     ubyte damageAmount;
     ubyte frameCount;
+    Color color;
     float respawnDelay;
+
+    this(ubyte damageAmount, ubyte frameCount, float respawnDelay, Color color = white) {
+        this.damageAmount = damageAmount;
+        this.frameCount = frameCount;
+        this.respawnDelay = respawnDelay;
+        this.color = color;
+    }
 }
 
 final class Anomaly : SkyEntity
 {
     private ubyte damageAmount;
+    private DrawOptions drawOptions;
     private SpriteAnimation[2] animations;
 
     Timer respawnTimer;
@@ -26,6 +35,7 @@ final class Anomaly : SkyEntity
 
         respawnTimer = Timer(config.respawnDelay);
         this.damageAmount = config.damageAmount;
+        drawOptions.color = config.color;
         
         // Sprites configuration
         animations[SEState.enabled] = SpriteAnimation(0, config.frameCount, 6);
@@ -61,7 +71,7 @@ final class Anomaly : SkyEntity
 
     public override void draw() {
         if (state != SEState.respawn)
-            texture.isValid() ? drawSprite(texture, sprite) : drawRect(hitbox, red);
+            texture.isValid() ? drawSprite(texture, sprite, drawOptions) : drawRect(hitbox, drawOptions.color);
     }
 
     public override void reset() {

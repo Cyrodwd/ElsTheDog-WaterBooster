@@ -1,8 +1,8 @@
 module scenes.pause;
 
 import parin;
+import data.play.misc;
 import data.constants;
-import scenes.play : PlayScene, PlayTimer;
 import scenes.iscene;
 
 import managers.text;

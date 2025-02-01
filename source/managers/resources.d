@@ -15,7 +15,7 @@ struct ResourceManager
         const IStr mainPath = "sentity/{}";
 
         TextureManager.getInstance().add("FireTear", format(mainPath, "FireTear.png"));
-        TextureManager.getInstance().add("UnknownMoonRock", format(mainPath, "UnknownMoonRock.png"));
+        TextureManager.getInstance().add("MarsMeteorite", format(mainPath, "MarsMeteorite.png"));
 
         // Texture for Advantage Flasks (all share the same, but with different colors)
         TextureManager.getInstance().add("FlaskAtlas", format(mainPath, "AdvantageFlask.png"));

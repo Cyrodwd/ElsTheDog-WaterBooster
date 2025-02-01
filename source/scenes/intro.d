@@ -40,6 +40,8 @@ final class IntroScene : IScene
 
     public void onUpdate(float dt) {
         transitions.update(dt);
+        if (isPressed(Keyboard.c)) openUrl(""); 
+
         if (!transitioningToMenu) {
             toMenuTimer.update(dt);
 

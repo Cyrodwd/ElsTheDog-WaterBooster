@@ -13,6 +13,17 @@ enum ElsState : ubyte {
     dead = 0x2,
 }
 
+struct ElsControls
+{
+    @disable this();
+    static:
+
+    bool leftKey() { return isDown(Keyboard.left) || isDown(Keyboard.a); }
+    bool rightKey() { return isDown(Keyboard.right) || isDown(Keyboard.d); }
+    bool boostKey() { return isDown(Keyboard.z) || isDown(Keyboard.j); }
+    bool downBoostKey() { return isDown(Keyboard.x) || isDown(Keyboard.k); }
+}
+
 /// Gravity, acceleration, etc.
 struct ElsPhysics {
      @disable this();
@@ -120,7 +131,7 @@ struct Player {
 
     // The impact will be minimal but still
     pragma(inline, true) byte inputAxis() const {
-        return isDown(Keyboard.right) - isDown(Keyboard.left);
+        return ElsControls.rightKey() - ElsControls.leftKey();
     }
 
     void updateAcceleration(float dt) {
@@ -155,12 +166,12 @@ struct Player {
     }
 
     void updateInput() {
-        if (isDown(Keyboard.z)) {
+        if (ElsControls.boostKey()) {
             booster.subtractFuel(ElsNumbers.boosterFuel);
             velocity.y = booster.getImpulse();
         }
 
-        if (isPressed(Keyboard.x)) {
+        if (ElsControls.downBoostKey()) {
             booster.subtractFuel(ElsNumbers.boosterFuelDownward);
             velocity.y = abs(booster.getImpulse());
         }
