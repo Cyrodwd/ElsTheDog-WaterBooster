@@ -25,12 +25,14 @@ struct ResourceManager
     void loadUiResources() {
         const IStr mainPath = "ui/{}"; // Folder where ui-based textures are stored
         const IStr iconsPath = format(mainPath, "introIcons/{}");
+        const IStr textPath = format(mainPath, "text/{}");
         // UI bar (base) to display Health, Points/Name of Advantage Flask obtained and Fuel.
         TextureManager.getInstance().add("uiBar", format(mainPath, "uiBar.png"));
         
-        TextureManager.getInstance().add("Title", format(mainPath, "title.png"));
-        TextureManager.getInstance().add("PauseTexture", format(mainPath, "pause.png"));
-        TextureManager.getInstance().add("TestFailedTexture", format(mainPath, "testFailed.png"));
+        TextureManager.getInstance().add("Title", format(textPath, "title.png"));
+        TextureManager.getInstance().add("PauseTexture", format(textPath, "pause.png"));
+        TextureManager.getInstance().add("TestFailedTexture", format(textPath, "testFailed.png"));
+        TextureManager.getInstance().add("WBRejected", format(textPath, "rejected.png"));
 
         // Intro icons
         TextureManager.getInstance().add("ParinLogo", format(iconsPath, "parin.png"));
