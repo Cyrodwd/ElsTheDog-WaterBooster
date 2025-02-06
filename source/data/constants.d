@@ -62,4 +62,5 @@ struct ETFScenesNames {
     enum IStr pause = "PauseScene";
     enum IStr gameOver = "GameOverScene";
     enum IStr rejected = "WBRejected";
+    enum IStr approved = "ApprovedScene";
 }

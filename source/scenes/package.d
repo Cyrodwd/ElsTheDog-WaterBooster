@@ -8,3 +8,4 @@ import scenes.play;
 import scenes.pause;
 import scenes.gameover;
 import scenes.rejected;
+import scenes.approved;

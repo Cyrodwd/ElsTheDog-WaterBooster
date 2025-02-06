@@ -27,7 +27,7 @@ final class TextureManager {
         return textures[name];
     }
 
-    /// Loads a PNG image file inside 'images' folder.
+    /// Loads a PNG image file inside 'sprites' folder.
     public void add(IStr name, IStr filename) {
         if (name.length == 0 || filename.length == 0)
             assert(0, "Name or filename are empty.");
@@ -41,10 +41,10 @@ final class TextureManager {
 
     public void remove(IStr name) {
         if (name !in textures)
-            assert(0, format("{} is not a texture."));
+            assert(0, format("{} is not a stored."));
 
         if (!textures[name].isValid())
-            assert(0, format("{} is not stored."));
+            assert(0, format("{} is not valid."));
 
         textures[name].free();
         textures.remove(name);

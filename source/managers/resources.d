@@ -4,7 +4,6 @@ import parin;
 import scenes;
 import managers;
 import data.constants : ETFScenesNames;
-
 struct ResourceManager
 {
     @disable this();
@@ -33,6 +32,7 @@ struct ResourceManager
         TextureManager.getInstance().add("PauseTexture", format(textPath, "pause.png"));
         TextureManager.getInstance().add("WBNotSafeTexture", format(textPath, "testFailed.png"));
         TextureManager.getInstance().add("WBRejectedText", format(textPath, "rejected.png"));
+        TextureManager.getInstance().add("ApprovedText", format(textPath, "approved.png"));
 
         // Intro icons
         TextureManager.getInstance().add("ParinLogo", format(iconsPath, "parin.png"));
@@ -57,6 +57,8 @@ struct ResourceManager
         SceneManager.get().add(ETFScenesNames.pause, new PauseScene());
 
         SceneManager.get().add(ETFScenesNames.gameOver, new GameOverScene());
+
+        SceneManager.get().add(ETFScenesNames.approved, new ApprovedScene());
 
         SceneManager.get().add(ETFScenesNames.rejected, new RejectedScene());
     }

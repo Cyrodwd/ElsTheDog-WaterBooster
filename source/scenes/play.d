@@ -408,7 +408,9 @@ public final class PlayScene : IScene
         foreach (ref Anomaly anomaly ; anomalies) anomaly.update(dt);
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
-        if (deadTimer.hasStopped())
-            SceneManager.get().set(ETFScenesNames.gameOver);
+        if (deadTimer.hasStopped()) {
+            const IStr sceneToChange = state == PlayState.Victory ? ETFScenesNames.approved : ETFScenesNames.gameOver;
+            SceneManager.get().set(sceneToChange);
+        }
     }
 }

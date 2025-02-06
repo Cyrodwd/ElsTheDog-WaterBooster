@@ -37,7 +37,7 @@ final class RejectedScene : IScene
         transition.playTransition(Transition.fadeIn);
 
         rejectedText = WaveTexture("WBRejectedText", rejectedPosition, textAmplitude);
-        retryText = WaveText(format(TextString.retry, ETFKeys.confirmStr()), Vec2(70, ETFSprite.size + 256), 
+        retryText = WaveText(format(TextString.retry, ETFKeys.confirmStr()), Vec2(70, ETFSprite.size * 2.0f), 
             white, textAmplitude);
         acceptText = WaveText(format(TextString.accept, ETFKeys.denyStr()), Vec2(80, ETFSprite.size + 320), white,
             textAmplitude);
