@@ -1,13 +1,14 @@
 module scenes.gameover;
 
 import parin;
-import data.constants : ETFUi, ETFSprite, ETFApplication;
 import scenes.iscene;
+import data.constants;
 
 import bg;
 import managers.texture;
 import managers.scene;
 import managers.text;
+import managers.transition;
 
 final class GameOverScene : IScene
 {
@@ -20,6 +21,8 @@ final class GameOverScene : IScene
     private WaveText restartText;
     private WaveText giveUpText;
 
+    private TransitionManager transitions;
+
     public override void onStart() {
         const Vec2 rsOrigin = Vec2(0, ETFApplication.resolution.y / 2.0f);
         const Vec2 guOrigin = Vec2(0, rsOrigin.y - 60);
@@ -28,17 +31,24 @@ final class GameOverScene : IScene
         restartText = WaveText("Press SPACE to restart", rsOrigin, white, textAmplitude, textAlignment);
         giveUpText = WaveText("Press ESC to give up", guOrigin, white, textAmplitude, textAlignment);
 
-        testFailedTexture = WaveTexture("TestFailedTexture",
+        testFailedTexture = WaveTexture("WBNotSafeTexture",
             Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size), 40.0f);
+
+        transitions = TransitionManager(1.3f);
+        transitions.playTransition(Transition.fadeIn);
     }
 
     public override void onUpdate(float dt) {
+        transitions.update(dt);
         testFailedTexture.update(dt);
         restartText.update(dt);
         giveUpText.update(dt);
 
-        if (isDown(ETFUi.confirmKey)) SceneManager.get().set("PlayScene");
-        else if (isDown(ETFUi.denyKey)) SceneManager.get().set("MenuScene");
+
+        if (transitions.canTransition()) {
+            if (isDown(ETFKeys.confirm)) SceneManager.get().set(ETFScenesNames.play);
+            else if (isDown(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.menu);
+        }
     }
 
     public override void onDraw() {
@@ -47,5 +57,7 @@ final class GameOverScene : IScene
         giveUpText.draw();
         restartText.draw();
         testFailedTexture.draw();
+
+        transitions.draw();
     }
 }

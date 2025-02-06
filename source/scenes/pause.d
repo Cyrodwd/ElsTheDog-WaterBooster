@@ -13,8 +13,8 @@ private struct TextStrings {
     @disable this();
 
     enum pause = "PAUSE";
-    enum cnt = "SPACE to continue";
-    enum abort = "ESC to abort"; // Abort Magma Booster Test
+    enum cnt = "Press {} to continue";
+    enum abort = "Press {} to abort"; // Abort Magma Booster Test
 }
 
 final class PauseScene : IScene
@@ -26,9 +26,11 @@ final class PauseScene : IScene
     WaveText abortText;
 
     public override void onStart() {
-        pauseTexture = WaveTexture("PauseTexture", Vec2(ETFSprite.size), textAmplitude);
-        continueText = WaveText(TextStrings.cnt, Vec2(35, ETFSprite.size + 256), white, textAmplitude);
-        abortText = WaveText(TextStrings.abort, Vec2(110, ETFSprite.size + 320), white, textAmplitude);
+        pauseTexture = WaveTexture("PauseTexture", Vec2(ETFSprite.size + 80.0f, ETFSprite.size), textAmplitude);
+        continueText = WaveText(format(TextStrings.cnt, ETFKeys.confirmStr()), Vec2(35, ETFSprite.size + 256), 
+            white, textAmplitude);
+        abortText = WaveText(format(TextStrings.abort, ETFKeys.denyStr()), Vec2(110, ETFSprite.size + 320), white,
+            textAmplitude);
     }
 
     public override void onUpdate(float dt) {
@@ -36,12 +38,12 @@ final class PauseScene : IScene
         continueText.update(dt);
         abortText.update(dt);
 
-        if (isPressed(ETFUi.confirmKey)){
+        if (isPressed(ETFKeys.confirm)){
             PlayTimer.start();
             SceneManager.get().set(ETFScenesNames.play, refresh: false);
         }
 
-        else if (isPressed(ETFUi.denyKey)) SceneManager.get().set(ETFScenesNames.menu);
+        else if (isPressed(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.rejected);
     }
 
     public override void onDraw() {

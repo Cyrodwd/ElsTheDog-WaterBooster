@@ -1,7 +1,6 @@
 module managers.text;
 
-import parin.engine;
-import joka.io : println;
+import parin;
 import data.constants;
 
 struct FontManager {

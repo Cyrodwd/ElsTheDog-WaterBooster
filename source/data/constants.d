@@ -1,8 +1,8 @@
 module data.constants;
 
-import parin : Color, IVec2, Vec2, Rect, Keyboard;
+import joka;
 import joka.colors : white;
-import joka.types : IStr;
+import parin : Color, IVec2, Vec2, Rect, Keyboard;
 
 struct ETFApplication {
     @disable this();
@@ -16,11 +16,31 @@ struct ETFUi {
 
     enum charSize = 15;
     enum cherryColor = Color(222, 49, 99, 255);
-    alias confirmKey = Keyboard.space;
-    alias denyKey = Keyboard.esc;
 
     static enum vTextOffset = ETFApplication.resolution.y - 85.0f;
     static enum defaultTextColor = white;
+}
+
+struct ETFKeys {
+    @disable this();
+    static:
+
+    alias confirm = Keyboard.space;
+    alias deny = Keyboard.esc;
+
+    alias pLeft = Keyboard.left;
+    alias pRight = Keyboard.right;
+
+    alias pBoost = Keyboard.z;
+    alias pBoostDown = Keyboard.x;
+
+    IStr confirmStr() {
+        return toStr(confirm);
+    }
+
+    IStr denyStr() {
+        return toStr(deny);
+    }
 }
 
 struct ETFSprite {
@@ -41,4 +61,5 @@ struct ETFScenesNames {
     enum IStr play = "PlayScene";
     enum IStr pause = "PauseScene";
     enum IStr gameOver = "GameOverScene";
+    enum IStr rejected = "WBRejected";
 }

@@ -11,6 +11,7 @@ enum ElsState : ubyte {
     normal = 0x0,
     hurt = 0x1,
     dead = 0x2,
+    invincible,
 }
 
 struct ElsControls
@@ -18,10 +19,10 @@ struct ElsControls
     @disable this();
     static:
 
-    bool leftKey() { return isDown(Keyboard.left) || isDown(Keyboard.a); }
-    bool rightKey() { return isDown(Keyboard.right) || isDown(Keyboard.d); }
-    bool boostKey() { return isDown(Keyboard.z) || isDown(Keyboard.j); }
-    bool downBoostKey() { return isDown(Keyboard.x) || isDown(Keyboard.k); }
+    bool leftKey() { return isDown(ETFKeys.pLeft) || isDown(Keyboard.a); }
+    bool rightKey() { return isDown(ETFKeys.pRight) || isDown(Keyboard.d); }
+    bool boostKey() { return isDown(ETFKeys.pBoost) || isDown(Keyboard.j); }
+    bool downBoostKey() { return isDown(ETFKeys.pBoostDown) || isDown(Keyboard.k); }
 }
 
 /// Gravity, acceleration, etc.
@@ -110,7 +111,9 @@ struct Player {
 
         // Update states
         final switch (state) {
-            case ElsState.normal: updateNormalState(dt); break;
+            case ElsState.normal:
+            case ElsState.invincible:
+                updateNormalState(dt); break;
             case ElsState.hurt: updateHurtState(dt); break;
             case ElsState.dead: break;
         }
@@ -188,7 +191,7 @@ struct Player {
     }
 
     void startHurtState() {
-        if (state == ElsState.dead) return;
+        if (state == ElsState.dead || state == ElsState.invincible) return;
 
         direction = 0;
         velocity.y = booster.getImpulse();
@@ -203,6 +206,11 @@ struct Player {
             state = healthPoints > 0 ? ElsState.normal : ElsState.dead;
             hurtTimer.time = 0.0f;
         }
+    }
+
+    void applyInvicibility() {
+        if (state != ElsState.invincible)
+            state = ElsState.invincible;
     }
 
     // ----------------

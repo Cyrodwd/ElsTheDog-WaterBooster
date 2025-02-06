@@ -224,15 +224,14 @@ public final class PlayScene : IScene
     private WaveText counter;
     private UiCenterText centerText;
 
+    private TransitionManager transition;
     private Color uiTextColor = ETFUi.defaultTextColor;
-
-    private void fillBooster() {
-        playerEls.getBooster.addFuel(5U);
-    }
 
     public override void onStart() {
         playerEls.start();
         deadTimer = Timer(3.0f);
+        transition = TransitionManager(2.0f);
+        transition.playTransition(Transition.fadeIn);
 
         scoreManager = ScoreManager(1.0f);
         FlasksEffects.setup(&scoreManager, &playerEls);
@@ -264,6 +263,8 @@ public final class PlayScene : IScene
                 updateActive(dt); break;
             case PlayState.GameOver:
                 updateGameover(dt); break;
+            case PlayState.Victory:
+                updateVictory(dt); break;
         }
     }
 
@@ -309,6 +310,7 @@ public final class PlayScene : IScene
         uiBar.draw();
         uiText.draw();
         centerText.draw();
+        transition.draw();
 
         if (onCounting()) counter.draw();
     }
@@ -317,6 +319,10 @@ public final class PlayScene : IScene
         return (state == PlayState.Ready || state == PlayState.Pause);
     }
 
+    /*
+        Private methods to update states
+    */
+
     private void updateReady(float dt) {
         uiBar.update(dt);
         if (state != PlayState.Pause) playerEls.updateSprite(dt);
@@ -324,17 +330,17 @@ public final class PlayScene : IScene
         PlayTimer.update(dt);
         counter.update(dt);
         counter.setText(toStr(PlayTimer.count()));
+        transition.update(dt);
 
         centerText.setAlpha(uiBar.getAlpha());
         uiText.setAlpha(uiBar.getAlpha());
 
-        if (PlayTimer.done()) {
+        if (PlayTimer.done())
             state = PlayState.Active;
-        }
     }
 
     private void updateActive(float dt) {
-        if (isPressed(ETFUi.denyKey)) {
+        if (isPressed(ETFKeys.deny)) {
             state = PlayState.Pause;
             SceneManager.get().set(ETFScenesNames.pause);
         }
@@ -360,18 +366,21 @@ public final class PlayScene : IScene
 
         screenLimit.update(playerEls);
 
-        if (!playerEls.isAlive()) {
+        if (!playerEls.isAlive() || scoreManager.hasMaxPoints()) {
             centerText.reset();
             centerText.setColor(ETFUi.cherryColor);
             centerText.setText(format("%05d", scoreManager.points));
 
             deadTimer.start();
-            state = PlayState.GameOver;
             uiBar.setState(GhostState.disappearing);
+
+            state = scoreManager.hasMaxPoints() && playerEls.isAlive() ? PlayState.Victory : PlayState.GameOver;
+            transition.playTransition(Transition.fadeOut);
         }
     }
 
     private void updateGameover(float dt) {
+        transition.update(dt);
         uiBar.update(dt);
         playerEls.update(dt);
         deadTimer.update(dt);
@@ -383,8 +392,23 @@ public final class PlayScene : IScene
         foreach(ref Anomaly anomaly ; anomalies) anomaly.update(dt);
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
-        if (deadTimer.hasStopped()) {
+        if (deadTimer.hasStopped())
             SceneManager.get().set(ETFScenesNames.gameOver);
-        }
+    }
+
+    private void updateVictory(float dt) {
+        transition.update(dt);
+        uiBar.update(dt);
+        playerEls.update(dt);
+        deadTimer.update(dt);
+
+        centerText.setAlpha(uiBar.getAlpha());
+        uiText.setAlpha(uiBar.getAlpha());
+
+        foreach (ref Anomaly anomaly ; anomalies) anomaly.update(dt);
+        foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
+
+        if (deadTimer.hasStopped())
+            SceneManager.get().set(ETFScenesNames.gameOver);
     }
 }

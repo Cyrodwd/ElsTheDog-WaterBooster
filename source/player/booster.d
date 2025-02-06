@@ -18,7 +18,7 @@ struct WaterBooster {
         fuel = WBoosterConst.startingFuel;
     }
 
-    void addFuel(float value) {
+    void addWater(float value) {
         fuel += clamp(value, 0.0f, WBoosterConst.maxFuel);
         if (fuel > WBoosterConst.maxFuel) fuel = WBoosterConst.maxFuel;
     }

@@ -30,5 +30,6 @@ enum PlayState : ubyte {
     Ready = 0,
     Active,
     Pause,
-    GameOver
+    GameOver,
+    Victory,
 }

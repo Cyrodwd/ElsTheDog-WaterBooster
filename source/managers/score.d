@@ -6,8 +6,6 @@ private
 {
     enum pointsDefaultAmount = 20;
     enum maxPoints = 10_000;
-    enum minMultiplier = 1;
-    enum maxMultiplier = 3;
 }
 
 struct ScoreManager

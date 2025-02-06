@@ -29,7 +29,7 @@ struct FlasksEffects {
         this.els = els;
     }
 
-    void water() { if (els !is null) els.getBooster().addFuel(10U); }
+    void water() { if (els !is null) els.getBooster().addWater(10U); }
     void health() { if (els !is null) els.addHealth(15); }
     void score() { if (scoreManager !is null) scoreManager.add(100); }
 }

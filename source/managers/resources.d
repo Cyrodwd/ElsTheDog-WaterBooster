@@ -29,10 +29,10 @@ struct ResourceManager
         // UI bar (base) to display Health, Points/Name of Advantage Flask obtained and Fuel.
         TextureManager.getInstance().add("uiBar", format(mainPath, "uiBar.png"));
         
-        TextureManager.getInstance().add("Title", format(textPath, "title.png"));
+        TextureManager.getInstance().add("TitleTexture", format(textPath, "title.png"));
         TextureManager.getInstance().add("PauseTexture", format(textPath, "pause.png"));
-        TextureManager.getInstance().add("TestFailedTexture", format(textPath, "testFailed.png"));
-        TextureManager.getInstance().add("WBRejected", format(textPath, "rejected.png"));
+        TextureManager.getInstance().add("WBNotSafeTexture", format(textPath, "testFailed.png"));
+        TextureManager.getInstance().add("WBRejectedText", format(textPath, "rejected.png"));
 
         // Intro icons
         TextureManager.getInstance().add("ParinLogo", format(iconsPath, "parin.png"));
@@ -57,5 +57,7 @@ struct ResourceManager
         SceneManager.get().add(ETFScenesNames.pause, new PauseScene());
 
         SceneManager.get().add(ETFScenesNames.gameOver, new GameOverScene());
+
+        SceneManager.get().add(ETFScenesNames.rejected, new RejectedScene());
     }
 }

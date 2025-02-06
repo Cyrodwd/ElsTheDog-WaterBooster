@@ -13,22 +13,20 @@ final class IntroScene : IScene
     immutable Vec2 devTextPosition = Vec2(0.0f, 64.0f);
     immutable Vec2 authorTextPosition = Vec2(0, ETFApplication.resolution.y / 2.0f - 10);
 
-    Timer toMenuTimer;
+    private bool transitioningToMenu;
 
+    private Timer toMenuTimer;
     TextureId parinLogo;
 
-    Text devText;
-    Text authorText;
-    TransitionManager transitions;
-    bool transitioningToMenu;
+    private Text devText;
+    private Text authorText;
+    private TransitionManager transitions = TransitionManager(transitionTime: 3.0f);
 
     public void onStart() {
         parinLogo = TextureManager.getInstance().get("ParinLogo");
 
         devText = Text("Made with parin", devTextPosition, white, Alignment.center);
         authorText = Text("@Cyrodwd: Programming", authorTextPosition, white, Alignment.center);
-
-        transitions = TransitionManager(transitionTime: 3.0f);
 
         // Technically its real duration is 8.0 seconds lmto.
         toMenuTimer = Timer(11.0f);
@@ -40,12 +38,12 @@ final class IntroScene : IScene
 
     public void onUpdate(float dt) {
         transitions.update(dt);
-        if (isPressed(Keyboard.c)) openUrl(""); 
+        if (isPressed(ETFKeys.pBoost)) openUrl(); // Testing with parin github 
 
         if (!transitioningToMenu) {
             toMenuTimer.update(dt);
 
-            if (transitions.canTransition() && (toMenuTimer.hasStopped() || isPressed(ETFUi.confirmKey))) {
+            if (transitions.canTransition() && (toMenuTimer.hasStopped() || isPressed(ETFKeys.confirm))) {
                 transitions.setDuration(time: 1.0f);
                 transitions.playTransition(Transition.fadeOut);
                 transitioningToMenu = true;
