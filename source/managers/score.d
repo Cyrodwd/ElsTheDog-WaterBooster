@@ -4,7 +4,7 @@ import parin;
 
 private
 {
-    enum pointsDefaultAmount = 1000;
+    enum pointsDefaultAmount = 20;
     enum maxPoints = 10_000;
 }
 

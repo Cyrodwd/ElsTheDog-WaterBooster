@@ -110,7 +110,7 @@ final class AdvantageFlask : SkyEntity
         respawnTimer.update(dt);
 
         if (respawnTimer.hasStopped()) {
-            immutable ubyte number = cast (ubyte) randi() % 100 + 1; // 0-100
+            immutable ubyte number = cast (ubyte) randi() % 101; // 0-100
             if (number <= rarityRate) enable();
             else reset();
         }

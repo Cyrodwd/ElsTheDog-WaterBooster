@@ -249,6 +249,10 @@ struct Player {
         this.velocity.y = y;
     }
 
+    void setVelocity(Vec2 velocity) {
+        this.velocity = velocity;
+    }
+
     ubyte getHealth() const {
         return healthPoints;
     }

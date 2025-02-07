@@ -19,6 +19,7 @@ struct ResourceManager
         // Texture for Advantage Flasks (all share the same, but with different colors)
         TextureManager.getInstance().add("FlaskAtlas", format(mainPath, "AdvantageFlask.png"));
         TextureManager.getInstance().add("ElsAtlas", format(mainPath, "Els.png")); // Not a sky entity, just entity lmao
+        TextureManager.getInstance().add("SAWarning", format(mainPath, "Warning.png"));
     }
 
     void loadUiResources() {
