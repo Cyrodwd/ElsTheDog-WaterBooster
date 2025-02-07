@@ -1,10 +1,10 @@
 module sentity.sanomaly;
 
 import parin;
-import sentity.data;
-import data.constants : ETFApplication;
-import managers.texture;
 import player;
+import sentity.data;
+import managers.texture;
+import data.constants : ETFApplication, ETFSprite;
 
 enum SAState : ubyte {
     enabled = 0,
@@ -76,7 +76,7 @@ struct SAnomaly {
         final switch(state) {
             case SAState.respawn: updateRespawn(dt); break;
             case SAState.enabled: updateActive(dt); break;
-            case SAState.waiting: updateWaiting(dt); break; // No.
+            case SAState.waiting: updateWaiting(dt); break;
         }
     }
 
@@ -166,7 +166,7 @@ struct SAnomaly {
                 // Nothing
                 break;
         }
-        println(spawn);
+        
         return spawn;
     }
 }
