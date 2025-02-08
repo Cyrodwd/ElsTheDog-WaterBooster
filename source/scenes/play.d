@@ -17,7 +17,8 @@ import scenes.iscene;
 import bg.nightsky;
 import data.play;
 
-import std.format : format; // score with 5 digits
+import std.format : format;
+import sentity.sanomaly; // score with 5 digits
 
 private:
 
@@ -214,6 +215,7 @@ public final class PlayScene : IScene
     private Timer deadTimer; // Time to switch to GameOver Scene
 
     private Anomaly[3] anomalies;
+    private SAnomaly[2] sanomalies;
     private AdvantageFlask[3] advantageFlasks;
 
     private SEConfig fireTearConfig;
@@ -238,6 +240,7 @@ public final class PlayScene : IScene
         screenLimit.start();
 
         addAnomalies();
+        addSanomalies();
         addAdvantageFlasks();
 
         state = PlayState.Ready;
@@ -274,6 +277,9 @@ public final class PlayScene : IScene
 
         foreach (Anomaly anomaly ; anomalies)
             anomaly.draw();
+
+        foreach (SAnomaly sanomaly ; sanomalies)
+            sanomaly.draw();
         
         foreach (AdvantageFlask flask ; advantageFlasks)
             flask.draw();
@@ -291,6 +297,13 @@ public final class PlayScene : IScene
         advantageFlasks[0] = new AdvantageFlask(FlasksBaseConfig.waterFlask, FlasksConfig.waterFlask);
         advantageFlasks[1] = new AdvantageFlask(FlasksBaseConfig.healthFlask, FlasksConfig.healthFlask);
         advantageFlasks[2] = new AdvantageFlask(FlasksBaseConfig.scoreFlask, FlasksConfig.scoreFlask);
+    }
+
+    private void addSanomalies() {
+        sanomalies[0] = SAnomaly(SAConfig(SEDirection.vertical, white), SANumbers(40, 21, 35.2f),
+            SATimes(5.1f, 2.5f, 3.45f));
+        sanomalies[1] = SAnomaly(SAConfig(SEDirection.horizontal, red), SANumbers(30, 22, 3.2f),
+            SATimes(2.4f, 1.5f, 6.1f));
     }
 
     private void updateUi(float dt) {
@@ -357,6 +370,11 @@ public final class PlayScene : IScene
             anomaly.update(dt);
             anomaly.updateCollision(playerEls);
         }
+
+        foreach (ref SAnomaly sanomaly ; sanomalies) {
+            sanomaly.update(dt);
+            sanomaly.updateCollision(playerEls);
+        }
         
         foreach (ref AdvantageFlask flask ; advantageFlasks) {
             flask.update(dt);
@@ -390,6 +408,7 @@ public final class PlayScene : IScene
 
         // DO NOT UPDATE COLLISIONS
         foreach(ref Anomaly anomaly ; anomalies) anomaly.update(dt);
+        foreach (ref SAnomaly sanomaly ; sanomalies) sanomaly.update(dt);
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped())
