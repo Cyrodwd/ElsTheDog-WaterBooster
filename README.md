@@ -18,12 +18,13 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 - Water booster
 - Score (max 10,000)
 - Advantage Flasks with callbacks and their own rarity
-- Various anomalies: fast, slow, weak, strong, blah blah blah
+- Dynamic and static anomalies (Thunders, fire tears, etc.)
 - Minimalistic menus
 
 ## Missing
-- Unique anomalies
-- "Surrender" and "Victory" scenes.
+- Better background for Game Over.
+- Backgrounds for Water Booster Approved, and Water Booster Rejected.
+- Music & sounds.
 
 This game was created with [Parin](https://github.com/Kapendev/parin).
 
