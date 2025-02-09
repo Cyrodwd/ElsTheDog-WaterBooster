@@ -214,8 +214,8 @@ public final class PlayScene : IScene
 
     private Timer deadTimer; // Time to switch to GameOver Scene
 
-    private Anomaly[3] anomalies;
     private SAnomaly[2] sanomalies;
+    private Anomaly[4] anomalies;
     private AdvantageFlask[3] advantageFlasks;
 
     private SEConfig fireTearConfig;
@@ -291,6 +291,7 @@ public final class PlayScene : IScene
         anomalies[0] = new Anomaly(AnomaliesBaseConfig.fireTear, AnomaliesConfig.fireTear);
         anomalies[1] = new Anomaly(AnomaliesBaseConfig.fastTear, AnomaliesConfig.fastTear);
         anomalies[2] = new Anomaly(AnomaliesBaseConfig.meteorite, AnomaliesConfig.meteorite);
+        anomalies[3] = new Anomaly(AnomaliesBaseConfig.acidFlask, AnomaliesConfig.acidFlask);
     }
 
     private void addAdvantageFlasks() {
@@ -300,10 +301,10 @@ public final class PlayScene : IScene
     }
 
     private void addSanomalies() {
-        sanomalies[0] = SAnomaly(SAConfig(SEDirection.vertical, white), SANumbers(40, 21, 35.2f),
-            SATimes(5.1f, 2.5f, 3.45f));
-        sanomalies[1] = SAnomaly(SAConfig(SEDirection.horizontal, red), SANumbers(30, 22, 3.2f),
-            SATimes(2.4f, 1.5f, 6.1f));
+        // THUNDER
+        sanomalies[0] = SAnomaly(PSAConfigs.thunder, PSAValues.thunder, PSATimes.thunder);
+        // RS (Random Laser)
+        sanomalies[1] = SAnomaly(PSAConfigs.randomLaser, PSAValues.randomLaser, PSATimes.randomLaser);
     }
 
     private void updateUi(float dt) {

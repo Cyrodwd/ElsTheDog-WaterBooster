@@ -24,9 +24,9 @@ struct SANumbers {
 }
 
 struct SATimes {
-    float spawnTime;
-    float activeTime;
-    float waitTime;
+    float spawn;
+    float active;
+    float wait;
 }
 
 /// Unlike standard anomalies, these one are just a bar. Like AF, it has a rarity
@@ -49,9 +49,9 @@ struct SAnomaly {
     this(SAConfig config, SANumbers numbers, SATimes times) {
         direction = config.direction;
 
-        spawnTimer = Timer(times.spawnTime);
-        activeTimer = Timer(times.activeTime);
-        waitTimer = Timer(times.waitTime);
+        spawnTimer = Timer(times.spawn);
+        activeTimer = Timer(times.active);
+        waitTimer = Timer(times.wait);
 
         drawOptions.color = config.color;
         drawOptions.color.a = 180;

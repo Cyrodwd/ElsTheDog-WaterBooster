@@ -10,15 +10,8 @@ import data.constants : ETFSprite;
 struct AnomalyConfig {
     ubyte damageAmount;
     ubyte frameCount;
-    Color color;
     float respawnDelay;
-
-    this(ubyte damageAmount, ubyte frameCount, float respawnDelay, Color color = white) {
-        this.damageAmount = damageAmount;
-        this.frameCount = frameCount;
-        this.respawnDelay = respawnDelay;
-        this.color = color;
-    }
+    Color color = white;
 }
 
 final class Anomaly : SkyEntity
