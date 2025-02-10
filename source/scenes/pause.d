@@ -8,13 +8,13 @@ import scenes.iscene;
 import managers.text;
 import managers.scene;
 import managers.texture;
+import data.attempts;
 
 private struct TextStrings {
     @disable this();
 
-    enum pause = "PAUSE";
     enum cnt = "Press {} to continue";
-    enum abort = "Press {} to abort"; // Abort Magma Booster Test
+    enum abort = "Press {} to abort"; // Abort Water Booster Test
 }
 
 final class PauseScene : IScene
@@ -43,7 +43,11 @@ final class PauseScene : IScene
             SceneManager.get().set(ETFScenesNames.play, refresh: false);
         }
 
-        else if (isPressed(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.rejected);
+        else if (isPressed(ETFKeys.deny)) {
+            AttemptsData.add(isDeath: false); // Add surrender
+            AttemptsData.save();
+            SceneManager.get().set(ETFScenesNames.rejected);
+        }
     }
 
     public override void onDraw() {

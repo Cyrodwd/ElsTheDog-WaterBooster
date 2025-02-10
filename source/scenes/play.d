@@ -18,7 +18,9 @@ import bg.nightsky;
 import data.play;
 
 import std.format : format;
-import sentity.sanomaly; // score with 5 digits
+import sentity.sanomaly;
+import data.score;
+import data.attempts; // score with 5 digits
 
 private:
 
@@ -412,8 +414,13 @@ public final class PlayScene : IScene
         foreach (ref SAnomaly sanomaly ; sanomalies) sanomaly.update(dt);
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
-        if (deadTimer.hasStopped())
+        if (deadTimer.hasStopped()) {
+            ScoreData.setBestScore(scoreManager.points);
+
+            AttemptsData.add(isDeath: true);
+            AttemptsData.save();
             SceneManager.get().set(ETFScenesNames.gameOver);
+        }
     }
 
     private void updateVictory(float dt) {
@@ -429,6 +436,7 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
+            ScoreData.setBestScore(scoreManager.points);
             const IStr sceneToChange = state == PlayState.Victory ? ETFScenesNames.approved : ETFScenesNames.gameOver;
             SceneManager.get().set(sceneToChange);
         }

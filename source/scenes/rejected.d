@@ -9,6 +9,7 @@ import managers.transition;
 
 import data.constants;
 import managers.scene;
+import data.attempts;
 
 struct TextString {
     @disable this();

@@ -1,7 +1,9 @@
 import game;
 import parin;
 import std.conv : to;
+import data.score;
 import data.constants : ETFApplication;
+import data.attempts;
 
 // Ok?
 Game etfMbGame = {};
@@ -14,9 +16,14 @@ void ready() {
     lockResolution(ETFApplication.resolution.x, ETFApplication.resolution.y);
     setBackgroundColor(bgColor);
 
+    AttemptsData.load();
+    ScoreData.load();
+
     debugTextOptions.scale = Vec2(2.0f);
 
     etfMbGame.start();
+    printfln("Best score: {}", ScoreData.bestScore);
+    printfln("Deaths: {}\nSurrenders: {}", AttemptsData.deaths, AttemptsData.surrenders);
 }
 
 bool update(float dt) {
