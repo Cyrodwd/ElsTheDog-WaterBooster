@@ -12,6 +12,7 @@ struct ScoreData {
     static:
 
     ushort bestScore = 0;
+    ushort prevBestScore = 0;
     ushort currScore = 0;
 
     void load() {
@@ -21,7 +22,7 @@ struct ScoreData {
             file.close();
 
             if (data.length == 1)
-                ScoreData.bestScore = data[0];
+               prevBestScore = bestScore = data[0];
         }
     }
 
@@ -29,15 +30,23 @@ struct ScoreData {
         File file = File(path, "wb");
         if (!file.isOpen()) return;
 
-        file.rawWrite([ScoreData.bestScore]);
+        file.rawWrite([bestScore]);
         file.close();
     }
 
     void setBestScore(ushort nscore) {
-        ScoreData.currScore = nscore;
-        if (nscore > ScoreData.bestScore) {
-            ScoreData.bestScore = nscore;
+        currScore = nscore;
+        if (nscore > bestScore) {
+            bestScore = nscore;
             save();
         }
+    }
+
+    void applyBestScore() {
+        if (bestScore > prevBestScore) prevBestScore = bestScore;
+    }
+
+    bool hasNewRecord() {
+        return prevBestScore > 0 && currScore > prevBestScore;
     }
 }

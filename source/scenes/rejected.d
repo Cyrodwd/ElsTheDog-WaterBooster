@@ -8,8 +8,8 @@ import scenes.iscene;
 import managers.transition;
 
 import data.constants;
-import managers.scene;
 import data.attempts;
+import managers.scene;
 
 struct TextString {
     @disable this();
@@ -68,6 +68,6 @@ final class RejectedScene : IScene
 
     private void updateUi() {
         if (isPressed(ETFKeys.confirm)) SceneManager.get().set(ETFScenesNames.play);
-        if (isPressed(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.menu);
+        if (isPressed(ETFKeys.deny)) { SceneManager.get().set(ETFScenesNames.menu); }
     }
 }

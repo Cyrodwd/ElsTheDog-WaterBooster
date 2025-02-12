@@ -10,14 +10,15 @@ private
 
 struct ScoreManager
 {
+    ubyte amount;
     ushort points;
-    ubyte multiplier;
     Timer timer;
 
     @safe @nogc nothrow:
 
     this(float time) {
         points = 0;
+        amount = pointsDefaultAmount;
 
         timer = Timer(time, true);
         timer.start();
@@ -26,7 +27,7 @@ struct ScoreManager
     /// Adds 20 points by default
     void update(float dt) {
         timer.update(dt);
-        if (timer.hasStopped() && !hasMaxPoints()) points += pointsDefaultAmount;
+        if (timer.hasStopped() && !hasMaxPoints()) points += amount;
     }
 
     void add(ubyte newPoints) {
@@ -42,6 +43,10 @@ struct ScoreManager
 
     void stop() {
         timer.stop();
+    }
+
+    void setAmount(ubyte amount) {
+        this.amount = amount;
     }
 
     bool hasMaxPoints() const {

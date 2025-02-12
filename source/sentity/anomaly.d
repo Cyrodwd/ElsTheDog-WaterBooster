@@ -27,7 +27,7 @@ final class Anomaly : SkyEntity
         super(baseConfig);
 
         respawnTimer = Timer(config.respawnDelay);
-        this.damageAmount = config.damageAmount;
+        damageAmount = config.damageAmount;
         drawOptions.color = config.color;
         
         // Sprites configuration
@@ -91,5 +91,14 @@ final class Anomaly : SkyEntity
 
         if (respawnTimer.hasStopped())
             enable();
+    }
+
+    public void setConfig(SEConfig bConfig, AnomalyConfig config) {
+        direction = bConfig.direction;
+        speed = bConfig.speed;
+
+        respawnTimer.duration = config.respawnDelay;
+        damageAmount = config.damageAmount;
+        drawOptions.color = config.color;
     }
 }

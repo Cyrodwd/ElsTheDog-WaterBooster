@@ -31,7 +31,7 @@ struct ResourceManager
         
         TextureManager.getInstance().add("TitleTexture", format(textPath, "title.png"));
         TextureManager.getInstance().add("PauseTexture", format(textPath, "pause.png"));
-        TextureManager.getInstance().add("WBNotSafeTexture", format(textPath, "testFailed.png"));
+        TextureManager.getInstance().add("WbUnsafeTexture", format(textPath, "wbUnsafe.png"));
         TextureManager.getInstance().add("WBRejectedText", format(textPath, "rejected.png"));
         TextureManager.getInstance().add("ApprovedText", format(textPath, "approved.png"));
 

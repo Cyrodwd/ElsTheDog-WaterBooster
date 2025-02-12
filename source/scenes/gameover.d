@@ -15,31 +15,42 @@ import data.attempts;
 
 final class GameOverScene : IScene
 {
-    private static Alignment textAlignment = Alignment.center;
-    private static float textAmplitude = 40.0f;
+    private static Alignment textAlignment = Alignment.right;
+    private static float textAmplitude = 20.0f;
+    private static IStr newScoreStr = "[NEW RECORD!]";
 
     private Background background;
 
-    private WaveTexture testFailedTexture;
+    private WaveTexture wbUnsafeTexture;
     private WaveText restartText;
     private WaveText giveUpText;
+
+    private WaveText yourScoreText;
+    private WaveText bestScoreText;
+    private WaveText newRecordText;
 
     private TransitionManager transitions;
 
     public override void onStart() {
-        const Vec2 rsOrigin = Vec2(0, ETFApplication.resolution.y / 2.0f);
-        const Vec2 guOrigin = Vec2(0, rsOrigin.y - 60);
+        const Vec2 ysOrigin = Vec2(40, ETFApplication.resolution.y / 2.0f);
+        const Vec2 bsOrigin = Vec2(65, ysOrigin.y - 60);
 
-        printfln("Current score: {}", ScoreData.currScore);
+        const nRecordOrigin = Vec2(0.0f, ysOrigin.y - 120);
+        const wbUnsafeOrigin = Vec2((ETFApplication.resolution.x / 2.0f), ETFSprite.size);
 
         background = Background("ElsDeadBackground");
-        restartText = WaveText(format("Press {} to restart", ETFKeys.confirmStr()), rsOrigin, white, textAmplitude,
-            textAlignment);
-        giveUpText = WaveText(format("Press {} to give up", ETFKeys.denyStr()), guOrigin, white, textAmplitude,
-            textAlignment);
 
-        testFailedTexture = WaveTexture("WBNotSafeTexture",
-            Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size), 40.0f);
+        restartText = WaveText(format("{} to restart", ETFKeys.confirmStr()), Vec2(-ysOrigin.x, ysOrigin.y),
+            white, textAmplitude, textAlignment);
+
+        giveUpText = WaveText(format("{} to give up", ETFKeys.denyStr()), Vec2(-bsOrigin.x, bsOrigin.y),
+            white, textAmplitude, textAlignment);
+        
+        yourScoreText = WaveText(format("Your score: {}", ScoreData.currScore), ysOrigin, white, textAmplitude);
+        bestScoreText = WaveText(format("Best score: {}", ScoreData.prevBestScore), bsOrigin, white, textAmplitude);
+        newRecordText = WaveText(newScoreStr, nRecordOrigin, pink, textAmplitude, Alignment.center);
+
+        wbUnsafeTexture = WaveTexture("WbUnsafeTexture", wbUnsafeOrigin, 40.0f);
 
         transitions = TransitionManager(1.3f);
         transitions.playTransition(Transition.fadeIn);
@@ -47,24 +58,38 @@ final class GameOverScene : IScene
 
     public override void onUpdate(float dt) {
         transitions.update(dt);
-        testFailedTexture.update(dt);
-        restartText.update(dt);
-        giveUpText.update(dt);
+        wbUnsafeTexture.update(dt);
 
+        updateText(dt);
 
         if (transitions.canTransition()) {
-            if (isDown(ETFKeys.confirm)) SceneManager.get().set(ETFScenesNames.play);
-            else if (isDown(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.menu);
+            if (isDown(ETFKeys.confirm)) { ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.play); }
+            else if (isDown(ETFKeys.deny)) { ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.menu); }
         }
+    }
+
+    private void updateText(float dt) {
+        yourScoreText.update(dt);
+        bestScoreText.update(dt);
+        if (ScoreData.hasNewRecord()) newRecordText.update(dt);
+
+        restartText.update(dt);
+        giveUpText.update(dt);
     }
 
     public override void onDraw() {
         background.draw();
+        displayText();
+        wbUnsafeTexture.draw();
+        transitions.draw();
+    }
+
+    private void displayText() {
+        yourScoreText.draw();
+        bestScoreText.draw();
+        if (ScoreData.hasNewRecord()) newRecordText.draw();
 
         giveUpText.draw();
         restartText.draw();
-        testFailedTexture.draw();
-
-        transitions.draw();
     }
 }

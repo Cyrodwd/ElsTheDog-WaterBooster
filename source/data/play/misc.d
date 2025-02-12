@@ -33,3 +33,8 @@ enum PlayState : ubyte {
     GameOver,
     Victory,
 }
+
+enum PlayDifficulty {
+    Normal,
+    Hard
+}

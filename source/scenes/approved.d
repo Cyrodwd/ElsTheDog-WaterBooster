@@ -2,11 +2,12 @@ module scenes.approved;
 
 import parin;
 
-import managers.text;
 import scenes.iscene;
-
-import managers.scene;
 import data.constants;
+import data.score;
+
+import managers.text;
+import managers.scene;
 import managers.transition;
 import managers.texture : WaveTexture;
 
@@ -40,7 +41,12 @@ final class ApprovedScene : IScene {
             switching = true;
         }
 
-        if (switching) { if (transitions.canTransition()) SceneManager.get().set(ETFScenesNames.menu); }
+        if (switching) {
+            if (transitions.canTransition()) { 
+                ScoreData.applyBestScore();
+                SceneManager.get().set(ETFScenesNames.menu);
+            }
+        }
     }
 
     public void onDraw() {

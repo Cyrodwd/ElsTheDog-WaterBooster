@@ -211,6 +211,7 @@ public final class PlayScene : IScene
     // Attributes/Methods
 
     private static PlayState state;
+    private static PlayDifficulty difficulty;
     private Player playerEls;
     private ScoreManager scoreManager;
 
@@ -363,6 +364,17 @@ public final class PlayScene : IScene
 
         playerEls.update(dt);
         uiTextColor = playerEls.isHurt() ? ETFUi.cherryColor : ETFUi.defaultTextColor;
+
+        if (difficulty == PlayDifficulty.Normal && scoreManager.points >= 5000) {
+            anomalies[0].setConfig(AnomaliesBHConfig.fireTear, AnomaliesHardConfig.fireTear);
+            anomalies[1].setConfig(AnomaliesBHConfig.fastTear, AnomaliesHardConfig.fastTear);
+            anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
+            anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
+
+            scoreManager.setAmount(10);
+
+            difficulty = PlayDifficulty.Hard;
+        }
 
         uiText.setColor(uiTextColor);
         if (!centerText.hasTempText()) centerText.setColor(uiTextColor);

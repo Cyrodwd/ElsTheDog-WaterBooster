@@ -9,6 +9,7 @@ struct AnomaliesColors {
     static const:
 
     Color fireTear = Color(164, 181, 254);
+    Color fireTearAlt = Color(128, 0, 0);
     Color fastTear = Color(230, 190, 138, 128); // alpha non-accidental
     Color acidFlask = Color(50, 205, 50);
 }
@@ -19,9 +20,9 @@ struct AnomaliesBaseConfig
     static const:
 
     SEConfig fireTear = SEConfig(SEDirection.horizontal, 441.2f, "FireTear",);
-    SEConfig fastTear = SEConfig(SEDirection.horizontal, 633.5f, "FireTear");
+    SEConfig fastTear = SEConfig(SEDirection.vertical, 633.5f, "FireTear");
     SEConfig meteorite = SEConfig(SEDirection.vertical, 547.45f, "MarsMeteorite");
-    SEConfig acidFlask = SEConfig(SEDirection.vertical, 361.72f, "FlaskAtlas"); // Yeah
+    SEConfig acidFlask = SEConfig(SEDirection.horizontal, 361.72f, "FlaskAtlas"); // Yeah
 }
 
 struct AnomaliesConfig
@@ -37,4 +38,24 @@ struct AnomaliesConfig
     AnomalyConfig meteorite = AnomalyConfig(18U, 12U, 6.13f);
     /// Acid Flask
     AnomalyConfig acidFlask = AnomalyConfig(27U, 8U, 4.0f, AnomaliesColors.acidFlask);
+}
+
+struct AnomaliesBHConfig {
+    @disable this();
+    static const:
+
+    SEConfig fireTear = SEConfig(SEDirection.horizontal, 500.1f, "FireTear");
+    SEConfig fastTear = SEConfig(SEDirection.horizontal, 661.4f, "FireTear");
+    SEConfig meteorite = SEConfig(SEDirection.vertical, 612.2f, "MarsMeteorite");
+    SEConfig acidFlask = SEConfig(SEDirection.horizontal, 411.4f, "FlaskAtlas");
+}
+
+struct AnomaliesHardConfig {
+    @disable this();
+    static const:
+
+    AnomalyConfig fireTear = AnomalyConfig(22U, 4U, 2.1f, AnomaliesColors.fireTearAlt);
+    AnomalyConfig fastTear = AnomalyConfig(30U, 4U, 3.6f, AnomaliesColors.fastTear);
+    AnomalyConfig meteorite = AnomalyConfig(26U, 12U, 3.66f);
+    AnomalyConfig acidFlask = AnomalyConfig(31U, 8U, 2.6f, AnomaliesColors.acidFlask);
 }
