@@ -47,7 +47,7 @@ final class GameOverScene : IScene
             white, textAmplitude, textAlignment);
         
         yourScoreText = WaveText(format("Your score: {}", ScoreData.currScore), ysOrigin, white, textAmplitude);
-        bestScoreText = WaveText(format("Best score: {}", ScoreData.prevBestScore), bsOrigin, white, textAmplitude);
+        bestScoreText = WaveText(format("Best score: {}", ScoreData.bestScore), bsOrigin, white, textAmplitude);
         newRecordText = WaveText(newScoreStr, nRecordOrigin, pink, textAmplitude, Alignment.center);
 
         wbUnsafeTexture = WaveTexture("WbUnsafeTexture", wbUnsafeOrigin, 40.0f);

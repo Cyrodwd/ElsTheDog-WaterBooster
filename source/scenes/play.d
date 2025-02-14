@@ -20,7 +20,7 @@ import data.play;
 import std.format : format;
 import sentity.sanomaly;
 import data.score;
-import data.attempts; // score with 5 digits
+import data.attempts;
 
 private:
 
@@ -207,6 +207,7 @@ struct ScreenLimit {
 public final class PlayScene : IScene
 {
     private static enum Vec2 counterPosition = Vec2(0, ETFApplication.resolution.y / 2.0f - 40);
+    private static enum ushort hardScoreInitialize = (maxPoints / 2);
 
     // Attributes/Methods
 
@@ -336,6 +337,17 @@ public final class PlayScene : IScene
         return (state == PlayState.Ready || state == PlayState.Pause);
     }
 
+    private void setHardDifficulty() {
+        anomalies[0].setConfig(AnomaliesBHConfig.fireTear, AnomaliesHardConfig.fireTear);
+        anomalies[1].setConfig(AnomaliesBHConfig.fastTear, AnomaliesHardConfig.fastTear);
+        anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
+        anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
+
+        scoreManager.setAmount(10);
+
+        difficulty = PlayDifficulty.Hard;
+    }
+
     /*
         Private methods to update states
     */
@@ -358,23 +370,14 @@ public final class PlayScene : IScene
 
     private void updateActive(float dt) {
         if (isPressed(ETFKeys.deny)) {
+            ScoreData.setScore(scoreManager.points);
+            
             state = PlayState.Pause;
             SceneManager.get().set(ETFScenesNames.pause);
         }
 
         playerEls.update(dt);
         uiTextColor = playerEls.isHurt() ? ETFUi.cherryColor : ETFUi.defaultTextColor;
-
-        if (difficulty == PlayDifficulty.Normal && scoreManager.points >= 5000) {
-            anomalies[0].setConfig(AnomaliesBHConfig.fireTear, AnomaliesHardConfig.fireTear);
-            anomalies[1].setConfig(AnomaliesBHConfig.fastTear, AnomaliesHardConfig.fastTear);
-            anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
-            anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
-
-            scoreManager.setAmount(10);
-
-            difficulty = PlayDifficulty.Hard;
-        }
 
         uiText.setColor(uiTextColor);
         if (!centerText.hasTempText()) centerText.setColor(uiTextColor);
@@ -410,6 +413,9 @@ public final class PlayScene : IScene
             state = scoreManager.hasMaxPoints() && playerEls.isAlive() ? PlayState.Victory : PlayState.GameOver;
             transition.playTransition(Transition.fadeOut);
         }
+
+        if (difficulty == PlayDifficulty.Normal && scoreManager.points >= hardScoreInitialize)
+            setHardDifficulty();
     }
 
     private void updateGameover(float dt) {
@@ -427,7 +433,7 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            ScoreData.setBestScore(scoreManager.points);
+            ScoreData.setScore(scoreManager.points);
 
             AttemptsData.add(isDeath: true);
             AttemptsData.save();
@@ -448,7 +454,7 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            ScoreData.setBestScore(scoreManager.points);
+            ScoreData.setScore(scoreManager.points);
             const IStr sceneToChange = state == PlayState.Victory ? ETFScenesNames.approved : ETFScenesNames.gameOver;
             SceneManager.get().set(sceneToChange);
         }

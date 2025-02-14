@@ -2,11 +2,8 @@ module managers.score;
 
 import parin;
 
-private
-{
-    enum pointsDefaultAmount = 20;
-    enum maxPoints = 10_000;
-}
+private enum pointsDefaultAmount = 20;
+enum maxPoints = 10_000;
 
 struct ScoreManager
 {

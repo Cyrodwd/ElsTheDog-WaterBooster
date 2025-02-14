@@ -40,4 +40,8 @@ struct AttemptsData {
         if (isDeath) deaths++;
         else surrenders++;
     }
+
+    bool canClean() {
+        return deaths != 0 || surrenders != 0;
+    }
 }

@@ -9,6 +9,7 @@ import managers.text;
 import managers.scene;
 import managers.texture;
 import data.attempts;
+import bg.nightsky;
 
 private struct TextStrings {
     @disable this();
@@ -19,26 +20,46 @@ private struct TextStrings {
 
 final class PauseScene : IScene
 {
+    private static warnOffset = 150;
     private static textAmplitude = 40.2f;
+    private static rectColor = Color(0, 0, 0, 128);
+    private static texturePosition = Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size);
 
-    WaveTexture pauseTexture;
-    WaveText continueText;
-    WaveText abortText;
+    private Rect backgroundRect;
+    private WaveTexture pauseTexture;
+    private WaveText continueText;
+    private WaveText abortText;
+
+    private WaveText scoreText;
+    private WaveText warningText;
 
     public override void onStart() {
-        pauseTexture = WaveTexture("PauseTexture", Vec2(ETFSprite.size + 80.0f, ETFSprite.size), textAmplitude);
-        continueText = WaveText(format(TextStrings.cnt, ETFKeys.confirmStr()), Vec2(35, ETFSprite.size + 256), 
-            white, textAmplitude);
-        abortText = WaveText(format(TextStrings.abort, ETFKeys.denyStr()), Vec2(110, ETFSprite.size + 320), white,
-            textAmplitude);
+        backgroundRect = Rect(Vec2.zero, toVec(ETFApplication.resolution));
+
+        pauseTexture = WaveTexture("PauseTexture", texturePosition, textAmplitude);
+        continueText = WaveText(format(TextStrings.cnt, ETFKeys.confirmStr()), Vec2(0, ETFSprite.size + 256), 
+            white, textAmplitude, Alignment.center);
+        abortText = WaveText(format(TextStrings.abort, ETFKeys.denyStr()), Vec2(0, ETFSprite.size + 320), white,
+            textAmplitude, Alignment.center);
+
+        import data.score;
+        scoreText = WaveText(format("Current Score: {}", ScoreData.currScore),
+            Vec2(0.0f, ETFApplication.resolution.y - warnOffset * 1.5f), white, textAmplitude, Alignment.center);
+
+        warningText = WaveText("If you abort, your score will be lost.",
+            Vec2(0.0f, ETFApplication.resolution.y - warnOffset), red, textAmplitude, Alignment.center);
     }
 
     public override void onUpdate(float dt) {
+        BGNightSky.update(dt);
         pauseTexture.update(dt);
         continueText.update(dt);
         abortText.update(dt);
 
-        if (isPressed(ETFKeys.confirm)){
+        scoreText.update(dt);
+        warningText.update(dt);
+
+        if (isPressed(ETFKeys.confirm)) {
             PlayTimer.start();
             SceneManager.get().set(ETFScenesNames.play, refresh: false);
         }
@@ -46,13 +67,20 @@ final class PauseScene : IScene
         else if (isPressed(ETFKeys.deny)) {
             AttemptsData.add(isDeath: false); // Add surrender
             AttemptsData.save();
+
             SceneManager.get().set(ETFScenesNames.rejected);
         }
     }
 
     public override void onDraw() {
+        BGNightSky.draw();
+        drawRect(backgroundRect, rectColor);
+
         pauseTexture.draw();
         continueText.draw();
         abortText.draw();
+
+        scoreText.draw();
+        warningText.draw();
     }
 }

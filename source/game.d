@@ -2,6 +2,8 @@ module game;
 
 import managers;
 import bg.nightsky;
+
+import data.attempts;
 import data.constants : ETFScenesNames;
 import parin : isPressed, toggleIsFullscreen, Keyboard;
 
@@ -24,7 +26,6 @@ struct Game
     }
 
     bool update(float dt) {
-        if (isPressed(Keyboard.f)) toggleIsFullscreen();
         SceneManager.get().update(dt);
         return false;
     }
@@ -34,6 +35,11 @@ struct Game
     }
 
     void free() {
+        if (SceneManager.get().isOnScene(ETFScenesNames.play) || SceneManager.get().isOnScene(ETFScenesNames.pause)) {
+            AttemptsData.add(isDeath: false);
+            AttemptsData.save();
+        }
+
         FontManager.free();
         SceneManager.get().clear();
         TextureManager.getInstance().clear();

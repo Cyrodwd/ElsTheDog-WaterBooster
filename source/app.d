@@ -22,8 +22,6 @@ void ready() {
     debugTextOptions.scale = Vec2(2.0f);
 
     etfMbGame.start();
-    printfln("Best score: {}", ScoreData.bestScore);
-    printfln("Deaths: {}\nSurrenders: {}", AttemptsData.deaths, AttemptsData.surrenders);
 }
 
 bool update(float dt) {

@@ -38,6 +38,10 @@ final class SceneManager
         if (refresh) currentScene.onStart();
     }
 
+    public bool isOnScene(IStr name) {
+        return (name in scenes && currentScene == scenes[name]);
+    }
+
     public void update(float dt) {
         currentScene.onUpdate(dt);
     }
