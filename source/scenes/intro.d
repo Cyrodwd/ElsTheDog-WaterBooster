@@ -2,6 +2,7 @@ module scenes.intro;
 
 import parin;
 import data.constants;
+import data.intro;
 
 import scenes.iscene;
 import managers.text, managers.scene, managers.texture;
@@ -9,27 +10,26 @@ import managers.transition;
 
 final class IntroScene : IScene
 {
-    immutable Vec2 parinPosition = Vec2(ETFApplication.resolution.x / 2.0f - 128.0f,  128.0f);
-    immutable Vec2 devTextPosition = Vec2(0.0f, 64.0f);
-    immutable Vec2 authorTextPosition = Vec2(0, ETFApplication.resolution.y / 2.0f - 10);
-
     private bool transitioningToMenu;
 
     private Timer toMenuTimer;
-    TextureId parinLogo;
+    private TextureId parinLogo;
+    private Vec2 parinPosition;
 
     private Text devText;
-    private Text authorText;
+    private WaveText splashText;
     private TransitionManager transitions = TransitionManager(transitionTime: 3.0f);
 
     public void onStart() {
         parinLogo = TextureManager.getInstance().get("ParinLogo");
+        parinPosition = IntroPosition.parin;
 
-        devText = Text("Made with parin", devTextPosition, white, Alignment.center);
-        authorText = Text("@Cyrodwd: Programming", authorTextPosition, white, Alignment.center);
+        devText = Text("Made with parin", IntroPosition.devText, white, Alignment.center);
+        splashText = WaveText(IntroSplash.text, IntroPosition.splashText, pink, IntroSplash.amplitude,
+            Alignment.center);
 
-        // Technically its real duration is 8.0 seconds lmto.
-        toMenuTimer = Timer(11.0f);
+        // In reality, it will be 3 seconds
+        toMenuTimer = Timer(6.0f);
         toMenuTimer.start();
 
         transitions.playTransition(Transition.fadeIn);
@@ -38,13 +38,14 @@ final class IntroScene : IScene
 
     public void onUpdate(float dt) {
         transitions.update(dt);
-        if (isPressed(ETFKeys.pBoost)) openUrl(); // Testing with parin github 
+        splashText.update(dt);
 
         if (!transitioningToMenu) {
             toMenuTimer.update(dt);
 
             if (transitions.canTransition() && (toMenuTimer.hasStopped() || isPressed(ETFKeys.confirm))) {
                 transitions.setDuration(time: 1.0f);
+
                 transitions.playTransition(Transition.fadeOut);
                 transitioningToMenu = true;
             }
@@ -59,7 +60,7 @@ final class IntroScene : IScene
         drawTexture(parinLogo, parinPosition);
 
         devText.draw();
-        authorText.draw();
+        splashText.draw();
 
         transitions.draw();
     }
