@@ -87,14 +87,19 @@ final class MenuScene : IScene {
     }
 
     private void updateUi() {
-        // My Social
+        // Github (Z)
         if (canPress(ETFKeys.pBoost))
-            openUrl();
+            openUrl("https://github.com/Cyrodwd");
 
-        // Clear data
-        if (canCleanData() && canPress(ETFKeys.pBoostDown))
+        // Threads (I don't use X anymore lol, X)
+        if (canPress(ETFKeys.pBoostDown))
+            openUrl("https://www.threads.net/@cyrodwd");
+
+        // Clear data (C)
+        if (canCleanData() && canPress(ETFKeys.pExtra))
             clearData();
 
+        // Play
         if (canPress(ETFKeys.confirm))
             SceneManager.get().set(ETFScenesNames.play);
     }

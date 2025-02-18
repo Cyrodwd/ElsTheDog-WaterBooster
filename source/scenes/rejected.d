@@ -7,6 +7,7 @@ import parin;
 import scenes.iscene;
 import managers.transition;
 
+import data.score;
 import data.constants;
 import data.attempts;
 import managers.scene;
@@ -16,18 +17,27 @@ struct TextString {
 
     static:
 
-    immutable IStr retry = "Press {} to retry";
-    immutable IStr accept = "Press {} to accept";
+    immutable IStr retry = "{} to retry";
+    immutable IStr accept = "{} to accept";
 }
 
 final class RejectedScene : IScene
 {
-    static immutable Vec2 rejectedPosition = Vec2( ETFSprite.size + 80.0f, ETFSprite.size);
-    static immutable Vec2 retryPosition = Vec2(20.0f, rejectedPosition.y + ETFSprite.size);
+    static immutable Vec2 rejectedTextOrigin = Vec2( ETFApplication.resolution.x / 2.0f, ETFSprite.size);
+
+    static immutable Vec2 ysOrigin = Vec2(40, ETFApplication.resolution.y / 2.0f);
+    static immutable Vec2 bsOrigin = Vec2(65, ysOrigin.y - 60);
+    
+    static immutable Vec2 retryTextOrigin = Vec2(-ysOrigin.x, ysOrigin.y);
+    static immutable Vec2 acceptTextOrigin = Vec2(-bsOrigin.x, bsOrigin.y);
+
     static immutable float textAmplitude = 30.0f;
 
     private WaveText retryText;
     private WaveText acceptText;
+    private WaveText yourScoreText;
+    private WaveText bestScoreText;
+
     private WaveTexture rejectedText;
     private TransitionManager transition;
 
@@ -37,11 +47,15 @@ final class RejectedScene : IScene
         transition = TransitionManager(1.8f);
         transition.playTransition(Transition.fadeIn);
 
-        rejectedText = WaveTexture("WBRejectedText", rejectedPosition, textAmplitude);
-        retryText = WaveText(format(TextString.retry, ETFKeys.confirmStr()), Vec2(70, ETFSprite.size * 2.0f), 
-            white, textAmplitude);
-        acceptText = WaveText(format(TextString.accept, ETFKeys.denyStr()), Vec2(80, ETFSprite.size + 320), white,
-            textAmplitude);
+        rejectedText = WaveTexture("WBRejectedText", rejectedTextOrigin, textAmplitude);
+
+        retryText = WaveText(format(TextString.retry, ETFKeys.confirmStr()), retryTextOrigin, 
+            white, textAmplitude, Alignment.right);
+        acceptText = WaveText(format(TextString.accept, ETFKeys.denyStr()), acceptTextOrigin, white,
+            textAmplitude, Alignment.right);
+
+        yourScoreText = WaveText(format("Your score: {}", ScoreData.currScore), ysOrigin, white, textAmplitude);
+        bestScoreText = WaveText(format("Best score: {}", ScoreData.bestScore), bsOrigin, white, textAmplitude);
     }
 
     public void onUpdate(float dt) {
@@ -49,6 +63,8 @@ final class RejectedScene : IScene
 
         retryText.update(dt);
         acceptText.update(dt);
+        yourScoreText.update(dt);
+        bestScoreText.update(dt);
 
         rejectedText.update(dt);
 
@@ -61,7 +77,10 @@ final class RejectedScene : IScene
 
         acceptText.draw();
         retryText.draw();
+
         rejectedText.draw();
+        yourScoreText.draw();
+        bestScoreText.draw();
 
         transition.draw();
     }
