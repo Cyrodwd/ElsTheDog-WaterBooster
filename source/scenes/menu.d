@@ -55,9 +55,12 @@ final class MenuScene : IScene {
         surrendersText = WaveText(format(TextConstants.surrendersLabel, AttemptsData.surrenders),
             Vec2(-TextConstants.dataOrigin.x, TextConstants.dataOrigin.y), white,
                 TextConstants.amplitude, Alignment.right);
+
+        MusicManager.play("MenuBGM");
     }
 
     public override void onUpdate(float dt) {
+        MusicManager.update("MenuBGM");
         transitions.update(dt);
         startText.update(dt);
         titleTexture.update(dt);
@@ -100,8 +103,10 @@ final class MenuScene : IScene {
             clearData();
 
         // Play
-        if (canPress(ETFKeys.confirm))
+        if (canPress(ETFKeys.confirm)) {
+            MusicManager.stop("MenuBGM");
             SceneManager.get().set(ETFScenesNames.play);
+        }
     }
 
     private void clearData() {

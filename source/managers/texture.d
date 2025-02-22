@@ -41,10 +41,10 @@ final class TextureManager {
 
     public void remove(IStr name) {
         if (name !in textures)
-            assert(0, format("{} is not a stored."));
+            assert(0, format("{} is not a stored.", name));
 
         if (!textures[name].isValid())
-            assert(0, format("{} is not valid."));
+            assert(0, format("{} is not valid.", name));
 
         textures[name].free();
         textures.remove(name);

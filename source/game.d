@@ -13,8 +13,9 @@ struct Game
         FontManager.setup();
 
         ResourceManager.loadSentities();
-
         ResourceManager.loadBackgrounds();
+
+        ResourceManager.loadMusic();
         ResourceManager.loadUiResources();
         
         ResourceManager.setupScenes();
@@ -42,6 +43,7 @@ struct Game
 
         FontManager.free();
         SceneManager.get().clear();
+        MusicManager.clear();
         TextureManager.getInstance().clear();
     }
 }

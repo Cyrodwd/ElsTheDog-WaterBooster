@@ -7,4 +7,5 @@ public {
     import managers.texture;
     import managers.resources;
     import managers.transition;
+    import managers.music;
 }

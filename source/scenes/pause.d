@@ -8,6 +8,8 @@ import scenes.iscene;
 import managers.text;
 import managers.scene;
 import managers.texture;
+import managers.music;
+
 import data.attempts;
 import bg.nightsky;
 
@@ -48,9 +50,13 @@ final class PauseScene : IScene
 
         warningText = WaveText("If you abort, your score will be lost.",
             Vec2(0.0f, ETFApplication.resolution.y - warnOffset), red, textAmplitude, Alignment.center);
+
+        MusicManager.setVolume("PlayBGM", 0.5f);
     }
 
     public override void onUpdate(float dt) {
+        MusicManager.update("PlayBGM");
+
         BGNightSky.update(dt);
         pauseTexture.update(dt);
         continueText.update(dt);
@@ -61,13 +67,15 @@ final class PauseScene : IScene
 
         if (isPressed(ETFKeys.confirm)) {
             PlayTimer.start();
+            MusicManager.setVolume("PlayBGM", 1.0f);
             SceneManager.get().set(ETFScenesNames.play, refresh: false);
         }
 
         else if (isPressed(ETFKeys.deny)) {
+            MusicManager.stop("PlayBGM");
             AttemptsData.add(isDeath: false); // Add surrender
             AttemptsData.save();
-
+            
             SceneManager.get().set(ETFScenesNames.rejected);
         }
     }

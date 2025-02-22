@@ -232,6 +232,7 @@ public final class PlayScene : IScene
 
     private TransitionManager transition;
     private Color uiTextColor = ETFUi.defaultTextColor;
+    private SoundId bgMusic;
 
     public override void onStart() {
         playerEls.start();
@@ -255,11 +256,15 @@ public final class PlayScene : IScene
         centerText.start();
         counter = WaveText("-", counterPosition, ETFUi.cherryColor, 20.0f, Alignment.center);
         uiBar.setState(GhostState.appearing);
+
+        MusicManager.setVolume("PlayBGM", 1.0f);
+        MusicManager.play("PlayBGM");
     }
 
     public override void onUpdate(float dt) {
         if (state != PlayState.Ready) updateUi(dt);
         if (state != PlayState.Pause) BGNightSky.update(dt);
+        MusicManager.update("PlayBGM");
         
         final switch ( state )
         {
@@ -424,6 +429,7 @@ public final class PlayScene : IScene
         playerEls.update(dt);
         deadTimer.update(dt);
 
+        MusicManager.setVolume("PlayBGM", uiBar.getAlpha());
         centerText.setAlpha(uiBar.getAlpha());
         uiText.setAlpha(uiBar.getAlpha());
 

@@ -48,6 +48,14 @@ struct ResourceManager
         TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "bgGameOver.png"));
     }
 
+    void loadMusic() {
+        const IStr playBgmFilename = randi() % 2 == 1 ? "cs_run.ogg" : "cs_eyes_of_flame.ogg";
+
+        MusicManager.add("PlayBGM", playBgmFilename);
+        MusicManager.add("MenuBGM", "cs_torokos_theme.ogg");
+        MusicManager.add("GameOverBGM", "cs_quiet.ogg");
+    }
+
     void setupScenes() {
         SceneManager.get().add(ETFScenesNames.intro, new IntroScene());
 

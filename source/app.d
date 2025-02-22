@@ -12,6 +12,7 @@ Color bgColor = Color(13, 13, 13);
 
 void ready() {
     // Testing window icon
+    setWindowMinSize(320, 240);
     setWindowIconFromFiles("icon.png");
     lockResolution(ETFApplication.resolution.x, ETFApplication.resolution.y);
     setBackgroundColor(bgColor);

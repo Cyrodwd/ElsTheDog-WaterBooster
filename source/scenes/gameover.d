@@ -12,6 +12,7 @@ import managers.scene;
 import managers.text;
 import managers.transition;
 import data.attempts;
+import managers.music;
 
 final class GameOverScene : IScene
 {
@@ -57,17 +58,22 @@ final class GameOverScene : IScene
 
         transitions = TransitionManager(1.3f);
         transitions.playTransition(Transition.fadeIn);
+        MusicManager.play("GameOverBGM");
     }
 
     public override void onUpdate(float dt) {
         transitions.update(dt);
         wbUnsafeTexture.update(dt);
+        MusicManager.update("GameOverBGM");
 
         updateText(dt);
 
         if (transitions.canTransition()) {
-            if (isDown(ETFKeys.confirm)) { ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.play); }
-            else if (isDown(ETFKeys.deny)) { ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.menu); }
+            if (isDown(ETFKeys.confirm)) { MusicManager.stop("GameOverBGM"); 
+                ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.play); }
+
+            else if (isDown(ETFKeys.deny)) { MusicManager.stop("GameOverBGM");
+                ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.menu); }
         }
     }
 
