@@ -1,27 +1,31 @@
-module data.score;
+module data.user;
 
 import parin;
 
 import std.file;
 import std.stdio;
 
-enum path = "assets/data/best.bin";
+enum path = "assets/data/user.bin";
 
-struct ScoreData {
+struct UserData {
     @disable this();
     static:
 
     ushort bestScore = 0;
     ushort currScore = 0;
+    bool haveLetter = false;
 
     void load() {
+        
         if (exists(path)) {
             File file = File(path, "rb");
-            auto data = file.rawRead(new ushort[1]);
+            auto data = file.rawRead(new ubyte[2]);
             file.close();
 
-            if (data.length == 1)
+            if (data.length == 2) {
                bestScore = data[0];
+               haveLetter = data[1] >= 1 ? true : false;
+            }
         }
     }
 
@@ -29,7 +33,7 @@ struct ScoreData {
         File file = File(path, "wb");
         if (!file.isOpen()) return;
 
-        file.rawWrite([bestScore]);
+        file.rawWrite([bestScore, haveLetter ? 1 : 0]);
         file.close();
     }
 
@@ -42,6 +46,10 @@ struct ScoreData {
             bestScore = currScore;
             save();
         }
+    }
+
+    void giveTrophy() {
+        haveLetter = true;
     }
 
     bool hasNewRecord() {

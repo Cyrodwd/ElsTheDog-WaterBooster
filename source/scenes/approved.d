@@ -2,18 +2,19 @@ module scenes.approved;
 
 import parin;
 
+import data.user;
 import scenes.iscene;
 import data.constants;
-import data.score;
 
 import managers.text;
 import managers.scene;
 import managers.transition;
 import managers.texture : WaveTexture;
+import managers.music;
 
 final class ApprovedScene : IScene {
-    private static toMenuPosition = Vec2(-20, ETFSprite.size * 2.0f);
-    private static approvedPosition = Vec2(ETFApplication.resolution.x - (ETFSprite.size + 80), ETFSprite.size);
+    private static toMenuPosition = Vec2(0.0f, ETFSprite.size * 2.0f);
+    private static approvedPosition = Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size);
 
     private bool switching;
     private WaveText toMenu;
@@ -27,10 +28,14 @@ final class ApprovedScene : IScene {
 
         approvedTexture = WaveTexture("ApprovedText", approvedPosition, 45.3f);
         toMenu = WaveText(format("Press {} to confirm", ETFKeys.confirmStr()), toMenuPosition, white,
-            41.3f, Alignment.right);
+            41.3f, Alignment.center);
+
+        if (!MusicManager.isPlaying("MenuBGM"))
+            MusicManager.play("MenuBGM");
     }
 
     public void onUpdate(float dt) {
+        MusicManager.update("MenuBGM");
         transitions.update(dt);
 
         approvedTexture.update(dt);
@@ -43,7 +48,7 @@ final class ApprovedScene : IScene {
 
         if (switching) {
             if (transitions.canTransition()) { 
-                ScoreData.applyBestScore();
+                UserData.applyBestScore();
                 SceneManager.get().set(ETFScenesNames.menu);
             }
         }

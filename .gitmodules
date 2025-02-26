@@ -1,0 +1,6 @@
+[submodule "include/p"]
+	path = include/p
+	url = https://github.com/Cyrodwd/parin
+[submodule "include/cparin"]
+	path = include/cparin
+	url = https://github.com/Cyrodwd/parin

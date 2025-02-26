@@ -53,7 +53,7 @@ struct ResourceManager
 
         MusicManager.add("PlayBGM", playBgmFilename);
         MusicManager.add("MenuBGM", "cs_torokos_theme.ogg");
-        MusicManager.add("GameOverBGM", "cs_quiet.ogg");
+        MusicManager.add("GameOverBGM", "cs_game_over.ogg", loop: false);
     }
 
     void setupScenes() {

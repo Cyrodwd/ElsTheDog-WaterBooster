@@ -3,7 +3,7 @@ module scenes.gameover;
 import parin;
 import scenes.iscene;
 
-import data.score;
+import data.user;
 import data.constants;
 
 import bg;
@@ -49,8 +49,8 @@ final class GameOverScene : IScene
         giveUpText = WaveText(format("{} to give up", ETFKeys.denyStr()), giveUpTextOrigin,
             white, textAmplitude, Alignment.right);
         
-        yourScoreText = WaveText(format("Your score: {}", ScoreData.currScore), ysOrigin, white, textAmplitude);
-        bestScoreText = WaveText(format("Best score: {}", ScoreData.bestScore), bsOrigin, white, textAmplitude);
+        yourScoreText = WaveText(format("Your score: {}", UserData.currScore), ysOrigin, white, textAmplitude);
+        bestScoreText = WaveText(format("Best score: {}", UserData.bestScore), bsOrigin, white, textAmplitude);
         
         newRecordText = WaveText(newScoreStr, nRecordOrigin, pink, textAmplitude, Alignment.center);
 
@@ -64,23 +64,21 @@ final class GameOverScene : IScene
     public override void onUpdate(float dt) {
         transitions.update(dt);
         wbUnsafeTexture.update(dt);
-        MusicManager.update("GameOverBGM");
-
         updateText(dt);
 
         if (transitions.canTransition()) {
             if (isDown(ETFKeys.confirm)) { MusicManager.stop("GameOverBGM"); 
-                ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.play); }
+                UserData.applyBestScore(); SceneManager.get().set(ETFScenesNames.play); }
 
             else if (isDown(ETFKeys.deny)) { MusicManager.stop("GameOverBGM");
-                ScoreData.applyBestScore(); SceneManager.get().set(ETFScenesNames.menu); }
+                UserData.applyBestScore(); SceneManager.get().set(ETFScenesNames.menu); }
         }
     }
 
     private void updateText(float dt) {
         yourScoreText.update(dt);
         bestScoreText.update(dt);
-        if (ScoreData.hasNewRecord()) newRecordText.update(dt);
+        if (UserData.hasNewRecord()) newRecordText.update(dt);
 
         restartText.update(dt);
         giveUpText.update(dt);
@@ -96,7 +94,7 @@ final class GameOverScene : IScene
     private void displayText() {
         yourScoreText.draw();
         bestScoreText.draw();
-        if (ScoreData.hasNewRecord()) newRecordText.draw();
+        if (UserData.hasNewRecord()) newRecordText.draw();
 
         giveUpText.draw();
         restartText.draw();

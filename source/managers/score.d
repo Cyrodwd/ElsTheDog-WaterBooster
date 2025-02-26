@@ -7,7 +7,7 @@ enum maxPoints = 10_000;
 
 struct ScoreManager
 {
-    ubyte amount;
+    ushort amount;
     ushort points;
     Timer timer;
 
@@ -42,7 +42,7 @@ struct ScoreManager
         timer.stop();
     }
 
-    void setAmount(ubyte amount) {
+    void setAmount(ushort amount) {
         this.amount = amount;
     }
 

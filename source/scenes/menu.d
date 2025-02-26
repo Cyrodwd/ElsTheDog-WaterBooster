@@ -5,7 +5,7 @@ import scenes.iscene;
 
 import managers;
 
-import data.score;
+import data.user;
 import data.attempts;
 import data.constants;
 
@@ -32,13 +32,18 @@ final class MenuScene : IScene {
     
     private WaveText startText;
     private WaveTexture titleTexture;
+    private TextureId ribbonTexture; // Local texture, it will not be used in other place.
     private TransitionManager transitions;
 
     private WaveText deathsText;
     private WaveText bestScoreText;
     private WaveText surrendersText;
+    private bool displayLetter;
 
     public override void onStart() {
+        TextureManager.getInstance().add("LetterTexture", "ui/letter.png");
+        ribbonTexture = TextureManager.getInstance().get("LetterTexture");
+
         transitions = TransitionManager(1.0f);
         transitions.playTransition(Transition.fadeIn);
         
@@ -46,7 +51,7 @@ final class MenuScene : IScene {
         startText = WaveText(format(TextConstants.startStr, ETFKeys.confirmStr()), TextConstants.startOrigin,
             white, TextConstants.amplitude, Alignment.center);
 
-        bestScoreText = WaveText(format(TextConstants.bestScoreLabel, ScoreData.bestScore), TextConstants.dataOrigin,
+        bestScoreText = WaveText(format(TextConstants.bestScoreLabel, UserData.bestScore), TextConstants.dataOrigin,
             white, TextConstants.amplitude);
 
         deathsText = WaveText(format(TextConstants.deathsLabel, AttemptsData.deaths),
@@ -56,7 +61,8 @@ final class MenuScene : IScene {
             Vec2(-TextConstants.dataOrigin.x, TextConstants.dataOrigin.y), white,
                 TextConstants.amplitude, Alignment.right);
 
-        MusicManager.play("MenuBGM");
+        if (!MusicManager.isPlaying("MenuBGM")) MusicManager.play("MenuBGM");
+        displayLetter = UserData.haveLetter;
     }
 
     public override void onUpdate(float dt) {
@@ -75,6 +81,9 @@ final class MenuScene : IScene {
 
     public override void onDraw() {
         BGNightSky.draw();
+        if (displayLetter)
+            drawTexture(ribbonTexture, Vec2.zero);
+            
         titleTexture.draw();
 
         bestScoreText.draw();
@@ -82,7 +91,9 @@ final class MenuScene : IScene {
         surrendersText.draw();
 
         startText.draw();
+        
         transitions.draw();
+
     }
 
     private bool canPress(Keyboard key) {
@@ -94,7 +105,7 @@ final class MenuScene : IScene {
         if (canPress(ETFKeys.pBoost))
             openUrl("https://github.com/Cyrodwd");
 
-        // Threads (I don't use X anymore lol, X)
+        // Threads (I don't use X/Twitter anymore lol, X)
         if (canPress(ETFKeys.pBoostDown))
             openUrl("https://www.threads.net/@cyrodwd");
 
@@ -104,26 +115,30 @@ final class MenuScene : IScene {
 
         // Play
         if (canPress(ETFKeys.confirm)) {
+            TextureManager.getInstance().remove("LetterTexture"); // Literally it will not be used in any other place
             MusicManager.stop("MenuBGM");
             SceneManager.get().set(ETFScenesNames.play);
         }
     }
 
     private void clearData() {
-        ScoreData.bestScore = 0;
-        ScoreData.currScore = 0;
+        UserData.bestScore = 0;
+        UserData.currScore = 0;
+        
+        /* Letter will stay */
+        
         AttemptsData.deaths = 0;
         AttemptsData.surrenders = 0;
 
-        bestScoreText.setText(format(TextConstants.bestScoreLabel, ScoreData.bestScore));
+        bestScoreText.setText(format(TextConstants.bestScoreLabel, UserData.bestScore));
         deathsText.setText(format(TextConstants.deathsLabel, AttemptsData.deaths));
         surrendersText.setText(format(TextConstants.surrendersLabel, AttemptsData.surrenders));
 
-        ScoreData.save();
+        UserData.save();
         AttemptsData.save();
     }
 
     private bool canCleanData() const {
-        return ScoreData.canClean() && AttemptsData.canClean();
+        return UserData.canClean() && AttemptsData.canClean();
     }
 }

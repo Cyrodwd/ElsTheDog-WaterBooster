@@ -17,10 +17,10 @@ import scenes.iscene;
 import bg.nightsky;
 import data.play;
 
-import std.format : format;
-import sentity.sanomaly;
-import data.score;
+import data.user;
 import data.attempts;
+import sentity.sanomaly;
+import std.format : format;
 
 private:
 
@@ -255,6 +255,8 @@ public final class PlayScene : IScene
         uiText.start();
         centerText.start();
         counter = WaveText("-", counterPosition, ETFUi.cherryColor, 20.0f, Alignment.center);
+        difficulty = PlayDifficulty.Normal;
+
         uiBar.setState(GhostState.appearing);
 
         MusicManager.setVolume("PlayBGM", 1.0f);
@@ -348,8 +350,7 @@ public final class PlayScene : IScene
         anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
         anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
 
-        scoreManager.setAmount(10);
-
+        scoreManager.setAmount(amount: 2000);
         difficulty = PlayDifficulty.Hard;
     }
 
@@ -375,7 +376,7 @@ public final class PlayScene : IScene
 
     private void updateActive(float dt) {
         if (isPressed(ETFKeys.deny)) {
-            ScoreData.setScore(scoreManager.points);
+            UserData.setScore(scoreManager.points);
             
             state = PlayState.Pause;
             SceneManager.get().set(ETFScenesNames.pause);
@@ -439,7 +440,8 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            ScoreData.setScore(scoreManager.points);
+            MusicManager.stop("PlayBGM");
+            UserData.setScore(scoreManager.points);
 
             AttemptsData.add(isDeath: true);
             AttemptsData.save();
@@ -453,6 +455,7 @@ public final class PlayScene : IScene
         playerEls.update(dt);
         deadTimer.update(dt);
 
+        MusicManager.setVolume("PlayBGM", uiBar.getAlpha());
         centerText.setAlpha(uiBar.getAlpha());
         uiText.setAlpha(uiBar.getAlpha());
 
@@ -460,7 +463,10 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            ScoreData.setScore(scoreManager.points);
+            MusicManager.stop("PlayBGM");
+
+            UserData.giveTrophy();
+            UserData.setScore(scoreManager.points);
             const IStr sceneToChange = state == PlayState.Victory ? ETFScenesNames.approved : ETFScenesNames.gameOver;
             SceneManager.get().set(sceneToChange);
         }

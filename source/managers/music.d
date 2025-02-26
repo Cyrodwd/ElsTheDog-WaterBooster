@@ -9,13 +9,13 @@ struct MusicManager {
 
     private SoundId[IStr] sounds;
 
-    void add(IStr name, IStr filename) {
+    void add(IStr name, IStr filename, bool loop = true) {
         if (name.length == 0 || filename.length == 0)
             assert(0, "Name or filename is empty");
         
         if (name in sounds) return;
 
-        sounds[name] = loadSound(format("audio/msx/{}", filename), 1.0f, 1.0f);
+        sounds[name] = loadSound(format("audio/msx/{}", filename), 1.0f, 1.0f, loop);
         
         if (!sounds[name].isValid())
             assert(0, format("{} is not a valid music.", name));
@@ -70,5 +70,12 @@ struct MusicManager {
             assert(0, format("{} does not exist.", name));
 
         sounds[name].getOr().setVolume(volume);
+    }
+
+    bool isPlaying(IStr name) {
+        if (name !in sounds)
+            assert(0, format("{} does not exist.", name));
+        
+        return sounds[name].getOr().isPlaying();
     }
 }

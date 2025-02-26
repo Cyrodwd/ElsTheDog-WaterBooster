@@ -44,8 +44,8 @@ final class PauseScene : IScene
         abortText = WaveText(format(TextStrings.abort, ETFKeys.denyStr()), Vec2(0, ETFSprite.size + 320), white,
             textAmplitude, Alignment.center);
 
-        import data.score;
-        scoreText = WaveText(format("Current Score: {}", ScoreData.currScore),
+        import data.user;
+        scoreText = WaveText(format("Current Score: {}", UserData.currScore),
             Vec2(0.0f, ETFApplication.resolution.y - warnOffset * 1.5f), white, textAmplitude, Alignment.center);
 
         warningText = WaveText("If you abort, your score will be lost.",

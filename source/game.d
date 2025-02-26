@@ -3,8 +3,11 @@ module game;
 import managers;
 import bg.nightsky;
 
+import data.user;
 import data.attempts;
 import data.constants : ETFScenesNames;
+
+import joka.io : printfln;
 import parin : isPressed, toggleIsFullscreen, Keyboard;
 
 struct Game
@@ -24,6 +27,7 @@ struct Game
         BGNightSky.start();
 
         SceneManager.get().set(ETFScenesNames.intro);
+        printfln("Your Letter!: {}", UserData.haveLetter);
     }
 
     bool update(float dt) {

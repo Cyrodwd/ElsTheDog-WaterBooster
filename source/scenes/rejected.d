@@ -7,10 +7,11 @@ import parin;
 import scenes.iscene;
 import managers.transition;
 
-import data.score;
+import data.user;
 import data.constants;
 import data.attempts;
 import managers.scene;
+import managers.music;
 
 struct TextString {
     @disable this();
@@ -54,8 +55,9 @@ final class RejectedScene : IScene
         acceptText = WaveText(format(TextString.accept, ETFKeys.denyStr()), acceptTextOrigin, white,
             textAmplitude, Alignment.right);
 
-        yourScoreText = WaveText(format("Your score: {}", ScoreData.currScore), ysOrigin, white, textAmplitude);
-        bestScoreText = WaveText(format("Best score: {}", ScoreData.bestScore), bsOrigin, white, textAmplitude);
+        yourScoreText = WaveText(format("Your score: {}", UserData.currScore), ysOrigin, white, textAmplitude);
+        bestScoreText = WaveText(format("Best score: {}", UserData.bestScore), bsOrigin, white, textAmplitude);
+        MusicManager.play("GameOverBGM");
     }
 
     public void onUpdate(float dt) {
@@ -74,7 +76,6 @@ final class RejectedScene : IScene
     }
 
     public void onDraw() {
-
         acceptText.draw();
         retryText.draw();
 
@@ -86,7 +87,13 @@ final class RejectedScene : IScene
     }
 
     private void updateUi() {
-        if (isPressed(ETFKeys.confirm)) SceneManager.get().set(ETFScenesNames.play);
-        if (isPressed(ETFKeys.deny)) SceneManager.get().set(ETFScenesNames.menu);
+        if (isPressed(ETFKeys.confirm)) {
+            MusicManager.stop("GameOverBGM"); 
+            SceneManager.get().set(ETFScenesNames.play);
+        }
+        if (isPressed(ETFKeys.deny)) {
+            MusicManager.stop("GameOverBGM");
+            SceneManager.get().set(ETFScenesNames.menu);
+        }    
     }
 }

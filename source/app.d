@@ -1,12 +1,12 @@
 import game;
 import parin;
 import std.conv : to;
-import data.score;
+import data.user;
 import data.constants : ETFApplication;
 import data.attempts;
 
 // Ok?
-Game etfMbGame = {};
+Game etfWbGame = {};
 DrawOptions debugTextOptions;
 Color bgColor = Color(13, 13, 13);
 
@@ -18,23 +18,23 @@ void ready() {
     setBackgroundColor(bgColor);
 
     AttemptsData.load();
-    ScoreData.load();
+    UserData.load();
 
     debugTextOptions.scale = Vec2(2.0f);
 
-    etfMbGame.start();
+    etfWbGame.start();
 }
 
 bool update(float dt) {
-    if (etfMbGame.update(dt)) return true;
-    etfMbGame.draw();
+    if (etfWbGame.update(dt)) return true;
+    etfWbGame.draw();
 
     debug drawDebugText(format("{} fps.", fps()), Vec2.zero, debugTextOptions);
     return false;
 }
 
 void finish() {
-    etfMbGame.free();
+    etfWbGame.free();
 }
 
 mixin runGame!(ready, update, finish, 800, 600, ETFApplication.title);
