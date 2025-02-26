@@ -1,2 +1,0 @@
-I didn't know if Kapendev would agree with changing “loadSound”, so I better make a game-specific modification.
-Literally “loadSound” has only one boolean field “loop” lmao.
