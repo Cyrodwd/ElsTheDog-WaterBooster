@@ -20,11 +20,13 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 - Advantage Flasks with callbacks and their own rarity
 - Dynamic and static anomalies (Thunders, fire tears, etc.)
 - Minimalistic menus
+- Music (from Cave Story)
 
 ## Missing
 - Better background for Game Over.
 - Backgrounds for Water Booster Approved, and Water Booster Rejected.
-- Music & sounds.
+- BGM for Rejected and Victory scene.
+- Sounds.
 
 This game was created with [Parin](https://github.com/Kapendev/parin).
 
