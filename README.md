@@ -1,4 +1,4 @@
-# Els The Fox: Water Booster.
+# Els The Dog: Water Booster.
 
 Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advantages (obviously) on your journey, and keep and get the water in your booster so you don't fall.
 
