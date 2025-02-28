@@ -350,7 +350,7 @@ public final class PlayScene : IScene
         anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
         anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
 
-        scoreManager.setAmount(amount: 2000);
+        scoreManager.setAmount(amount: 10);
         difficulty = PlayDifficulty.Hard;
     }
 
