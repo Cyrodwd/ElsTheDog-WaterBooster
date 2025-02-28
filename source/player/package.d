@@ -19,10 +19,10 @@ struct ElsControls
     @disable this();
     static:
 
-    bool leftKey() { return isDown(ETFKeys.pLeft) || isDown(Keyboard.a); }
-    bool rightKey() { return isDown(ETFKeys.pRight) || isDown(Keyboard.d); }
-    bool boostKey() { return isDown(ETFKeys.pBoost) || isDown(Keyboard.j); }
-    bool downBoostKey() { return isDown(ETFKeys.pBoostDown) || isDown(Keyboard.k); }
+    bool leftKey() { return isDown(ETFKeys.pLeft); }
+    bool rightKey() { return isDown(ETFKeys.pRight); }
+    bool boostKey() { return isDown(ETFKeys.pBoost); }
+    bool downBoostKey() { return isDown(ETFKeys.pBoostDown); }
 }
 
 /// Gravity, acceleration, etc.
