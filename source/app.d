@@ -5,16 +5,19 @@ import data.user;
 import data.constants : ETFApplication;
 import data.attempts;
 
-// Ok?
 Game etfWbGame = {};
 DrawOptions debugTextOptions;
-Color bgColor = Color(13, 13, 13);
+
+enum Color bgColor = Color(13, 13, 13);
+enum IVec2 windowResolution = IVec2(800, 600);
+enum IVec2 minWindowResolution = IVec2(320, 240);
 
 void ready() {
     // Testing window icon
-    setWindowMinSize(320, 240);
+    setWindowMinSize(minWindowResolution.x, minWindowResolution.y);
     setWindowIconFromFiles("icon.png");
     lockResolution(ETFApplication.resolution.x, ETFApplication.resolution.y);
+
     setBackgroundColor(bgColor);
 
     AttemptsData.load();
@@ -37,4 +40,4 @@ void finish() {
     etfWbGame.free();
 }
 
-mixin runGame!(ready, update, finish, 800, 600, ETFApplication.title);
+mixin runGame!(ready, update, finish, windowResolution.x, windowResolution.y, ETFApplication.title);

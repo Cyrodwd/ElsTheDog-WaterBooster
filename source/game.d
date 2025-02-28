@@ -28,7 +28,6 @@ struct Game
         BGNightSky.start();
 
         SceneManager.get().set(ETFScenesNames.intro);
-        printfln("Your Letter!: {}", UserData.haveLetter);
     }
 
     bool update(float dt) {
