@@ -13,6 +13,7 @@ import parin : isPressed, toggleIsFullscreen, Keyboard;
 struct Game
 {
     void start() {
+        // Probably in future projects I won't load all the resources at once :|
         FontManager.setup();
 
         ResourceManager.loadSentities();

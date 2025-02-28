@@ -8,7 +8,7 @@ struct ETFApplication {
     @disable this();
 
     enum resolution = IVec2(1280, 960);
-    enum title = "Els The Fox: Water Booster ~ Cyrodwd";
+    enum title = "Els The Dog: Water Booster ~ Cyrodwd";
 }
 
 struct ETFUi {
