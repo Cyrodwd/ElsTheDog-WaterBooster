@@ -22,7 +22,6 @@ struct UserData {
             
             file.rawRead((&bestScore)[0..1]);
             file.rawRead((&haveLetter)[0..1]);
-            writeln((&bestScore)[0..1]);
 
             file.close();
         }
