@@ -43,9 +43,9 @@ struct ResourceManager
         // Backgrounds size: 640x480 (Half of 1280x960).
         const IStr mainPath = "bg/{}"; // Folder where backgrounds are stored
         // Background for PlayScene
-        TextureManager.getInstance().add("NightSkyBackground", format(mainPath, "bgNightSky.png"));
+        TextureManager.getInstance().add("NightSkyBackground", format(mainPath, "NightSky.png"));
         // Background for GameOverScene
-        TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "bgGameOver.png"));
+        TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "GameOver.png"));
     }
 
     void loadMusic() {

@@ -36,6 +36,8 @@ struct ETFKeys {
     alias pBoostDown = Keyboard.x;
     alias pExtra = Keyboard.c;
 
+    alias pMute = Keyboard.m;
+
     IStr confirmStr() {
         return toStr(confirm);
     }

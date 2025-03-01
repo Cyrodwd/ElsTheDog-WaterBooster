@@ -5,7 +5,7 @@ import bg.nightsky;
 
 import data.user;
 import data.attempts;
-import data.constants : ETFScenesNames;
+import data.constants : ETFScenesNames, ETFKeys;
 
 import joka.io : printfln;
 import parin : isPressed, toggleIsFullscreen, Keyboard;

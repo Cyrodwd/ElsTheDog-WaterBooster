@@ -18,6 +18,7 @@ final class GameOverScene : IScene
 {
     private static float textAmplitude = 20.0f;
     private static IStr newScoreStr = "[NEW RECORD!]";
+    private static Color newScoreColor = Color(12, 164, 237);
 
     static immutable Vec2 ysOrigin = Vec2(40, ETFApplication.resolution.y / 2.0f);
     static immutable Vec2 bsOrigin = Vec2(65, ysOrigin.y - 60);
@@ -52,8 +53,7 @@ final class GameOverScene : IScene
         yourScoreText = WaveText(format("Your score: {}", UserData.currScore), ysOrigin, white, textAmplitude);
         bestScoreText = WaveText(format("Best score: {}", UserData.bestScore), bsOrigin, white, textAmplitude);
         
-        newRecordText = WaveText(newScoreStr, nRecordOrigin, pink, textAmplitude, Alignment.center);
-
+        newRecordText = WaveText(newScoreStr, nRecordOrigin, newScoreColor, textAmplitude, Alignment.center);
         wbUnsafeTexture = WaveTexture("WbUnsafeTexture", wbUnsafeOrigin, 40.0f);
 
         transitions = TransitionManager(1.3f);

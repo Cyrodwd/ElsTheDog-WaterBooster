@@ -8,7 +8,6 @@ struct MusicManager {
     static:
 
     private SoundId[IStr] sounds;
-
     void add(IStr name, IStr filename, bool loop = true) {
         if (name.length == 0 || filename.length == 0)
             assert(0, "Name or filename is empty");
@@ -68,14 +67,13 @@ struct MusicManager {
     void setVolume(IStr name, float volume) {
         if (name !in sounds)
             assert(0, format("{} does not exist.", name));
-
+        
         sounds[name].getOr().setVolume(volume);
     }
 
     bool isPlaying(IStr name) {
         if (name !in sounds)
             assert(0, format("{} does not exist.", name));
-        
         return sounds[name].getOr().isPlaying();
     }
 }
