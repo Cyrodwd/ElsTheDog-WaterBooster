@@ -1,6 +1,6 @@
 {
-    "name" : "els-the-fox-water-booster",
-    "description" : "Simple game of Els the fox. Avoid anomalies in sky",
+    "name" : "els-the-dog-water-booster",
+    "description" : "Simple game of Els the dog. Avoid anomalies in sky",
     "authors" : ["ByancaUwU"],
     "copyright" : "Copyright © 2025, ByancaUwU",
     "license" : "MIT",
@@ -10,7 +10,7 @@
             "path": "include/cparin"
         }
     },
-    "targetName": "ElsTheFox_WaterBooster_Executable",
+    "targetName": "ElsTheFox_WaterBooster",
     "configurations": [
         {
             "name": "linux",
