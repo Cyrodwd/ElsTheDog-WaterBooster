@@ -20,11 +20,13 @@ private struct TextConstants {
     enum startOrigin = Vec2(16, ETFApplication.resolution.y - 150);
 
     enum Vec2 dataOrigin = Vec2(18, ETFApplication.resolution.y / 2.0f);
+    enum Vec2 miscOrigin = Vec2(0.0f, dataOrigin.y + 80.0f);
     enum float amplitude = 30.0f;
 
     enum bestScoreLabel = "Best Score: {}";
     enum deathsLabel = "Deaths: {}";
     enum surrendersLabel = "Surrenders: {}";
+    enum miscLabel = "{}: Github. {}: Tumblr. {}: Clear Score.";
 }
 
 final class MenuScene : IScene {
@@ -32,17 +34,19 @@ final class MenuScene : IScene {
     
     private WaveText startText;
     private WaveTexture titleTexture;
-    private TextureId ribbonTexture; // Local texture, it will not be used in other place.
+    private TextureId letterTexture;
     private TransitionManager transitions;
 
     private WaveText deathsText;
     private WaveText bestScoreText;
     private WaveText surrendersText;
+    private Text miscText;
+
     private bool displayLetter;
 
     public override void onStart() {
         TextureManager.getInstance().add("LetterTexture", "ui/letter.png");
-        ribbonTexture = TextureManager.getInstance().get("LetterTexture");
+        letterTexture = TextureManager.getInstance().get("LetterTexture");
 
         transitions = TransitionManager(1.0f);
         transitions.playTransition(Transition.fadeIn);
@@ -60,6 +64,10 @@ final class MenuScene : IScene {
         surrendersText = WaveText(format(TextConstants.surrendersLabel, AttemptsData.surrenders),
             Vec2(-TextConstants.dataOrigin.x, TextConstants.dataOrigin.y), white,
                 TextConstants.amplitude, Alignment.right);
+
+        miscText = Text(format(TextConstants.miscLabel,
+            toStr(ETFKeys.pBoost), toStr(ETFKeys.pBoostDown),
+                toStr(ETFKeys.pExtra)), TextConstants.miscOrigin, white, Alignment.center);
 
         if (!MusicManager.isPlaying("MenuBGM")) MusicManager.play("MenuBGM");
         displayLetter = UserData.haveLetter;
@@ -81,14 +89,16 @@ final class MenuScene : IScene {
 
     public override void onDraw() {
         BGNightSky.draw();
+
         if (displayLetter)
-            drawTexture(ribbonTexture, Vec2.zero);
+            drawTexture(letterTexture, Vec2.zero);
             
         titleTexture.draw();
 
         bestScoreText.draw();
         deathsText.draw();
         surrendersText.draw();
+        miscText.draw();
 
         startText.draw();
         
@@ -105,9 +115,9 @@ final class MenuScene : IScene {
         if (canPress(ETFKeys.pBoost))
             openUrl("https://github.com/Cyrodwd");
 
-        // Threads (I don't use X/Twitter anymore lol, X)
+        // Tumblr (I don't use X/Twitter anymore lol, X)
         if (canPress(ETFKeys.pBoostDown))
-            openUrl("https://www.threads.net/@cyrodwd");
+            openUrl("https://www.tumblr.com/cyrodwd");
 
         // Clear data (C)
         if (canCleanData() && canPress(ETFKeys.pExtra))
