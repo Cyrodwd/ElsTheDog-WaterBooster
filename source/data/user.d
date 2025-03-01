@@ -19,13 +19,12 @@ struct UserData {
         
         if (exists(path)) {
             File file = File(path, "rb");
-            auto data = file.rawRead(new ubyte[2]);
-            file.close();
+            
+            file.rawRead((&bestScore)[0..1]);
+            file.rawRead((&haveLetter)[0..1]);
+            writeln((&bestScore)[0..1]);
 
-            if (data.length == 2) {
-               bestScore = data[0];
-               haveLetter = data[1] >= 1 ? true : false;
-            }
+            file.close();
         }
     }
 
@@ -33,7 +32,8 @@ struct UserData {
         File file = File(path, "wb");
         if (!file.isOpen()) return;
 
-        file.rawWrite([bestScore, haveLetter ? 1 : 0]);
+        file.rawWrite((&bestScore)[0..1]);
+        file.rawWrite((&haveLetter)[0..1]);
         file.close();
     }
 

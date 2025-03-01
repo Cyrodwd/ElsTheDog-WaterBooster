@@ -467,6 +467,8 @@ public final class PlayScene : IScene
 
             UserData.giveTrophy();
             UserData.setScore(scoreManager.points);
+            UserData.save();
+            
             const IStr sceneToChange = state == PlayState.Victory ? ETFScenesNames.approved : ETFScenesNames.gameOver;
             SceneManager.get().set(sceneToChange);
         }

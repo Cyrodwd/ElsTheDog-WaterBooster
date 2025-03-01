@@ -24,7 +24,6 @@ struct AttemptsData {
                 deaths = data[0];
                 surrenders = data[1];
             }
-
         }
     }
 
@@ -37,8 +36,8 @@ struct AttemptsData {
     }
 
     void add(bool isDeath) {
-        if (isDeath) deaths++;
-        else surrenders++;
+        if (isDeath && deaths < 9999) deaths++;
+        else if (surrenders < 9999) surrenders++;
     }
 
     bool canClean() {
