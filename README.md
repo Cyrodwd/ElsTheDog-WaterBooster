@@ -21,11 +21,10 @@ Avoid the sky anomalies and keep flying. Use the advantage flasks to gain advant
 - Dynamic and static anomalies (Thunders, fire tears, etc.)
 - Minimalistic menus
 - Music (from Cave Story)
-- A prize on winning.
+- A "prize" on winning.
 
 ## Missing
-- Better background for Game Over.
-- Backgrounds for Water Booster Approved, and Water Booster Rejected.
+- Background for Water Booster Rejected.
 - Sounds.
 
 This game was created with [Parin](https://github.com/Kapendev/parin).
@@ -43,6 +42,7 @@ git submodule update --init --recursive include/cparin
 ```
 
 > You can use the `install.sh` script, but inside the `include` directory.
+> You can also clone the repository with `--recursive`.
 
 Run this command in your terminal/cmd (Parin installed via dub).
 ```sh
@@ -64,7 +64,7 @@ cd ../../../
 
 Now, run this other command to build it.
 ```sh
-dub build
+dub build --build=release --compiler=ldc2 # Any compiler
 ```
 
 # The music used in the video game is not original. It is from Cave Story, made by Pixel (afaik).
