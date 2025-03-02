@@ -6,7 +6,7 @@ import scenes.iscene;
 import data.user;
 import data.constants;
 
-import bg;
+import backgrounds;
 import managers.texture;
 import managers.scene;
 import managers.text;

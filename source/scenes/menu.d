@@ -9,7 +9,7 @@ import data.user;
 import data.attempts;
 import data.constants;
 
-import bg.nightsky;
+import backgrounds.nightsky;
 
 private struct TextConstants {
     @disable this();

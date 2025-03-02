@@ -11,7 +11,7 @@ import managers.texture;
 import managers.music;
 
 import data.attempts;
-import bg.nightsky;
+import backgrounds.nightsky;
 
 private struct TextStrings {
     @disable this();

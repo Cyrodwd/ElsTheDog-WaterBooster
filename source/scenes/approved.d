@@ -6,6 +6,7 @@ import data.user;
 import scenes.iscene;
 import data.constants;
 
+import backgrounds;
 import managers.text;
 import managers.scene;
 import managers.transition;
@@ -17,6 +18,8 @@ final class ApprovedScene : IScene {
     private static approvedPosition = Vec2(ETFApplication.resolution.x / 2.0f, ETFSprite.size);
 
     private bool switching;
+    private Background background;
+
     private WaveText toMenu;
     private WaveTexture approvedTexture;
     private TransitionManager transitions;
@@ -25,6 +28,8 @@ final class ApprovedScene : IScene {
         switching = false;
         transitions = TransitionManager(1.5f);
         transitions.playTransition(Transition.fadeIn);
+
+        background = Background("ApprovedBackground");
 
         approvedTexture = WaveTexture("ApprovedText", approvedPosition, 45.3f);
         toMenu = WaveText(format("Press {} to confirm", ETFKeys.confirmStr()), toMenuPosition, white,
@@ -55,6 +60,7 @@ final class ApprovedScene : IScene {
     }
 
     public void onDraw() {
+        background.draw();
         approvedTexture.draw();
         toMenu.draw();
 

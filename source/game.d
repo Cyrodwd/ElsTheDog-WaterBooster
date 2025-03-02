@@ -1,7 +1,7 @@
 module game;
 
 import managers;
-import bg.nightsky;
+import backgrounds.nightsky;
 
 import data.user;
 import data.attempts;

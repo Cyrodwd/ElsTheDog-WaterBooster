@@ -41,18 +41,21 @@ struct ResourceManager
 
     void loadBackgrounds() {
         // Backgrounds size: 640x480 (Half of 1280x960).
-        const IStr mainPath = "bg/{}"; // Folder where backgrounds are stored
+        const IStr mainPath = "backgrounds/{}"; // Folder where backgrounds are stored
         // Background for PlayScene
         TextureManager.getInstance().add("NightSkyBackground", format(mainPath, "NightSky.png"));
         // Background for GameOverScene
         TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "GameOver.png"));
+        // Backgrounds for Approved Scene
+        TextureManager.getInstance().add("ApprovedBackgrounds", format(mainPath, "Approved.png"));
     }
 
     void loadMusic() {
-        const IStr playBgmFilename = randi() % 2 == 1 ? "cs_run.ogg" : "cs_eyes_of_flame.ogg";
-
-        MusicManager.add("PlayBGM", playBgmFilename);
+        // PlayScene Background Music (Normal)
+        MusicManager.add("PlayBGM", "cs_eyes_of_flame.ogg");
+        // MenuScene & ApprovedScene Background Music
         MusicManager.add("MenuBGM", "cs_torokos_theme.ogg");
+        // GameOverScene & RejectedScene Background Music
         MusicManager.add("GameOverBGM", "cs_game_over.ogg", loop: false);
     }
 

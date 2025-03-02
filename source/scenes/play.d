@@ -14,7 +14,7 @@ import sentity.aflask;
 import managers;
 import scenes.iscene;
 
-import bg.nightsky;
+import backgrounds.nightsky;
 import data.play;
 
 import data.user;

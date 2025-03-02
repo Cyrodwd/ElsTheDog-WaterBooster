@@ -34,7 +34,7 @@ final class TextureManager {
         
         if (name in textures) return;
 
-        textures[name] = loadTexture(format("sprites/{}", filename));
+        textures[name] = loadTexture(format("images/{}", filename));
         if (!textures[name].isValid())
             assert(0, format("{} is not a valid image.", filename));
     }
