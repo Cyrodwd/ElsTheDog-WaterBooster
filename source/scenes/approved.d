@@ -32,15 +32,16 @@ final class ApprovedScene : IScene {
         background = Background("ApprovedBackground");
 
         approvedTexture = WaveTexture("ApprovedText", approvedPosition, 45.3f);
-        toMenu = WaveText(format("Press {} to confirm", ETFKeys.confirmStr()), toMenuPosition, white,
-            41.3f, Alignment.center);
+        
+        const IStr toMenuLabel = format("Press {} to confirm", ETFKeys.confirmStr());
+        toMenu = WaveText(toMenuLabel, toMenuPosition, white, 41.3f, Alignment.center);
 
-        if (!MusicManager.isPlaying("MenuBGM"))
-            MusicManager.play("MenuBGM");
+        if (!MusicManager.isPlaying("AltMenuBGM"))
+            MusicManager.play("AltMenuBGM");
     }
 
     public void onUpdate(float dt) {
-        MusicManager.update("MenuBGM");
+        MusicManager.update("AltMenuBGM");
         transitions.update(dt);
 
         approvedTexture.update(dt);
@@ -61,6 +62,7 @@ final class ApprovedScene : IScene {
 
     public void onDraw() {
         background.draw();
+
         approvedTexture.draw();
         toMenu.draw();
 

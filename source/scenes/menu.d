@@ -43,6 +43,7 @@ final class MenuScene : IScene {
     private Text miscText;
 
     private bool displayLetter;
+    IStr musName;
 
     public override void onStart() {
         TextureManager.getInstance().add("LetterTexture", "ui/letter.png");
@@ -69,12 +70,14 @@ final class MenuScene : IScene {
             toStr(ETFKeys.pBoost), toStr(ETFKeys.pBoostDown),
                 toStr(ETFKeys.pExtra)), TextConstants.miscOrigin, white, Alignment.center);
 
-        if (!MusicManager.isPlaying("MenuBGM")) MusicManager.play("MenuBGM");
+        musName = UserData.haveLetter ? "AltMenuBGM" : "MenuBGM";
+
+        if (!MusicManager.isPlaying(musName)) MusicManager.play(musName);
         displayLetter = UserData.haveLetter;
     }
 
     public override void onUpdate(float dt) {
-        MusicManager.update("MenuBGM");
+        MusicManager.update(musName);
         transitions.update(dt);
         startText.update(dt);
         titleTexture.update(dt);
@@ -126,7 +129,7 @@ final class MenuScene : IScene {
         // Play
         if (canPress(ETFKeys.confirm)) {
             TextureManager.getInstance().remove("LetterTexture"); // Literally it will not be used in any other place
-            MusicManager.stop("MenuBGM");
+            MusicManager.stop(musName);
             SceneManager.get().set(ETFScenesNames.play);
         }
     }

@@ -232,7 +232,8 @@ public final class PlayScene : IScene
 
     private TransitionManager transition;
     private Color uiTextColor = ETFUi.defaultTextColor;
-    private SoundId bgMusic;
+
+    private IStr backgroundMusName;
 
     public override void onStart() {
         playerEls.start();
@@ -259,14 +260,16 @@ public final class PlayScene : IScene
 
         uiBar.setState(GhostState.appearing);
 
-        MusicManager.setVolume("PlayBGM", 1.0f);
-        MusicManager.play("PlayBGM");
+        backgroundMusName = "PlayBGM";
+        MusicManager.setVolume(backgroundMusName, 1.0f);
+        MusicManager.setVolume("AltPlayBGM", 1.0f);
+        MusicManager.play(backgroundMusName);
     }
 
     public override void onUpdate(float dt) {
         if (state != PlayState.Ready) updateUi(dt);
         if (state != PlayState.Pause) BGNightSky.update(dt);
-        MusicManager.update("PlayBGM");
+        MusicManager.update(backgroundMusName);
         
         final switch ( state )
         {
@@ -350,6 +353,10 @@ public final class PlayScene : IScene
         anomalies[2].setConfig(AnomaliesBHConfig.meteorite, AnomaliesHardConfig.meteorite);
         anomalies[3].setConfig(AnomaliesBHConfig.acidFlask, AnomaliesHardConfig.acidFlask);
 
+        MusicManager.stop(backgroundMusName);
+        backgroundMusName = "AltPlayBGM";
+        MusicManager.play(backgroundMusName);
+
         scoreManager.setAmount(amount: 10);
         difficulty = PlayDifficulty.Hard;
     }
@@ -430,7 +437,7 @@ public final class PlayScene : IScene
         playerEls.update(dt);
         deadTimer.update(dt);
 
-        MusicManager.setVolume("PlayBGM", uiBar.getAlpha());
+        MusicManager.setVolume(backgroundMusName, uiBar.getAlpha());
         centerText.setAlpha(uiBar.getAlpha());
         uiText.setAlpha(uiBar.getAlpha());
 
@@ -440,7 +447,8 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            MusicManager.stop("PlayBGM");
+            MusicManager.stop(backgroundMusName);
+
             UserData.setScore(scoreManager.points);
 
             AttemptsData.add(isDeath: true);
@@ -455,7 +463,7 @@ public final class PlayScene : IScene
         playerEls.update(dt);
         deadTimer.update(dt);
 
-        MusicManager.setVolume("PlayBGM", uiBar.getAlpha());
+        MusicManager.setVolume(backgroundMusName, uiBar.getAlpha());
         centerText.setAlpha(uiBar.getAlpha());
         uiText.setAlpha(uiBar.getAlpha());
 
@@ -463,7 +471,7 @@ public final class PlayScene : IScene
         foreach (ref AdvantageFlask flask ; advantageFlasks) flask.update(dt);
 
         if (deadTimer.hasStopped()) {
-            MusicManager.stop("PlayBGM");
+            MusicManager.stop(backgroundMusName);
 
             UserData.giveTrophy();
             UserData.setScore(scoreManager.points);

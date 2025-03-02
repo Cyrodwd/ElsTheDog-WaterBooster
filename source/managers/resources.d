@@ -47,14 +47,18 @@ struct ResourceManager
         // Background for GameOverScene
         TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "GameOver.png"));
         // Backgrounds for Approved Scene
-        TextureManager.getInstance().add("ApprovedBackgrounds", format(mainPath, "Approved.png"));
+        TextureManager.getInstance().add("ApprovedBackground", format(mainPath, "Approved.png"));
     }
 
     void loadMusic() {
         // PlayScene Background Music (Normal)
         MusicManager.add("PlayBGM", "cs_eyes_of_flame.ogg");
-        // MenuScene & ApprovedScene Background Music
+        // PlayScene Background Music (Hard)
+        MusicManager.add("AltPlayBGM", "cs_last_battle.ogg");
+        // MenuScene Background Music
         MusicManager.add("MenuBGM", "cs_torokos_theme.ogg");
+        // MenuScene & ApprovedScene Background Music (Alt)
+        MusicManager.add("AltMenuBGM", "cs_hero_end.ogg");
         // GameOverScene & RejectedScene Background Music
         MusicManager.add("GameOverBGM", "cs_game_over.ogg", loop: false);
     }
