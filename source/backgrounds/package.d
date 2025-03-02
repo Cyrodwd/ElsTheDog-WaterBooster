@@ -1,4 +1,4 @@
-module bg;
+module backgrounds;
 
 import parin;
 import managers.texture;

@@ -1,4 +1,4 @@
-module bg.nightsky;
+module backgrounds.nightsky;
 
 import parin : Vec2, DrawOptions, TextureId, drawTexture;
 import managers : TextureManager;
