@@ -37,7 +37,7 @@ struct AnomaliesConfig
     /// Unknown Moon Rock
     AnomalyConfig meteorite = AnomalyConfig(18U, 12U, 6.13f);
     /// Acid Flask
-    AnomalyConfig acidFlask = AnomalyConfig(27U, 8U, 4.0f, AnomaliesColors.acidFlask);
+    AnomalyConfig acidFlask = AnomalyConfig(21U, 8U, 4.0f, AnomaliesColors.acidFlask);
 }
 
 struct AnomaliesBHConfig {
@@ -55,7 +55,7 @@ struct AnomaliesHardConfig {
     static const:
 
     AnomalyConfig fireTear = AnomalyConfig(22U, 4U, 2.1f, AnomaliesColors.fireTearAlt);
-    AnomalyConfig fastTear = AnomalyConfig(30U, 4U, 3.6f, AnomaliesColors.fastTear);
-    AnomalyConfig meteorite = AnomalyConfig(26U, 12U, 3.66f);
-    AnomalyConfig acidFlask = AnomalyConfig(31U, 8U, 2.6f, AnomaliesColors.acidFlask);
+    AnomalyConfig fastTear = AnomalyConfig(18U, 4U, 3.6f, AnomaliesColors.fastTear);
+    AnomalyConfig meteorite = AnomalyConfig(24U, 12U, 3.66f);
+    AnomalyConfig acidFlask = AnomalyConfig(27U, 8U, 2.6f, AnomaliesColors.acidFlask);
 }
