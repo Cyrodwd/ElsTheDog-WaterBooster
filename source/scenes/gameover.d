@@ -62,6 +62,7 @@ final class GameOverScene : IScene
     }
 
     public override void onUpdate(float dt) {
+        MusicManager.update("GameOverBGM");
         transitions.update(dt);
         wbUnsafeTexture.update(dt);
         updateText(dt);

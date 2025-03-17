@@ -61,6 +61,7 @@ final class RejectedScene : IScene
     }
 
     public void onUpdate(float dt) {
+        MusicManager.update("GameOverBGM");
         transition.update(dt);
 
         retryText.update(dt);
