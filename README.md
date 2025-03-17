@@ -31,9 +31,10 @@ This game was created with [Parin](https://github.com/Kapendev/parin).
 
 ## Compilation
 
-First you have to clone the fork of parin (from me), inside the include/cparin directory (assuming you are in the root of the project).
+If you have not done so, install Dlang on your system (including DUB). You can go to their download page for more details: [Downloads](https://dlang.org/download.html)
+Now run the following
 ```sh
-git clone https://github.com/Cyrodwd/parin include/cparin
+dub fetch parin
 ```
 
 Run this command in your terminal/cmd (Parin installed via dub).
