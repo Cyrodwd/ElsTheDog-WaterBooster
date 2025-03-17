@@ -80,7 +80,7 @@ struct WaveTexture
 
     void update(float dt) {
         time += dt;
-        time = fmod(time, 2 * pi);
+        time = fmod(time, cast(float)(2 * pi));
 
         const float offset = sin(time * 2.0f) * amplitude;
         position.y = baseY + offset;

@@ -1,6 +1,6 @@
 module data.play.anomaly;
 
-import joka.colors;
+import joka.math;
 import sentity.data;
 import sentity.anomaly : AnomalyConfig;
 

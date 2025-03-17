@@ -1,8 +1,7 @@
 module data.constants;
 
 import joka;
-import joka.colors : white;
-import parin : Color, IVec2, Vec2, Rect, Keyboard;
+import parin : Color, white, IVec2, Vec2, Rect, Keyboard;
 
 // I'm not going to bother changing these names.
 struct ETFApplication {

@@ -32,14 +32,15 @@ struct Text {
     IStr text;
     Vec2 position;
     DrawOptions drawOptions;
+    TextOptions textOptions;
 
     this(IStr text, Vec2 position, Color color, Alignment alignment = Alignment.left) {
         this.text = text;
         this.position = position;
 
         drawOptions.color = color;
-        drawOptions.alignment = alignment;
-        drawOptions.alignmentWidth = ETFApplication.resolution.x;
+        textOptions.alignment = alignment;
+        textOptions.alignmentWidth = ETFApplication.resolution.x;
     }
 
     void setText(IStr newText) {
@@ -64,7 +65,7 @@ struct Text {
     }
 
     void draw() const {
-        drawText(FontManager.get(), text, position, drawOptions);
+        drawText(FontManager.get(), text, position, drawOptions, textOptions);
     }
 }
 

@@ -1,7 +1,7 @@
 module data.play.aflask;
 
 import player;
-import joka.colors;
+import joka.math;
 import managers.score;
 
 import sentity.data;

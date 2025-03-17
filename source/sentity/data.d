@@ -1,7 +1,7 @@
 module sentity.data;
 
 import joka : IStr;
-import joka.colors : Color, white;
+import joka.math : Color, white;
 
 /// SEDirection -> Sky Entity Direction
 enum SEDirection : ubyte {
