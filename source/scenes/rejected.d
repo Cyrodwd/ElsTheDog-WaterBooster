@@ -12,6 +12,7 @@ import data.constants;
 import data.attempts;
 import managers.scene;
 import managers.music;
+import backgrounds;
 
 struct TextString {
     @disable this();
@@ -41,13 +42,13 @@ final class RejectedScene : IScene
 
     private WaveTexture rejectedText;
     private TransitionManager transition;
-
-    // TODO: Add background
+    private Background background;
 
     public void onStart() {
         transition = TransitionManager(1.8f);
         transition.playTransition(Transition.fadeIn);
 
+        background = Background("RejectedBackground");
         rejectedText = WaveTexture("WBRejectedText", rejectedTextOrigin, textAmplitude);
 
         retryText = WaveText(format(TextString.retry, ETFKeys.confirmStr()), retryTextOrigin, 
@@ -77,6 +78,7 @@ final class RejectedScene : IScene
     }
 
     public void onDraw() {
+        background.draw();
         acceptText.draw();
         retryText.draw();
 
