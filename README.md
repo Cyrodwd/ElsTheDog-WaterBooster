@@ -36,30 +36,9 @@ First you have to clone the fork of parin (from me), inside the include/cparin d
 git clone https://github.com/Cyrodwd/parin include/cparin
 ```
 
-Then, you can update the submodule
-```sh
-git submodule update --init --recursive include/cparin
-```
-
-> You can use the `install.sh` script, but inside the `include` directory.
-> You can also clone the repository with `--recursive`.
-
 Run this command in your terminal/cmd (Parin installed via dub).
 ```sh
 dub run parin:setup
-```
-
-Or you can use the local parin setup (somewhat inconvenient, preferably install the official version of parin and use its setup).
-
-```sh
-# Go to the 'setup' directory of 'include/cparin'.
-cd include/cparin/setup
-# Build it
-dub build
-# Go to the root of the project
-cd ../../../
-# execute it (POSIX)
-./include/cparin/setup/setup
 ```
 
 Now, run this other command to build it.
