@@ -6,9 +6,7 @@
     "license" : "MIT",
     "dependencies": {
         "joka": "*",
-        "parin": {
-            "path": "include/cparin"
-        }
+        "parin": "*"
     },
     "targetName": "ElsTheFox_WaterBooster",
     "configurations": [
