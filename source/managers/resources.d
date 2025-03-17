@@ -48,6 +48,8 @@ struct ResourceManager
         TextureManager.getInstance().add("ElsDeadBackground", format(mainPath, "GameOver.png"));
         // Backgrounds for Approved Scene
         TextureManager.getInstance().add("ApprovedBackground", format(mainPath, "Approved.png"));
+        // Background for Rejected Scene
+        TextureManager.getInstance().add("RejectedBackground", format(mainPath, "Rejected.png"));
     }
 
     void loadMusic() {
